@@ -55,8 +55,17 @@ func exportCallback(parser *clio.ArgParser) {
         exit("Error:", err)
     }
 
+    // Assemble a list of entries to export.
+    var entries []*irondb.Entry
+
+    if parser.HasArgs() {
+        entries = db.Lookup(parser.GetArgs()...)
+    } else {
+        entries = db.Active()
+    }
+
     // Create the JSON dump.
-    dump, err := db.Export(key, parser.GetArgs()...)
+    dump, err := irondb.Export(entries, key)
     if err != nil {
         exit("Error:", err)
     }

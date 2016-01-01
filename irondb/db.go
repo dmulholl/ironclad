@@ -8,7 +8,6 @@ import (
     "encoding/json"
     "strings"
     "strconv"
-    "bytes"
     "github.com/dmulholland/ironclad/ironio"
 )
 
@@ -56,43 +55,6 @@ func (db *DB) Save(key []byte, password, filename string) error {
 }
 
 
-// Export exports a list of entries in JSON format. Passwords are unencrypted.
-func (db *DB) Export(key []byte, queries ...string) (dump string, err error) {
-
-    var entries []*Entry
-
-    // If no query strings have been specified, export all active entries.
-    if len(queries) == 0 {
-        entries = db.Active()
-    } else {
-        entries = db.Lookup(queries...)
-    }
-
-    // Create a list of entries with unencrypted passwords.
-    clones := make([]Entry, 0)
-    for _, original := range entries {
-        clone := *original
-        clone.Password, err = original.GetPassword(key)
-        if err != nil {
-            return "", err
-        }
-        clones = append(clones, clone)
-    }
-
-    // Generate a JSON dump of the list.
-    data, err := json.Marshal(clones)
-    if err != nil {
-        return "", err
-    }
-
-    // Format the JSON for display.
-    var formatted bytes.Buffer
-    json.Indent(&formatted, data, "", "  ")
-
-    return formatted.String(), nil
-}
-
-
 // Import adds entries from an exported JSON dump to the database.
 func (db *DB) Import(key []byte, dump string) error {
 
@@ -107,6 +69,7 @@ func (db *DB) Import(key []byte, dump string) error {
         if err != nil {
             return err
         }
+        entry.Active = true
         db.Add(entry)
     }
 

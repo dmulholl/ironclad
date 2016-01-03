@@ -17,7 +17,7 @@ import (
 
 
 // Application version number.
-const Version = "0.2.2"
+const version = "0.2.2"
 
 
 // Application help text.
@@ -53,6 +53,10 @@ Command Help:
 var ironpath = filepath.Join(os.Getenv("HOME"), ".ironclad")
 
 
+// Address for the cached-password server.
+const ironaddress = "localhost:54512"
+
+
 // Application entry point.
 func main() {
 
@@ -60,7 +64,7 @@ func main() {
     ironconfig.Configfile = filepath.Join(ironpath, "goconfig.toml")
 
     // Instantiate an argument parser.
-    parser := clio.NewParser(helptext, Version)
+    parser := clio.NewParser(helptext, version)
 
     // Register the 'add' command.
     addParser := parser.AddCommand("add", addCallback, addHelptext)
@@ -128,6 +132,9 @@ func main() {
     purgeParser := parser.AddCommand("purge", purgeCallback, purgeHelptext)
     purgeParser.AddStringOption("file", "", 'f')
     purgeParser.AddStringOption("db-password", "")
+
+    // Register the 'serve' command.
+    parser.AddCommand("serve", serveCallback, serveHelptext)
 
     // Register the 'user' command.
     userParser := parser.AddCommand("user", userCallback, userHelptext)

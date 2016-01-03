@@ -107,6 +107,12 @@ func exit(msg ...interface{}) {
 }
 
 
+// Print a message to stderr.
+func errmsg(msg ...interface{}) {
+    fmt.Fprintln(os.Stderr, msg...)
+}
+
+
 // Print a line of characters.
 func line(char string) {
     for i := 0; i < 80; i++ {

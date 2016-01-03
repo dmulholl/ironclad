@@ -42,17 +42,17 @@ func save(tree *toml.TomlTree) error {
 
 
 // Get reads a value from the configuration file.
-func Get(key string) (found bool, value string, err error) {
+func Get(key string) (value string, found bool, err error) {
     config, err := load()
     if err != nil {
-        return false, "", err
+        return "", false, err
     }
     if config.Has(key) {
         if value, ok := config.Get(key).(string); ok {
-            return true, value, nil
+            return value, true, nil
         }
     }
-    return false, "", nil
+    return "", false, nil
 }
 
 

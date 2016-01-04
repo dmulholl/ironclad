@@ -83,7 +83,7 @@ func addCallback(parser *clio.ArgParser) {
     // Do we need to launch a text editor to add notes?
     line("-")
     notesquery := input("  Add a note to this entry? (y/n): ")
-    if strings.ToLower(notesquery)[0] == 'y' {
+    if len(notesquery) > 0 && strings.ToLower(notesquery)[0] == 'y' {
         entry.Notes = inputViaEditor("add-note", "")
     } else {
         entry.Notes = ""

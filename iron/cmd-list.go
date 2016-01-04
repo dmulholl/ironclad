@@ -15,9 +15,12 @@ import (
 
 // Help text for the 'list' command.
 var listHelptext = fmt.Sprintf(`
-Usage: %s list [FLAGS] [OPTIONS]
+Usage: %s list [FLAGS] [OPTIONS] [ARGUMENTS]
 
   List the entries in a database.
+
+Arguments:
+  [entry ...]               Entries to list by ID or title. Default: all.
 
 Options:
   -f, --file <str>          Database file.
@@ -57,20 +60,26 @@ func listCallback(parser *clio.ArgParser) {
         exit("Error:", err)
     }
 
-    // Print the list of entries.
-    tag := parser.GetStringOption("tag")
-    if tag == "" {
-        if parser.GetFlag("verbose") {
-            printVerboseList(db.Active(), key)
-        } else {
-            printCompactList(db.Active())
-        }
+    // Assemble a list of entries.
+    var entries []*irondb.Entry
+    var title string
+
+    if parser.HasArgs() {
+        entries = db.Lookup(parser.GetArgs()...)
+        title = "Matching Entries"
+    } else if parser.GetStringOption("tag") != "" {
+        entries = db.ByTag(parser.GetStringOption("tag"))
+        title = "Entries Tagged: " + parser.GetStringOption("tag")
     } else {
-        if parser.GetFlag("verbose") {
-            printVerboseList(db.ByTag(tag), key)
-        } else {
-            printCompactList(db.ByTag(tag))
-        }
+        entries = db.Active()
+        title = "All Entries"
+    }
+
+    // Print the list of entries.
+    if parser.GetFlag("verbose") {
+        printVerboseList(entries, key, title)
+    } else {
+        printCompactList(entries)
     }
 
     // Cache the password and filename.
@@ -112,7 +121,7 @@ func printCompactList(entries []*irondb.Entry) {
 
 
 // Print a verbose listing.
-func printVerboseList(entries []*irondb.Entry, key []byte) {
+func printVerboseList(entries []*irondb.Entry, key []byte, title string) {
 
     // Bail if we have no entries to display.
     if len(entries) == 0 {
@@ -124,11 +133,7 @@ func printVerboseList(entries []*irondb.Entry, key []byte) {
 
     // Header.
     line("-")
-    if len(entries) == 1 {
-        fmt.Println("  1 Entry")
-    } else {
-        fmt.Printf("  %d Entries\n", len(entries))
-    }
+    fmt.Println("  " + title)
     line("-")
 
     // Print the entry listing.

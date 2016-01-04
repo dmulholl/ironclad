@@ -105,6 +105,21 @@ func (db *DB) ByTag(tag string) []*Entry {
 }
 
 
+// Tags returns a map of tags to entry lists.
+func (db *DB) Tags() map[string][]*Entry {
+    tags := make(map[string][]*Entry)
+    for _, entry := range db.Active() {
+        for _, tag := range entry.Tags {
+            if _, ok := tags[tag]; !ok {
+                tags[tag] = make([]*Entry, 0)
+            }
+            tags[tag] = append(tags[tag], entry)
+        }
+    }
+    return tags
+}
+
+
 // Add inserts a new entry into the database.
 func (db *DB) Add(entry *Entry) {
     if len(db.entries) == 0 {

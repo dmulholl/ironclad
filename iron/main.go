@@ -17,7 +17,7 @@ import (
 
 
 // Application version number.
-const version = "0.2.3"
+const version = "0.3.0"
 
 
 // Application help text.
@@ -42,6 +42,7 @@ Commands:
   new               Create a new database.
   pass              Print a password.
   purge             Purge deleted entries from a database.
+  tags              List database tags.
   user              Print a username.
 
 Command Help:
@@ -132,6 +133,11 @@ func main() {
     purgeParser := parser.AddCommand("purge", purgeCallback, purgeHelptext)
     purgeParser.AddStringOption("file", "", 'f')
     purgeParser.AddStringOption("db-password", "")
+
+    // Register the 'tags' command.
+    tagsParser := parser.AddCommand("tags", tagsCallback, tagsHelptext)
+    tagsParser.AddStringOption("file", "", 'f')
+    tagsParser.AddStringOption("db-password", "")
 
     // Register the 'serve' command.
     parser.AddCommand("serve", serveCallback, serveHelptext)

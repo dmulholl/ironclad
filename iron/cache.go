@@ -8,13 +8,18 @@ import (
     "encoding/base64"
     "time"
     "os/exec"
+    "path/filepath"
     "os"
 )
 
 
 // Cache the last-used filename for the application's next run.
 func cacheLastFilename(filename string) {
-    err := ironconfig.Set("file", filename)
+    filename, err := filepath.Abs(filename)
+    if err != nil {
+        exit("Error:", err)
+    }
+    err = ironconfig.Set("file", filename)
     if err != nil {
         exit("Error:", err)
     }

@@ -123,12 +123,11 @@ func line(char string) {
 
 
 // Print an indented line of characters.
-func iline(char string, indent int) {
-    for i := 0; i < indent; i++ {
-        fmt.Print(" ")
-    }
-    for i := 0; i < 80 - indent * 2; i++ {
+func iline(char string) {
+    fmt.Print("  ")
+    for i := 0; i < 26; i++ {
         fmt.Print(char)
+        fmt.Print("  ")
     }
     fmt.Println()
 }

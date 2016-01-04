@@ -147,7 +147,7 @@ func printVerboseList(entries []*irondb.Entry, key []byte) {
         fmt.Printf("  Tags:     %s\n", strings.Join(entry.Tags, ", "))
 
         if entry.Notes != "" {
-            iline("-", 2)
+            iline("-")
             wrapped := wordwrap.WrapString(entry.Notes, 76)
             indented := text.Indent(wrapped, "  ")
             fmt.Println(strings.Trim(indented, "\r\n"))

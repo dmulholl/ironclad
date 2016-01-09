@@ -25,6 +25,7 @@ Usage:
       new               Create a new database.
       pass              Print a password.
       purge             Purge deleted entries from a database.
+      tags              List database tags.
       user              Print a username.
 
     Command Help:

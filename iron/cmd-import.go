@@ -24,7 +24,7 @@ Options:
   -f, --file <str>          Database file.
 
 Flags:
-  --help                    Print this command's help text and exit.
+      --help                Print this command's help text and exit.
 `, filepath.Base(os.Args[0]))
 
 

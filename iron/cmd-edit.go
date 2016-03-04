@@ -24,13 +24,13 @@ Options:
   -f, --file <str>          Database file.
 
 Flags:
-  --help                    Print this command's help text and exit.
-  --notes                   Edit the entry's notes.
-  --password                Edit the entry's password.
-  --tags                    Edit the entry's tags.
-  --title                   Edit the entry's title.
-  --url                     Edit the entry's url.
-  --username                Edit the entry's username.
+      --help                Print this command's help text and exit.
+      --notes               Edit the entry's notes.
+      --password            Edit the entry's password.
+      --tags                Edit the entry's tags.
+      --title               Edit the entry's title.
+      --url                 Edit the entry's url.
+      --username            Edit the entry's username.
 `, filepath.Base(os.Args[0]))
 
 

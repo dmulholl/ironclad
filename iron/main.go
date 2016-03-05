@@ -32,6 +32,7 @@ Flags:
 
 Commands:
   add               Add a new entry to a database.
+  config            Set or print a configuration option.
   delete            Delete an entry from a database.
   dump              Dump a database's internal JSON data store.
   edit              Edit an existing database entry.
@@ -71,6 +72,9 @@ func main() {
     addParser := parser.AddCmd("add", addCallback, addHelptext)
     addParser.AddStrOpt("file", "", 'f')
     addParser.AddStrOpt("db-password", "")
+
+    // Register the 'config' command.
+    parser.AddCmd("config", configCallback, configHelptext)
 
     // Register the 'delete' command.
     deleteParser := parser.AddCmd("delete", deleteCallback, deleteHelptext)

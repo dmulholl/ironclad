@@ -15,7 +15,7 @@ var exportHelptext = fmt.Sprintf(`
 Usage: %s export [FLAGS] [OPTIONS] [ARGUMENTS]
 
   Export a list of entries in JSON format. Entries can be specified by ID or
-  title. If no entries are specified, all entries will be exported.
+  by title. If no entries are specified, all entries will be exported.
 
 Arguments:
   [entry ...]               List of entries to export by ID or title.

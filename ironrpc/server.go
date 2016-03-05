@@ -19,7 +19,7 @@ var TokenError = errors.New("invalid token")
 
 
 // Duration after which the server will automatically shut down.
-var ServerTimeout = 15 * time.Minute
+var ServerTimeout = 60 * time.Minute
 
 
 // TokenPair instances are used internally by the RPC implementation.

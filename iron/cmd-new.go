@@ -35,7 +35,7 @@ func newCallback(parser *clio.ArgParser) {
     filename := parser.GetArgs()[0]
 
     // Prompt for a password if none has been supplied.
-    password := parser.GetStringOption("db-password")
+    password := parser.GetStrOpt("db-password")
     if password == "" {
         password = input("Password: ")
     }

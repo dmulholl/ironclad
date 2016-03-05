@@ -39,7 +39,7 @@ func listCallback(parser *clio.ArgParser) {
     var found bool
 
     // Determine the filename to use.
-    filename = parser.GetStringOption("file")
+    filename = parser.GetStrOpt("file")
     if filename == "" {
         if filename, found = fetchLastFilename(); !found {
             filename = input("Filename: ")
@@ -47,7 +47,7 @@ func listCallback(parser *clio.ArgParser) {
     }
 
     // Determine the password to use.
-    password = parser.GetStringOption("db-password")
+    password = parser.GetStrOpt("db-password")
     if password == "" {
         if password, found = fetchLastPassword(); !found {
             password = input("Password: ")
@@ -67,9 +67,9 @@ func listCallback(parser *clio.ArgParser) {
     if parser.HasArgs() {
         entries = db.Lookup(parser.GetArgs()...)
         title = "Matching Entries"
-    } else if parser.GetStringOption("tag") != "" {
-        entries = db.ByTag(parser.GetStringOption("tag"))
-        title = "Entries Tagged: " + parser.GetStringOption("tag")
+    } else if parser.GetStrOpt("tag") != "" {
+        entries = db.ByTag(parser.GetStrOpt("tag"))
+        title = "Entries Tagged: " + parser.GetStrOpt("tag")
     } else {
         entries = db.Active()
         title = "All Entries"

@@ -46,7 +46,7 @@ func editCallback(parser *clio.ArgParser) {
     }
 
     // Determine the filename to use.
-    filename = parser.GetStringOption("file")
+    filename = parser.GetStrOpt("file")
     if filename == "" {
         if filename, found = fetchLastFilename(); !found {
             filename = input("Filename: ")
@@ -54,7 +54,7 @@ func editCallback(parser *clio.ArgParser) {
     }
 
     // Determine the password to use.
-    password = parser.GetStringOption("db-password")
+    password = parser.GetStrOpt("db-password")
     if password == "" {
         if password, found = fetchLastPassword(); !found {
             password = input("Password: ")

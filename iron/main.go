@@ -17,7 +17,7 @@ import (
 
 
 // Application version number.
-const version = "0.3.0"
+const version = "0.4.0"
 
 
 // Application help text.
@@ -68,24 +68,24 @@ func main() {
     parser := clio.NewParser(helptext, version)
 
     // Register the 'add' command.
-    addParser := parser.AddCommand("add", addCallback, addHelptext)
-    addParser.AddStringOption("file", "", 'f')
-    addParser.AddStringOption("db-password", "")
+    addParser := parser.AddCmd("add", addCallback, addHelptext)
+    addParser.AddStrOpt("file", "", 'f')
+    addParser.AddStrOpt("db-password", "")
 
     // Register the 'delete' command.
-    deleteParser := parser.AddCommand("delete", deleteCallback, deleteHelptext)
-    deleteParser.AddStringOption("file", "", 'f')
-    deleteParser.AddStringOption("db-password", "")
+    deleteParser := parser.AddCmd("delete", deleteCallback, deleteHelptext)
+    deleteParser.AddStrOpt("file", "", 'f')
+    deleteParser.AddStrOpt("db-password", "")
 
     // Register the 'dump' command.
-    dumpParser := parser.AddCommand("dump", dumpCallback, dumpHelptext)
-    dumpParser.AddStringOption("file", "", 'f')
-    dumpParser.AddStringOption("db-password", "")
+    dumpParser := parser.AddCmd("dump", dumpCallback, dumpHelptext)
+    dumpParser.AddStrOpt("file", "", 'f')
+    dumpParser.AddStrOpt("db-password", "")
 
     // Register the 'edit' command.
-    editParser := parser.AddCommand("edit", editCallback, editHelptext)
-    editParser.AddStringOption("file", "", 'f')
-    editParser.AddStringOption("db-password", "")
+    editParser := parser.AddCmd("edit", editCallback, editHelptext)
+    editParser.AddStrOpt("file", "", 'f')
+    editParser.AddStrOpt("db-password", "")
     editParser.AddFlag("title")
     editParser.AddFlag("url")
     editParser.AddFlag("username")
@@ -94,14 +94,14 @@ func main() {
     editParser.AddFlag("tags")
 
     // Register the 'export' command.
-    exportParser := parser.AddCommand("export", exportCallback, exportHelptext)
-    exportParser.AddStringOption("file", "", 'f')
-    exportParser.AddStringOption("db-password", "")
+    exportParser := parser.AddCmd("export", exportCallback, exportHelptext)
+    exportParser.AddStrOpt("file", "", 'f')
+    exportParser.AddStrOpt("db-password", "")
 
     // Register the 'gen' command.
-    genParser := parser.AddCommand("gen", genCallback, genHelptext)
-    genParser.AddStringOption("file", "", 'f')
-    genParser.AddStringOption("db-password", "")
+    genParser := parser.AddCmd("gen", genCallback, genHelptext)
+    genParser.AddStrOpt("file", "", 'f')
+    genParser.AddStrOpt("db-password", "")
     genParser.AddFlag("digits", 'd')
     genParser.AddFlag("exclude", 'e')
     genParser.AddFlag("lowercase", 'l')
@@ -109,43 +109,43 @@ func main() {
     genParser.AddFlag("uppercase", 'u')
 
     // Register the 'import' command.
-    importParser := parser.AddCommand("import", importCallback, importHelptext)
-    importParser.AddStringOption("file", "", 'f')
-    importParser.AddStringOption("db-password", "")
+    importParser := parser.AddCmd("import", importCallback, importHelptext)
+    importParser.AddStrOpt("file", "", 'f')
+    importParser.AddStrOpt("db-password", "")
 
     // Register the 'list' command.
-    listParser := parser.AddCommand("list", listCallback, listHelptext)
-    listParser.AddStringOption("file", "", 'f')
-    listParser.AddStringOption("db-password", "")
-    listParser.AddStringOption("tag", "", 't')
+    listParser := parser.AddCmd("list", listCallback, listHelptext)
+    listParser.AddStrOpt("file", "", 'f')
+    listParser.AddStrOpt("db-password", "")
+    listParser.AddStrOpt("tag", "", 't')
     listParser.AddFlag("verbose", 'v')
 
     // Register the 'new' command.
-    newParser := parser.AddCommand("new", newCallback, newHelptext)
-    newParser.AddStringOption("db-password", "")
+    newParser := parser.AddCmd("new", newCallback, newHelptext)
+    newParser.AddStrOpt("db-password", "")
 
     // Register the 'pass' command.
-    passParser := parser.AddCommand("pass", passCallback, passHelptext)
-    passParser.AddStringOption("file", "", 'f')
-    passParser.AddStringOption("db-password", "")
+    passParser := parser.AddCmd("pass", passCallback, passHelptext)
+    passParser.AddStrOpt("file", "", 'f')
+    passParser.AddStrOpt("db-password", "")
 
     // Register the 'purge' command.
-    purgeParser := parser.AddCommand("purge", purgeCallback, purgeHelptext)
-    purgeParser.AddStringOption("file", "", 'f')
-    purgeParser.AddStringOption("db-password", "")
+    purgeParser := parser.AddCmd("purge", purgeCallback, purgeHelptext)
+    purgeParser.AddStrOpt("file", "", 'f')
+    purgeParser.AddStrOpt("db-password", "")
 
     // Register the 'tags' command.
-    tagsParser := parser.AddCommand("tags", tagsCallback, tagsHelptext)
-    tagsParser.AddStringOption("file", "", 'f')
-    tagsParser.AddStringOption("db-password", "")
+    tagsParser := parser.AddCmd("tags", tagsCallback, tagsHelptext)
+    tagsParser.AddStrOpt("file", "", 'f')
+    tagsParser.AddStrOpt("db-password", "")
 
     // Register the 'serve' command.
-    parser.AddCommand("serve", serveCallback, serveHelptext)
+    parser.AddCmd("serve", serveCallback, serveHelptext)
 
     // Register the 'user' command.
-    userParser := parser.AddCommand("user", userCallback, userHelptext)
-    userParser.AddStringOption("file", "", 'f')
-    userParser.AddStringOption("db-password", "")
+    userParser := parser.AddCmd("user", userCallback, userHelptext)
+    userParser.AddStrOpt("file", "", 'f')
+    userParser.AddStrOpt("db-password", "")
 
     // Parse the application's command line arguments.
     // If a command is found, control will be passed to its
@@ -153,7 +153,7 @@ func main() {
     parser.Parse()
 
     // If no command has been found, print the help text and exit.
-    if !parser.HasCommand() {
+    if !parser.HasCmd() {
         parser.Help()
     }
 }

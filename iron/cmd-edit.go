@@ -38,7 +38,7 @@ Flags:
 func editCallback(parser *clio.ArgParser) {
 
     var filename, password string
-    var found bool
+    var found, all bool
 
     // Make sure an argument has been specified.
     if !parser.HasArgs() {
@@ -76,11 +76,11 @@ func editCallback(parser *clio.ArgParser) {
     }
     entry := entries[0]
 
-    // Check that we have at least one field to edit.
+    // Default to editing all fields except 'notes'.
     if !parser.GetFlag("title") && !parser.GetFlag("url") &&
         !parser.GetFlag("username") && !parser.GetFlag("password") &&
         !parser.GetFlag("tags") && !parser.GetFlag("notes") {
-        exit("Error: you must specify at least one field to edit.")
+        all = true
     }
 
     // Header.
@@ -88,28 +88,28 @@ func editCallback(parser *clio.ArgParser) {
     fmt.Println("  Editing Entry: " + entry.Title)
     line("-")
 
-    if parser.GetFlag("title") {
+    if parser.GetFlag("title") || all {
         fmt.Println("  TITLE")
         fmt.Println("  Old value: " + entry.Title)
         entry.Title = input("  New value: ")
         line("-")
     }
 
-    if parser.GetFlag("url") {
+    if parser.GetFlag("url") || all {
         fmt.Println("  URL")
         fmt.Println("  Old value: " + entry.Url)
         entry.Url = input("  New value: ")
         line("-")
     }
 
-    if parser.GetFlag("username") {
+    if parser.GetFlag("username") || all {
         fmt.Println("  USERNAME")
         fmt.Println("  Old value: " + entry.Username)
         entry.Username = input("  New value: ")
         line("-")
     }
 
-    if parser.GetFlag("password") {
+    if parser.GetFlag("password") || all {
         fmt.Println("  PASSWORD")
         oldpass, err := entry.GetPassword(key)
         if err != nil {
@@ -123,7 +123,7 @@ func editCallback(parser *clio.ArgParser) {
         line("-")
     }
 
-    if parser.GetFlag("tags") {
+    if parser.GetFlag("tags") || all {
         fmt.Println("  TAGS")
         fmt.Println("  Old value: " + strings.Join(entry.Tags, ", "))
         tagstring := input("  New value: ")

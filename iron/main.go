@@ -73,6 +73,9 @@ func main() {
     addParser.AddStrOpt("file", "", 'f')
     addParser.AddStrOpt("db-password", "")
 
+    // Register the 'cache' command.
+    parser.AddCmd("cache", cacheCallback, cacheHelptext)
+
     // Register the 'config' command.
     parser.AddCmd("config", configCallback, configHelptext)
 
@@ -142,9 +145,6 @@ func main() {
     tagsParser := parser.AddCmd("tags", tagsCallback, tagsHelptext)
     tagsParser.AddStrOpt("file", "", 'f')
     tagsParser.AddStrOpt("db-password", "")
-
-    // Register the 'serve' command.
-    parser.AddCmd("serve", serveCallback, serveHelptext)
 
     // Register the 'user' command.
     userParser := parser.AddCmd("user", userCallback, userHelptext)

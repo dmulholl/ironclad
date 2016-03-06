@@ -13,9 +13,9 @@ import (
 )
 
 
-// Help text for the 'serve' command.
-var serveHelptext = fmt.Sprintf(`
-Usage: %s serve [FLAGS]
+// Help text for the 'cache' command.
+var cacheHelptext = fmt.Sprintf(`
+Usage: %s cache [FLAGS]
 
   Run the cached-password server. This command should not be run manually.
 
@@ -25,7 +25,7 @@ Flags:
 
 
 // Callback for the 'serve' command.
-func serveCallback(parser *clio.ArgParser) {
+func cacheCallback(parser *clio.ArgParser) {
 
     // Check if a cache timeout has been set in the config file.
     timeout, found, err := ironconfig.Get("timeout")

@@ -43,7 +43,7 @@ func cacheLastPassword(password string) {
     // If we can't make a connection, launch a new server.
     client, err := ironrpc.NewClient(ironaddress)
     if err != nil {
-        cmd := exec.Command(os.Args[0], "serve")
+        cmd := exec.Command(os.Args[0], "cache")
         cmd.Stdin = os.Stdin
         cmd.Stdout = os.Stdout
         cmd.Stderr = os.Stderr

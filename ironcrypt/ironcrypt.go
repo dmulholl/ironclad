@@ -15,16 +15,22 @@
 
     The output of the Encrypt() function is structured as follows:
 
-        |-- IV --|-- Ciphertext --|-- HMAC --|
-            16         n x 16          32
+        |-- IV --|-- Payload --|-- HMAC --|
+            16         16n          32
 
-    Lengths are given in bytes. The length of the ciphertext will be a
-    multiple of the AES block size (16 bytes).
+        IV: initialization vector
+        Payload: encrypted plaintext
+        HMAC: authentication code
+
+    Lengths are given in bytes. The length of the payload will be a
+    multiple of the AES block size (16 bytes). (Note that the padding algorithm
+    appends a null block to the plaintext when the length of the plaintext
+    is a multiple of the block size. This padding is automatically removed
+    during decryption.)
 
     The Key() function can be used to derive a suitable 64-byte
     encryption key from a password. It uses the PBKDF2 scheme with
     an SHA-256 hash.
-
 */
 package ironcrypt
 
@@ -52,10 +58,10 @@ const (
 var (
     ErrInvalidPadding = errors.New("invalid padding length")
     ErrInvalidKey = errors.New("invalid key length")
-    ErrInvalidIV = errors.New("error generating initialization vector")
+    ErrIV = errors.New("error generating initialization vector")
     ErrInvalidCiphertext = errors.New("invalid ciphertext length")
-    ErrInvalidHMAC = errors.New("authentication failed")
-    ErrInvalidRandBytes = errors.New("error generating random bytes")
+    ErrInvalidHMAC = errors.New("invalid authentication code")
+    ErrRandBytes = errors.New("error generating random bytes")
 )
 
 
@@ -102,7 +108,7 @@ func Encrypt(key, plaintext []byte) ([]byte, error) {
     iv := make([]byte, aes.BlockSize)
     _, err := io.ReadFull(rand.Reader, iv)
     if err != nil {
-        return nil, ErrInvalidIV
+        return nil, ErrIV
     }
 
     // Pad the plaintext so its length is a multiple of the AES block size.
@@ -179,7 +185,7 @@ func RandBytes(length int) ([]byte, error) {
     output := make([]byte, length)
     _, err := io.ReadFull(rand.Reader, output)
     if err != nil {
-        return nil, ErrInvalidRandBytes
+        return nil, ErrRandBytes
     }
     return output, nil
 }
@@ -189,4 +195,26 @@ func RandBytes(length int) ([]byte, error) {
 // key derivation algorithm.
 func Key(password, salt []byte, iterations int) []byte {
     return pbkdf2.Key([]byte(password), salt, iterations, KeySize, sha256.New)
+}
+
+
+// LenCipher returns the length in bytes of the ciphertext that will be
+// returned for a given plaintext length.
+func LenCipher(lenPlain int) (length int) {
+
+    // The initialization vector is a single AES block.
+    length += aes.BlockSize
+
+    // The padding algorithm adds an extra null block to the plaintext if the
+    // length of the plaintext is a multiple of the block size.
+    if lenPlain % aes.BlockSize == 0 {
+        length += lenPlain + aes.BlockSize
+    } else {
+        length += lenPlain
+    }
+
+    // Authentication code.
+    length += HMACSize
+
+    return length
 }

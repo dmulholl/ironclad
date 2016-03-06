@@ -4,9 +4,12 @@ package main
 import (
     "os"
     "fmt"
+    "strconv"
+    "time"
     "path/filepath"
     "github.com/dmulholland/clio/go/clio"
     "github.com/dmulholland/ironclad/ironrpc"
+    "github.com/dmulholland/ironclad/ironconfig"
 )
 
 
@@ -23,7 +26,22 @@ Flags:
 
 // Callback for the 'serve' command.
 func serveCallback(parser *clio.ArgParser) {
-    err := ironrpc.Serve(ironaddress)
+
+    // Check if a cache timeout has been set in the config file.
+    timeout, found, err := ironconfig.Get("timeout")
+    if err != nil {
+        exit("Error:", err)
+    }
+    if found {
+        minutes, err := strconv.ParseInt(timeout, 10, 64)
+        if err != nil {
+            exit("Error:", err)
+        }
+        ironrpc.ServerTimeout = time.Duration(minutes) * time.Minute
+    }
+
+    // Run the cache server.
+    err = ironrpc.Serve(ironaddress)
     if err != nil {
         exit("Error:", err)
     }

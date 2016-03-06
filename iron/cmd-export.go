@@ -55,6 +55,8 @@ func exportCallback(parser *clio.ArgParser) {
     if err != nil {
         exit("Error:", err)
     }
+    cacheLastPassword(password)
+    cacheLastFilename(filename)
 
     // Assemble a list of entries to export.
     var entries []*irondb.Entry
@@ -73,8 +75,4 @@ func exportCallback(parser *clio.ArgParser) {
 
     // Print the JSON to stdout.
     fmt.Println(dump)
-
-    // Cache the password and filename.
-    cacheLastPassword(password)
-    cacheLastFilename(filename)
 }

@@ -51,14 +51,12 @@ func purgeCallback(parser *clio.ArgParser) {
     if err != nil {
         exit("Error:", err)
     }
+    cacheLastPassword(password)
+    cacheLastFilename(filename)
 
     // Purge the database.
     db.Purge()
 
     // Save the updated database to disk.
     db.Save(key, password, filename)
-
-    // Cache the password and filename.
-    cacheLastPassword(password)
-    cacheLastFilename(filename)
 }

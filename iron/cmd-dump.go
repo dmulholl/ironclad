@@ -53,6 +53,8 @@ func dumpCallback(parser *clio.ArgParser) {
     if err != nil {
         exit("Error:", err)
     }
+    cacheLastPassword(password)
+    cacheLastFilename(filename)
 
     // Format the JSON for display.
     var formatted bytes.Buffer
@@ -60,8 +62,4 @@ func dumpCallback(parser *clio.ArgParser) {
 
     // Print the formatted JSON to stdout.
     fmt.Println(formatted.String())
-
-    // Cache the password and filename.
-    cacheLastPassword(password)
-    cacheLastFilename(filename)
 }

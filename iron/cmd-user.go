@@ -59,6 +59,8 @@ func userCallback(parser *clio.ArgParser) {
     if err != nil {
         exit("Error:", err)
     }
+    cacheLastPassword(password)
+    cacheLastFilename(filename)
 
     // Search for an entry corresponding to the specified argument.
     entries := db.Lookup(parser.GetArgs()[0])
@@ -75,8 +77,4 @@ func userCallback(parser *clio.ArgParser) {
     if stdoutIsTerminal() {
         fmt.Println()
     }
-
-    // Cache the password and filename.
-    cacheLastPassword(password)
-    cacheLastFilename(filename)
 }

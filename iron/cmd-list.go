@@ -59,6 +59,8 @@ func listCallback(parser *clio.ArgParser) {
     if err != nil {
         exit("Error:", err)
     }
+    cacheLastPassword(password)
+    cacheLastFilename(filename)
 
     // Assemble a list of entries.
     var entries []*irondb.Entry
@@ -81,10 +83,6 @@ func listCallback(parser *clio.ArgParser) {
     } else {
         printCompactList(entries)
     }
-
-    // Cache the password and filename.
-    cacheLastPassword(password)
-    cacheLastFilename(filename)
 }
 
 

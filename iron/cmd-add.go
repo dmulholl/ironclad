@@ -52,6 +52,8 @@ func addCallback(parser *clio.ArgParser) {
     if err != nil {
         exit("Error:", err)
     }
+    cacheLastPassword(password)
+    cacheLastFilename(filename)
 
     // Create a new Entry object to add to the database.
     entry := irondb.NewEntry()
@@ -97,8 +99,4 @@ func addCallback(parser *clio.ArgParser) {
 
     // Footer.
     line("-")
-
-    // Cache the password and filename.
-    cacheLastPassword(password)
-    cacheLastFilename(filename)
 }

@@ -60,6 +60,8 @@ func deleteCallback(parser *clio.ArgParser) {
     if err != nil {
         exit("Error:", err)
     }
+    cacheLastPassword(password)
+    cacheLastFilename(filename)
 
     // Grab the entries to delete.
     entries := make([]*irondb.Entry, 0)
@@ -86,8 +88,4 @@ func deleteCallback(parser *clio.ArgParser) {
 
     // Save the altered database.
     db.Save(key, password, filename)
-
-    // Cache the password and filename.
-    cacheLastPassword(password)
-    cacheLastFilename(filename)
 }

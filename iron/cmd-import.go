@@ -54,6 +54,8 @@ func importCallback(parser *clio.ArgParser) {
             password = input("Password: ")
         }
     }
+    cacheLastPassword(password)
+    cacheLastFilename(filename)
 
     // Load the database file.
     db, key, err := irondb.Load(password, filename)
@@ -70,8 +72,4 @@ func importCallback(parser *clio.ArgParser) {
     // Import the entries into the database.
     db.Import(key, string(input))
     db.Save(key, password, filename)
-
-    // Cache the password and filename.
-    cacheLastPassword(password)
-    cacheLastFilename(filename)
 }

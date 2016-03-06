@@ -52,6 +52,8 @@ func tagsCallback(parser *clio.ArgParser) {
     if err != nil {
         exit("Error:", err)
     }
+    cacheLastPassword(password)
+    cacheLastFilename(filename)
 
     // Assemble a map of tags.
     tagmap := db.Tags()
@@ -71,8 +73,4 @@ func tagsCallback(parser *clio.ArgParser) {
         fmt.Printf("  %s [%d]\n", tag, len(tagmap[tag]))
     }
     line("-")
-
-    // Cache the password and filename.
-    cacheLastPassword(password)
-    cacheLastFilename(filename)
 }

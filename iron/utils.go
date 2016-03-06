@@ -125,9 +125,8 @@ func line(char string) {
 // Print an indented line of characters.
 func iline(char string) {
     fmt.Print("  ")
-    for i := 0; i < 26; i++ {
+    for i := 0; i < 76; i++ {
         fmt.Print(char)
-        fmt.Print("  ")
     }
     fmt.Println()
 }

@@ -4,8 +4,7 @@
 
     Encryption is performed using 256-bit AES in CBC mode. Message padding
     is handled transparently using the PKCS #7 padding scheme. Message
-    authentication is handled transparently using the HMAC-SHA-256
-    algorithm.
+    authentication is handled transparently using the HMAC-SHA-256 algorithm.
 
     Encryption requires a 64-byte key. The first 32 bytes are used as the
     cipher key; the last 32 bytes are used as the authentication key.
@@ -22,15 +21,13 @@
         Payload: encrypted plaintext
         HMAC: authentication code
 
-    Lengths are given in bytes. The length of the payload will be a
-    multiple of the AES block size (16 bytes). (Note that the padding algorithm
-    appends a null block to the plaintext when the length of the plaintext
-    is a multiple of the block size. This padding is automatically removed
-    during decryption.)
+    Lengths are given in bytes. The length of the payload will be a multiple of
+    the AES block size (16 bytes). (Note that the padding algorithm appends a
+    null block to the plaintext when the length of the plaintext is a multiple
+    of the block size. This padding is automatically removed during decryption.)
 
-    The Key() function can be used to derive a suitable 64-byte
-    encryption key from a password. It uses the PBKDF2 scheme with
-    an SHA-256 hash.
+    The Key() function can be used to derive a suitable 64-byte encryption key
+    from a password. It uses the PBKDF2 scheme with an SHA-256 hash.
 */
 package ironcrypt
 

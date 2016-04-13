@@ -1,5 +1,5 @@
 /*
-    Package ironconfig handles reading from and writing to the application's
+    Package ironconfig provides read and write access to the application's
     configuration file.
 */
 package ironconfig

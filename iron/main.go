@@ -1,8 +1,5 @@
 /*
     Command line tool for managing Ironclad password databases.
-
-    Author: Darren Mulholland <darren@mulholland.xyz>
-    License: MIT
 */
 package main
 

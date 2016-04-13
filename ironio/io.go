@@ -1,5 +1,6 @@
 /*
-    Package ironio handles reading from and writing to encrypted files.
+    Package ironio provides read and write access to the content of encrypted
+    files.
 */
 package ironio
 

@@ -38,7 +38,7 @@ Flags:
 func editCallback(parser *clio.ArgParser) {
 
     var filename, password string
-    var found, all bool
+    var found, allFields bool
 
     // Make sure an argument has been specified.
     if !parser.HasArgs() {
@@ -78,11 +78,11 @@ func editCallback(parser *clio.ArgParser) {
     }
     entry := entries[0]
 
-    // Default to editing all fields except 'notes'.
+    // Default to editing all fields if no flags are present.
     if !parser.GetFlag("title") && !parser.GetFlag("url") &&
         !parser.GetFlag("username") && !parser.GetFlag("password") &&
         !parser.GetFlag("tags") && !parser.GetFlag("notes") {
-        all = true
+        allFields = true
     }
 
     // Header.
@@ -90,28 +90,28 @@ func editCallback(parser *clio.ArgParser) {
     fmt.Println("  Editing Entry: " + entry.Title)
     line("-")
 
-    if parser.GetFlag("title") || all {
+    if parser.GetFlag("title") || (allFields && editField("title")) {
         fmt.Println("  TITLE")
         fmt.Println("  Old value: " + entry.Title)
         entry.Title = input("  New value: ")
         line("-")
     }
 
-    if parser.GetFlag("url") || all {
+    if parser.GetFlag("url") || (allFields && editField("url")) {
         fmt.Println("  URL")
         fmt.Println("  Old value: " + entry.Url)
         entry.Url = input("  New value: ")
         line("-")
     }
 
-    if parser.GetFlag("username") || all {
+    if parser.GetFlag("username") || (allFields && editField("username")) {
         fmt.Println("  USERNAME")
         fmt.Println("  Old value: " + entry.Username)
         entry.Username = input("  New value: ")
         line("-")
     }
 
-    if parser.GetFlag("password") || all {
+    if parser.GetFlag("password") || (allFields && editField("password")) {
         fmt.Println("  PASSWORD")
         oldpass, err := entry.GetPassword(key)
         if err != nil {
@@ -125,7 +125,7 @@ func editCallback(parser *clio.ArgParser) {
         line("-")
     }
 
-    if parser.GetFlag("tags") || all {
+    if parser.GetFlag("tags") || (allFields && editField("tags")) {
         fmt.Println("  TAGS")
         fmt.Println("  Old value: " + strings.Join(entry.Tags, ", "))
         tagstring := input("  New value: ")
@@ -140,7 +140,7 @@ func editCallback(parser *clio.ArgParser) {
         line("-")
     }
 
-    if parser.GetFlag("notes") {
+    if parser.GetFlag("notes") || (allFields && editField("notes")) {
         entry.Notes = inputViaEditor("edit-note", entry.Notes)
     }
 
@@ -149,4 +149,12 @@ func editCallback(parser *clio.ArgParser) {
 
     // Footer.
     fmt.Println("  Entry updated.")
+}
+
+
+// Ask the user whether they want to edit the specified field.
+func editField(field string) bool {
+    answer := input("  Edit " + field + "? (y/n) ")
+    line("-")
+    return strings.ToLower(answer) == "y"
 }

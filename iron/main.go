@@ -14,7 +14,7 @@ import (
 
 
 // Application version number.
-const version = "0.6.0"
+const version = "0.6.1"
 
 
 // Application help text.
@@ -90,12 +90,12 @@ func main() {
     editParser := parser.AddCmd("edit", editCallback, editHelptext)
     editParser.AddStrOpt("file", "", 'f')
     editParser.AddStrOpt("db-password", "")
-    editParser.AddFlag("title")
-    editParser.AddFlag("url")
-    editParser.AddFlag("username")
-    editParser.AddFlag("password")
-    editParser.AddFlag("notes")
-    editParser.AddFlag("tags")
+    editParser.AddFlag("title", 't')
+    editParser.AddFlag("url", 'l')
+    editParser.AddFlag("username", 'u')
+    editParser.AddFlag("password", 'p')
+    editParser.AddFlag("notes", 'n')
+    editParser.AddFlag("tags", 's')
 
     // Register the 'export' command.
     exportParser := parser.AddCmd("export", exportCallback, exportHelptext)

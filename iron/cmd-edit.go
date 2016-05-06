@@ -25,12 +25,12 @@ Options:
 
 Flags:
       --help                Print this command's help text and exit.
-      --notes               Edit the entry's notes.
-      --password            Edit the entry's password.
-      --tags                Edit the entry's tags.
-      --title               Edit the entry's title.
-      --url                 Edit the entry's url.
-      --username            Edit the entry's username.
+  -n, --notes               Edit the entry's notes.
+  -p, --password            Edit the entry's password.
+  -s, --tags                Edit the entry's tags.
+  -t, --title               Edit the entry's title.
+  -l, --url                 Edit the entry's url.
+  -u, --username            Edit the entry's username.
 `, filepath.Base(os.Args[0]))
 
 

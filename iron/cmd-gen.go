@@ -9,6 +9,7 @@ import (
     "crypto/rand"
     "math/big"
     "github.com/dmulholland/clio/go/clio"
+    "github.com/atotto/clipboard"
 )
 
 
@@ -44,14 +45,17 @@ Usage: %s gen [FLAGS] ARGUMENTS
 Arguments:
   [length]                  Length of the password. Default: 24 characters.
 
-Flags:
+Character Flags:
   -d, --digits              Include digits [0-9].
-  -e, --exclude-similar     Exclude similar characters.
-      --help                Print this command's help text and exit.
   -l, --lowercase           Include lowercase letters [a-z].
-  -r, --readable            Add a space after every fourth character.
   -s, --symbols             Include symbols.
   -u, --uppercase           Include uppercase letters [A-Z].
+
+Flags:
+  -c, --clipboard           Write the password to the system clipboard.
+  -e, --exclude-similar     Exclude similar characters.
+      --help                Print this command's help text and exit.
+  -r, --readable            Add spaces for readability.
 `, filepath.Base(os.Args[0]), PoolSymbols, PoolSimilars)
 
 
@@ -110,12 +114,20 @@ func genCallback(parser *clio.ArgParser) {
         password = addSpaces(password)
     }
 
-    // Print the password to stdout.
-    fmt.Print(password)
-
-    // Only print a newline if we're connected to a terminal.
-    if stdoutIsTerminal() {
-        fmt.Println()
+    // Print to the clipboard or stdout.
+    if parser.GetFlag("clipboard") {
+        if clipboard.Unsupported {
+            exit("Error: clipboard not supported on this system.")
+        }
+        err := clipboard.WriteAll(password)
+        if err != nil {
+            exit("Error:", err)
+        }
+    } else {
+        fmt.Print(password)
+        if stdoutIsTerminal() {
+            fmt.Println()
+        }
     }
 }
 

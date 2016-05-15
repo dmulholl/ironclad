@@ -7,6 +7,7 @@ import (
     "path/filepath"
     "github.com/dmulholland/ironclad/irondb"
     "github.com/dmulholland/clio/go/clio"
+    "github.com/atotto/clipboard"
 )
 
 
@@ -23,7 +24,9 @@ Options:
   -f, --file <str>          Database file.
 
 Flags:
+  -c, --clipboard           Write the password to the system clipboard.
       --help                Print this command's help text and exit.
+  -r, --readable            Add spaces for readability.
 `, filepath.Base(os.Args[0]))
 
 
@@ -80,11 +83,20 @@ func passCallback(parser *clio.ArgParser) {
     if parser.GetFlag("readable") {
         decrypted = addSpaces(decrypted)
     }
-    
-    fmt.Print(decrypted)
 
-    // Only print a newline if we're connected to a terminal.
-    if stdoutIsTerminal() {
-        fmt.Println()
+    // Print to the clipboard or stdout.
+    if parser.GetFlag("clipboard") {
+        if clipboard.Unsupported {
+            exit("Error: clipboard not supported on this system.")
+        }
+        err := clipboard.WriteAll(decrypted)
+        if err != nil {
+            exit("Error:", err)
+        }
+    } else {
+        fmt.Print(decrypted)
+        if stdoutIsTerminal() {
+            fmt.Println()
+        }
     }
 }

@@ -14,7 +14,7 @@ import (
 
 
 // Application version number.
-const version = "0.6.1"
+const version = "0.7.0"
 
 
 // Application help text.
@@ -112,6 +112,7 @@ func main() {
     genParser.AddFlag("symbols", 's')
     genParser.AddFlag("uppercase", 'u')
     genParser.AddFlag("readable", 'r')
+    genParser.AddFlag("clipboard", 'c')
 
     // Register the 'import' command.
     importParser := parser.AddCmd("import", importCallback, importHelptext)
@@ -133,6 +134,8 @@ func main() {
     passParser := parser.AddCmd("pass", passCallback, passHelptext)
     passParser.AddStrOpt("file", "", 'f')
     passParser.AddStrOpt("db-password", "")
+    passParser.AddFlag("readable", 'r')
+    passParser.AddFlag("clipboard", 'c')
 
     // Register the 'purge' command.
     purgeParser := parser.AddCmd("purge", purgeCallback, purgeHelptext)
@@ -148,6 +151,7 @@ func main() {
     userParser := parser.AddCmd("user", userCallback, userHelptext)
     userParser.AddStrOpt("file", "", 'f')
     userParser.AddStrOpt("db-password", "")
+    userParser.AddFlag("clipboard", 'c')
 
     // Parse the application's command line arguments.
     // If a command is found, control will be passed to its

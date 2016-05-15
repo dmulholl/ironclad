@@ -166,5 +166,5 @@ func addSpaces(input string) string {
         }
     }
 
-    return strings.Join(words, " ")
+    return strings.Join(words, "  ")
 }

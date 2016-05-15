@@ -7,6 +7,7 @@ import (
     "path/filepath"
     "github.com/dmulholland/ironclad/irondb"
     "github.com/dmulholland/clio/go/clio"
+    "github.com/atotto/clipboard"
 )
 
 
@@ -23,6 +24,7 @@ Options:
   -f, --file <str>          Database file.
 
 Flags:
+  -c, --clipboard           Write the username to the system clipboard.
       --help                Print this command's help text and exit.
 `, filepath.Base(os.Args[0]))
 
@@ -70,11 +72,19 @@ func userCallback(parser *clio.ArgParser) {
         exit("Error: query matches multiple entries.")
     }
 
-    // Print the username to stdout.
-    fmt.Print(entries[0].Username)
-
-    // Only print a newline if we're connected to a terminal.
-    if stdoutIsTerminal() {
-        fmt.Println()
+    // Print to the clipboard or stdout.
+    if parser.GetFlag("clipboard") {
+        if clipboard.Unsupported {
+            exit("Error: clipboard not supported on this system.")
+        }
+        err := clipboard.WriteAll(entries[0].Username)
+        if err != nil {
+            exit("Error:", err)
+        }
+    } else {
+        fmt.Print(entries[0].Username)
+        if stdoutIsTerminal() {
+            fmt.Println()
+        }
     }
 }

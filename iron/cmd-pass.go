@@ -24,7 +24,7 @@ Options:
   -f, --file <str>          Database file.
 
 Flags:
-  -c, --clipboard           Write the password to the system clipboard.
+  -c, --clipboard           Copy the password to the system clipboard.
       --help                Print this command's help text and exit.
   -r, --readable            Add spaces for readability.
 `, filepath.Base(os.Args[0]))

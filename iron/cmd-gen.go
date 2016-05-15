@@ -52,7 +52,7 @@ Character Flags:
   -u, --uppercase           Include uppercase letters [A-Z].
 
 Flags:
-  -c, --clipboard           Write the password to the system clipboard.
+  -c, --clipboard           Copy the password to the system clipboard.
   -e, --exclude-similar     Exclude similar characters.
       --help                Print this command's help text and exit.
   -r, --readable            Add spaces for readability.

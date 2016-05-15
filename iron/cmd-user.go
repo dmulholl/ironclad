@@ -24,7 +24,7 @@ Options:
   -f, --file <str>          Database file.
 
 Flags:
-  -c, --clipboard           Write the username to the system clipboard.
+  -c, --clipboard           Copy the username to the system clipboard.
       --help                Print this command's help text and exit.
 `, filepath.Base(os.Args[0]))
 

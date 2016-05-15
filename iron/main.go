@@ -48,8 +48,8 @@ Command Help:
 `, filepath.Base(os.Args[0]))
 
 
-// Path to the application's home directory.
-var ironpath = filepath.Join(os.Getenv("HOME"), ".ironclad")
+// Path to the application's configuration directory.
+var ironpath = filepath.Join(os.Getenv("HOME"), ".config", "ironclad")
 
 
 // Address for the cached-password server.

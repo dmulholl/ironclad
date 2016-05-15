@@ -24,9 +24,9 @@ const (
 
 // Help text for the 'gen' command.
 var genHelptext = fmt.Sprintf(`
-Usage: %s gen [FLAGS] [OPTIONS] ARGUMENTS
+Usage: %s gen [FLAGS] ARGUMENTS
 
-  Generate a random password.
+  Generate a random ASCII password.
 
   The default password length is 24 characters. The default character pool
   consists of the full range of uppercase letters, lowercase letters, digits,
@@ -36,22 +36,22 @@ Usage: %s gen [FLAGS] [OPTIONS] ARGUMENTS
 
     %s
 
-  The --exclude option excludes the following characters from the pool:
+  The --exclude-similar option excludes the following characters from the
+  pool:
 
     %s
 
 Arguments:
-  [length]                  Length of the password. Default: 24.
-
-Options:
-  -d, --digits              Include digits [0-9].
-  -e, --exclude             Exclude similar characters.
-  -l, --lowercase           Include lowercase letters [a-z].
-  -s, --symbols             Include symbols.
-  -u, --uppercase           Include uppercase letters [A-Z].
+  [length]                  Length of the password. Default: 24 characters.
 
 Flags:
+  -d, --digits              Include digits [0-9].
+  -e, --exclude-similar     Exclude similar characters.
       --help                Print this command's help text and exit.
+  -l, --lowercase           Include lowercase letters [a-z].
+  -r, --readable            Add a space after every fourth character.
+  -s, --symbols             Include symbols.
+  -u, --uppercase           Include uppercase letters [A-Z].
 `, filepath.Base(os.Args[0]), PoolSymbols, PoolSimilars)
 
 
@@ -88,7 +88,7 @@ func genCallback(parser *clio.ArgParser) {
     }
 
     // Are we excluding similar characters from the pool?
-    if parser.GetFlag("exclude") {
+    if parser.GetFlag("exclude-similar") {
         newpool := make([]rune, 0)
         for _, r := range pool {
             if !strings.ContainsRune(PoolSimilars, r) {
@@ -99,13 +99,19 @@ func genCallback(parser *clio.ArgParser) {
     }
 
     // Assemble the password.
-    password := make([]byte, length)
-    for i := range password {
-        password[i] = pool[randInt(len(pool))]
+    passBytes := make([]byte, length)
+    for i := range passBytes {
+        passBytes[i] = pool[randInt(len(pool))]
+    }
+    password := string(passBytes)
+
+    // Add spaces if required.
+    if parser.GetFlag("readable") {
+        password = addSpaces(password)
     }
 
     // Print the password to stdout.
-    fmt.Print(string(password))
+    fmt.Print(password)
 
     // Only print a newline if we're connected to a terminal.
     if stdoutIsTerminal() {

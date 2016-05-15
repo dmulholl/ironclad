@@ -151,3 +151,20 @@ func diff(slice1, slice2 []string) []string {
 
     return diff
 }
+
+
+// Add spaces to a string after every fourth character.
+func addSpaces(input string) string {
+    words := make([]string, 0)
+    runes := []rune(input)
+
+    for i := 0; i < len(runes); i += 4 {
+        if i + 4 > len(runes) {
+            words = append(words, string(runes[i:]))
+        } else {
+            words = append(words, string(runes[i:i+4]))
+        }
+    }
+
+    return strings.Join(words, " ")
+}

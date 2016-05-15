@@ -107,10 +107,11 @@ func main() {
     genParser.AddStrOpt("file", "", 'f')
     genParser.AddStrOpt("db-password", "")
     genParser.AddFlag("digits", 'd')
-    genParser.AddFlag("exclude", 'e')
+    genParser.AddFlag("exclude-similar", 'e')
     genParser.AddFlag("lowercase", 'l')
     genParser.AddFlag("symbols", 's')
     genParser.AddFlag("uppercase", 'u')
+    genParser.AddFlag("readable", 'r')
 
     // Register the 'import' command.
     importParser := parser.AddCmd("import", importCallback, importHelptext)

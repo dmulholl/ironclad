@@ -70,11 +70,17 @@ func passCallback(parser *clio.ArgParser) {
         exit("Error: query matches multiple entries.")
     }
 
-    // Print the password to stdout.
+    // Decrypt the stored password.
     decrypted, err := entries[0].GetPassword(key)
     if err != nil {
         exit("Error:", err)
     }
+
+    // Add spaces if required.
+    if parser.GetFlag("readable") {
+        decrypted = addSpaces(decrypted)
+    }
+    
     fmt.Print(decrypted)
 
     // Only print a newline if we're connected to a terminal.

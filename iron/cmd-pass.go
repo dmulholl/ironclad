@@ -66,7 +66,7 @@ func passCallback(parser *clio.ArgParser) {
     cacheLastFilename(filename)
 
     // Search for an entry corresponding to the specified argument.
-    entries := db.Lookup(parser.GetArgs()[0])
+    entries := db.LookupUnique(parser.GetArgs()[0])
     if len(entries) == 0 {
         exit("Error: no matching entry.")
     } else if len(entries) > 1 {

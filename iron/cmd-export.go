@@ -18,7 +18,7 @@ Usage: %s export [FLAGS] [OPTIONS] [ARGUMENTS]
   by title. If no entries are specified, all entries will be exported.
 
 Arguments:
-  [entry ...]               List of entries to export by ID or title.
+  [entries]                 List of entries to export by ID or title.
 
 Options:
   -f, --file <str>          Database file.
@@ -60,7 +60,6 @@ func exportCallback(parser *clio.ArgParser) {
 
     // Assemble a list of entries to export.
     var entries []*irondb.Entry
-
     if parser.HasArgs() {
         entries = db.Lookup(parser.GetArgs()...)
     } else {

@@ -18,7 +18,7 @@ Usage: %s delete [FLAGS] [OPTIONS] ARGUMENTS
   Delete one or more entries from a database.
 
 Arguments:
-  <entry ...>               List of entries to delete by ID or title.
+  <entries>                 List of entries to delete by ID or title.
 
 Options:
   -f, --file <str>          Database file.
@@ -34,7 +34,7 @@ func deleteCallback(parser *clio.ArgParser) {
     var filename, password string
     var found bool
 
-    // Check that at least one entry arg has been supplied.
+    // Check that at least one entry argument has been supplied.
     if !parser.HasArgs() {
         exit("Error: you must specify at least one entry argument.")
     }
@@ -64,10 +64,7 @@ func deleteCallback(parser *clio.ArgParser) {
     cacheLastFilename(filename)
 
     // Grab the entries to delete.
-    entries := make([]*irondb.Entry, 0)
-    for _, arg := range parser.GetArgs() {
-        entries = append(entries, db.Lookup(arg)...)
-    }
+    entries := db.Lookup(parser.GetArgs()...)
     if len(entries) == 0 {
         exit("Error: no matching entries.")
     }

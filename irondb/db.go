@@ -153,9 +153,9 @@ func (db *DB) Purge() {
 }
 
 
-// Lookup searches the database for entries matching the query string or
-// strings. A query string can be an ID or a case-insensitive title or
-// title-prefix.
+// Lookup searches the database for entries matching the specified query
+// strings. A query string can be an entry ID or a case-insensitive substring
+// of an entry title.
 func (db *DB) Lookup(queries ...string) []*Entry {
 
     // List of entries to return.
@@ -165,6 +165,9 @@ func (db *DB) Lookup(queries ...string) []*Entry {
     active := db.Active()
 
     for _, query := range queries {
+
+        // String comparisons will be case-insensitive.
+        query = strings.ToLower(query)
 
         // First, see if we can parse the query string as an integer ID.
         if i, err := strconv.ParseInt(query, 10, 32); err == nil {
@@ -177,12 +180,69 @@ func (db *DB) Lookup(queries ...string) []*Entry {
             }
         }
 
-        // Check for a case-insensitive prefix match on the entry title.
-        query = strings.ToLower(query)
+        // Check for a case-insensitive substring match on the entry title.
         for _, entry := range active {
-            if strings.HasPrefix(strings.ToLower(entry.Title), query) {
+            if strings.Contains(strings.ToLower(entry.Title), query) {
                 matches = append(matches, entry)
             }
+        }
+    }
+
+    return matches
+}
+
+
+// LookupUnique searches the database for a single entry matching the query
+// string. The query string may be (in order) an entry ID or a
+// (case-insensitive) exact, prefix, or substring match for an entry title.
+// This function returns a slice of entries; zero or multiple matches may be
+// interpreted as error conditions.
+func (db *DB) LookupUnique(query string) []*Entry {
+
+    // List of entries to return.
+    matches := make([]*Entry, 0)
+
+    // We only want to look for active entries.
+    active := db.Active()
+
+    // String comparisons will be case-insensitive.
+    query = strings.ToLower(query)
+
+    // First, see if we can parse the query string as an integer ID.
+    if i, err := strconv.ParseInt(query, 10, 32); err == nil {
+        id := int(i)
+        for _, entry := range active {
+            if id == entry.Id {
+                matches = append(matches, entry)
+                return matches
+            }
+        }
+    }
+
+    // Check for an exact match on the entry title.
+    for _, entry := range active {
+        if query == strings.ToLower(entry.Title) {
+            matches = append(matches, entry)
+        }
+    }
+    if len(matches) > 0 {
+        return matches
+    }
+
+    // No exact match so check for a prefix match on the entry title.
+    for _, entry := range active {
+        if strings.HasPrefix(strings.ToLower(entry.Title), query) {
+            matches = append(matches, entry)
+        }
+    }
+    if len(matches) > 0 {
+        return matches
+    }
+
+    // No exact or prefix match so check for a substring match.
+    for _, entry := range active {
+        if strings.Contains(strings.ToLower(entry.Title), query) {
+            matches = append(matches, entry)
         }
     }
 

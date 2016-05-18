@@ -20,7 +20,7 @@ Usage: %s list [FLAGS] [OPTIONS] [ARGUMENTS]
   List the entries in a database.
 
 Arguments:
-  [entry ...]               Entries to list by ID or title. Default: all.
+  [entries]                 Entries to list by ID or title. Default: all.
 
 Options:
   -f, --file <str>          Database file.

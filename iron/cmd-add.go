@@ -67,6 +67,7 @@ func addCallback(parser *clio.ArgParser) {
     entry.Title    = input("  Title:      ")
     entry.Url      = input("  URL:        ")
     entry.Username = input("  Username:   ")
+    entry.Email    = input("  Email:      ")
 
     // Get the password.
     entry.SetPassword(key, input("  Password:   "))

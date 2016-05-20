@@ -13,6 +13,7 @@ type ExportEntry struct {
     Url string          `json:"url"`
     Username string     `json:"username"`
     Password string     `json:"password"`
+    Email string        `json:"email"`
     Tags []string       `json:"tags"`
     Notes string        `json:"notes"`
 }
@@ -28,6 +29,7 @@ func Export(entries []*Entry, key []byte) (dump string, err error) {
             Title: entry.Title,
             Url: entry.Url,
             Username: entry.Username,
+            Email: entry.Email,
             Notes: entry.Notes,
             Tags: entry.Tags,
         }

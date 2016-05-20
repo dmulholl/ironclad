@@ -25,6 +25,7 @@ Options:
 
 Flags:
       --help                Print this command's help text and exit.
+  -e, --email               Edit the entry's email address.
   -n, --notes               Edit the entry's notes.
   -p, --password            Edit the entry's password.
   -s, --tags                Edit the entry's tags.
@@ -81,7 +82,8 @@ func editCallback(parser *clio.ArgParser) {
     // Default to editing all fields if no flags are present.
     if !parser.GetFlag("title") && !parser.GetFlag("url") &&
         !parser.GetFlag("username") && !parser.GetFlag("password") &&
-        !parser.GetFlag("tags") && !parser.GetFlag("notes") {
+        !parser.GetFlag("tags") && !parser.GetFlag("notes") &&
+        !parser.GetFlag("email") {
         allFields = true
     }
 
@@ -122,6 +124,13 @@ func editCallback(parser *clio.ArgParser) {
         if err != nil {
             exit("Error: ", err)
         }
+        line("-")
+    }
+
+    if parser.GetFlag("email") || (allFields && editField("email")) {
+        fmt.Println("  EMAIL")
+        fmt.Println("  Old value: " + entry.Email)
+        entry.Email = input("  New value: ")
         line("-")
     }
 

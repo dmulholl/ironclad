@@ -138,16 +138,28 @@ func printVerboseList(entries []*irondb.Entry, key []byte, title string) {
     for _, entry := range entries {
         fmt.Printf("  ID:       %d\n", entry.Id)
         fmt.Printf("  Title:    %s\n", entry.Title)
-        fmt.Printf("  URL:      %s\n", entry.Url)
-        fmt.Printf("  Username: %s\n", entry.Username)
+
+        if entry.Url != "" {
+            fmt.Printf("  URL:      %s\n", entry.Url)
+        }
+
+        if entry.Username != "" {
+            fmt.Printf("  Username: %s\n", entry.Username)
+        }
 
         password, err := entry.GetPassword(key)
         if err != nil {
             exit("Error:")
         }
-
         fmt.Printf("  Password: %s\n", password)
-        fmt.Printf("  Tags:     %s\n", strings.Join(entry.Tags, ", "))
+
+        if entry.Email != "" {
+            fmt.Printf("  Email:    %s\n", entry.Email)
+        }
+
+        if len(entry.Tags) > 0 {
+            fmt.Printf("  Tags:     %s\n", strings.Join(entry.Tags, ", "))
+        }
 
         if entry.Notes != "" {
             iline("~")

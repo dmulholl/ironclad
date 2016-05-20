@@ -15,6 +15,7 @@ type Entry struct {
     Url string          `json:"url"`
     Username string     `json:"username"`
     Password string     `json:"password"`
+    Email string        `json:"email"`
     Tags []string       `json:"tags"`
     Notes string        `json:"notes"`
 }

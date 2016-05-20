@@ -14,7 +14,7 @@ import (
 
 
 // Application version number.
-const version = "0.7.1"
+const version = "0.8.0"
 
 
 // Application help text.
@@ -96,6 +96,7 @@ func main() {
     editParser.AddFlag("password", 'p')
     editParser.AddFlag("notes", 'n')
     editParser.AddFlag("tags", 's')
+    editParser.AddFlag("email", 'e')
 
     // Register the 'export' command.
     exportParser := parser.AddCmd("export", exportCallback, exportHelptext)

@@ -24,8 +24,8 @@ Options:
   -f, --file <str>          Database file.
 
 Flags:
-      --help                Print this command's help text and exit.
   -e, --email               Edit the entry's email address.
+      --help                Print this command's help text and exit.
   -n, --notes               Edit the entry's notes.
   -p, --password            Edit the entry's password.
   -s, --tags                Edit the entry's tags.

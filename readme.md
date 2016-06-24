@@ -3,34 +3,6 @@
 
 A prototype command line utility for managing Ironclad password databases.
 
-Usage:
-
-    Usage: iron [FLAGS] [COMMAND]
-
-      Command line utility for managing Ironclad password databases.
-
-    Flags:
-      --help            Print the application's help text and exit.
-      --version         Print the application's version number and exit.
-
-    Commands:
-      add               Add a new entry to a database.
-      delete            Delete an entry from a database.
-      dump              Dump a database's internal JSON data store.
-      edit              Edit an existing database entry.
-      export            Export data from a database.
-      gen               Generate a random password.
-      import            Import data into a database.
-      list              List database entries.
-      new               Create a new database.
-      pass              Print a password.
-      purge             Purge deleted entries from a database.
-      tags              List database tags.
-      user              Print a username.
-
-    Command Help:
-      help <command>    Print the specified command's help text and exit.
-
 
 ## Security
 

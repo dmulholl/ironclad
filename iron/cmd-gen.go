@@ -30,8 +30,7 @@ Usage: %s gen [FLAGS] ARGUMENTS
   Generate a random ASCII password.
 
   The default password length is 24 characters. The default character pool
-  consists of the full range of uppercase letters, lowercase letters, digits,
-  and symbols.
+  consists of uppercase letters, lowercase letters, and digits.
 
   The full list of possible symbols is:
 
@@ -86,9 +85,9 @@ func genCallback(parser *clio.ArgParser) {
         pool += PoolUpper
     }
 
-    // Default to using all character classes if no options were specified.
+    // Set the default pool if no options were specified.
     if pool == "" {
-        pool = PoolDigits + PoolLower + PoolSymbols + PoolUpper
+        pool = PoolDigits + PoolLower + PoolUpper
     }
 
     // Are we excluding similar characters from the pool?

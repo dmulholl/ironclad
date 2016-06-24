@@ -32,7 +32,7 @@ func configCallback(parser *clio.ArgParser) {
         exit("Error: you must supply at least one argument.")
     }
 
-    if parser.NumArgs() == 1 {
+    if parser.LenArgs() == 1 {
         value, found, err := ironconfig.Get(parser.GetArg(0))
         if err != nil {
             exit("Error:", err)

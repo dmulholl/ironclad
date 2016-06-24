@@ -27,7 +27,8 @@ const (
 var genHelptext = fmt.Sprintf(`
 Usage: %s gen [FLAGS] ARGUMENTS
 
-  Generate a random ASCII password.
+  Generate a random ASCII password. The password is automatically copied to
+  the system clipboard. The password can also be printed to stdout.
 
   The default password length is 24 characters. The default character pool
   consists of uppercase letters, lowercase letters, and digits.
@@ -51,9 +52,9 @@ Character Flags:
   -u, --uppercase           Include uppercase letters [A-Z].
 
 Flags:
-  -c, --clipboard           Copy the password to the system clipboard.
   -e, --exclude-similar     Exclude similar characters.
       --help                Print this command's help text and exit.
+  -p, --print               Print the password to stdout.
   -r, --readable            Add spaces for readability.
 `, filepath.Base(os.Args[0]), PoolSymbols, PoolSimilars)
 
@@ -113,20 +114,21 @@ func genCallback(parser *clio.ArgParser) {
         password = addSpaces(password)
     }
 
-    // Print to the clipboard or stdout.
-    if parser.GetFlag("clipboard") {
-        if clipboard.Unsupported {
-            exit("Error: clipboard not supported on this system.")
-        }
-        err := clipboard.WriteAll(password)
-        if err != nil {
-            exit("Error:", err)
-        }
-    } else {
+    // Print the password to stdout.
+    if parser.GetFlag("print") {
         fmt.Print(password)
         if stdoutIsTerminal() {
             fmt.Println()
         }
+    }
+
+    // Copy the password to the clipboard.
+    if clipboard.Unsupported {
+        exit("Error: clipboard not supported on this system.")
+    }
+    err := clipboard.WriteAll(password)
+    if err != nil {
+        exit("Error:", err)
     }
 }
 

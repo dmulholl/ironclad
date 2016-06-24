@@ -113,7 +113,7 @@ func main() {
     genParser.AddFlag("symbols s")
     genParser.AddFlag("uppercase u")
     genParser.AddFlag("readable r")
-    genParser.AddFlag("clipboard c")
+    genParser.AddFlag("print p")
 
     // Register the 'import' command.
     importParser := parser.AddCmd("import", importHelptext, importCallback)

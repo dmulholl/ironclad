@@ -15,7 +15,8 @@ import (
 var userHelptext = fmt.Sprintf(`
 Usage: %s user [FLAGS] [OPTIONS] ARGUMENTS
 
-  Print a username.
+  Copy a username to the system clipboard. The username can additionally be
+  printed to stdout.
 
 Arguments:
   <entry>                   Entry ID or title.
@@ -24,8 +25,8 @@ Options:
   -f, --file <str>          Database file.
 
 Flags:
-  -c, --clipboard           Copy the username to the system clipboard.
       --help                Print this command's help text and exit.
+  -p, --print               Print the username to stdout.
 `, filepath.Base(os.Args[0]))
 
 
@@ -72,19 +73,20 @@ func userCallback(parser *clio.ArgParser) {
         exit("Error: query matches multiple entries.")
     }
 
-    // Print to the clipboard or stdout.
-    if parser.GetFlag("clipboard") {
-        if clipboard.Unsupported {
-            exit("Error: clipboard not supported on this system.")
-        }
-        err := clipboard.WriteAll(entries[0].Username)
-        if err != nil {
-            exit("Error:", err)
-        }
-    } else {
+    // Print the username to stdout.
+    if parser.GetFlag("print") {
         fmt.Print(entries[0].Username)
         if stdoutIsTerminal() {
             fmt.Println()
         }
+    }
+
+    // Copy the username to the clipboard.
+    if clipboard.Unsupported {
+        exit("Error: clipboard not supported on this system.")
+    }
+    err = clipboard.WriteAll(entries[0].Username)
+    if err != nil {
+        exit("Error:", err)
     }
 }

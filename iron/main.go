@@ -152,7 +152,7 @@ func main() {
     userParser := parser.AddCmd("user", userHelptext, userCallback)
     userParser.AddStr("file f", "")
     userParser.AddStr("db-password", "")
-    userParser.AddFlag("clipboard c")
+    userParser.AddFlag("print p")
 
     // Parse the application's command line arguments.
     // If a command is found, control will be passed to its

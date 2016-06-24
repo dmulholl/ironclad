@@ -136,7 +136,7 @@ func main() {
     passParser.AddStr("file f", "")
     passParser.AddStr("db-password", "")
     passParser.AddFlag("readable r")
-    passParser.AddFlag("clipboard c")
+    passParser.AddFlag("print p")
 
     // Register the 'purge' command.
     purgeParser := parser.AddCmd("purge", purgeHelptext, purgeCallback)

@@ -15,7 +15,8 @@ import (
 var passHelptext = fmt.Sprintf(`
 Usage: %s pass [FLAGS] [OPTIONS] ARGUMENTS
 
-  Print a password.
+  Copy a password to the system clipboard. The password can additionally be
+  printed to stdout.
 
 Arguments:
   <entry>                   Entry ID or title.
@@ -24,9 +25,9 @@ Options:
   -f, --file <str>          Database file.
 
 Flags:
-  -c, --clipboard           Copy the password to the system clipboard.
       --help                Print this command's help text and exit.
-  -r, --readable            Add spaces for readability.
+  -p, --print               Print the password to stdout.
+  -r, --readable            Add spaces to the password for readability.
 `, filepath.Base(os.Args[0]))
 
 
@@ -84,19 +85,20 @@ func passCallback(parser *clio.ArgParser) {
         decrypted = addSpaces(decrypted)
     }
 
-    // Print to the clipboard or stdout.
-    if parser.GetFlag("clipboard") {
-        if clipboard.Unsupported {
-            exit("Error: clipboard not supported on this system.")
-        }
-        err := clipboard.WriteAll(decrypted)
-        if err != nil {
-            exit("Error:", err)
-        }
-    } else {
+    // Print the password to stdout.
+    if parser.GetFlag("print") {
         fmt.Print(decrypted)
         if stdoutIsTerminal() {
             fmt.Println()
         }
+    }
+
+    // Copy the password to the clipboard.
+    if clipboard.Unsupported {
+        exit("Error: clipboard not supported on this system.")
+    }
+    err = clipboard.WriteAll(decrypted)
+    if err != nil {
+        exit("Error:", err)
     }
 }

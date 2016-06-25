@@ -89,24 +89,14 @@ func (db *DB) Active() []*Entry {
 }
 
 
-// ByTag returns a list of active entries associated with the specified tag.
-func (db *DB) ByTag(tag string) []*Entry {
-    entries := make([]*Entry, 0)
-    for _, entry := range db.entries {
-        if entry.Active {
-            for _, t := range entry.Tags {
-                if strings.ToLower(t) == strings.ToLower(tag) {
-                    entries = append(entries, entry)
-                }
-            }
-        }
-    }
-    return entries
+// FilterByTag returns a list of active entries matching the specified tag.
+func (db *DB) FilterByTag(tag string) []*Entry {
+    return FilterByTag(db.Active(), tag)
 }
 
 
-// Tags returns a map of tags to entry lists.
-func (db *DB) Tags() map[string][]*Entry {
+// TagMap returns a map of tags to entry-lists.
+func (db *DB) TagMap() map[string][]*Entry {
     tags := make(map[string][]*Entry)
     for _, entry := range db.Active() {
         for _, tag := range entry.Tags {
@@ -246,5 +236,26 @@ func (db *DB) LookupUnique(query string) []*Entry {
         }
     }
 
+    return matches
+}
+
+
+// Size returns the number of active entries in the database.
+func (db *DB) Size() int {
+    return len(db.Active())
+}
+
+
+// FilterByTag filters a list of entries by the specified tag.
+func FilterByTag(entries []*Entry, tag string) []*Entry {
+    matches := make([]*Entry, 0)
+    searchtag := strings.ToLower(tag)
+    for _, entry := range entries {
+        for _, entrytag := range entry.Tags {
+            if strings.ToLower(entrytag) == searchtag {
+                matches = append(matches, entry)
+            }
+        }
+    }
     return matches
 }

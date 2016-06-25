@@ -126,7 +126,7 @@ func main() {
     listParser.AddStr("db-password", "")
     listParser.AddStr("tag t", "")
     listParser.AddFlag("verbose v")
-    listParser.AddFlag("clear c")
+    listParser.AddFlag("cleartext c")
 
     // Register the 'new' command.
     newParser := parser.AddCmd("new", newHelptext, newCallback)

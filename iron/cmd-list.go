@@ -17,17 +17,21 @@ import (
 var listHelptext = fmt.Sprintf(`
 Usage: %s list [FLAGS] [OPTIONS] [ARGUMENTS]
 
-  List the entries in a database.
+  Print a list of entries from a database. Entries to list can be specified by
+  ID or by title. (Titles are checked for a case-insensitive substring match.)
+
+  If no arguments are specified, all the entries in the database will be
+  listed.
 
 Arguments:
-  [entries]                 Entries to list by ID or title. Default: all.
+  [entries]                 Entries to list by ID or title.
 
 Options:
   -f, --file <str>          Database file.
   -t, --tag <str>           List entries by tag.
 
 Flags:
-  -c, --clear               Print passwords in the clear.
+  -c, --cleartext           Print passwords in cleartext.
       --help                Print this command's help text and exit.
   -v, --verbose             Use the verbose list format.
 `, filepath.Base(os.Args[0]))
@@ -80,7 +84,7 @@ func listCallback(parser *clio.ArgParser) {
 
     // Print the list of entries.
     if parser.GetFlag("verbose") {
-        printVerboseList(entries, key, title, parser.GetFlag("clear"))
+        printVerboseList(entries, key, title, parser.GetFlag("cleartext"))
     } else {
         printCompactList(entries)
     }
@@ -120,7 +124,8 @@ func printCompactList(entries []*irondb.Entry) {
 
 
 // Print a verbose listing.
-func printVerboseList(entries []*irondb.Entry, key []byte, title string, clear bool) {
+func printVerboseList(
+    entries []*irondb.Entry, key []byte, title string, clear bool) {
 
     // Bail if we have no entries to display.
     if len(entries) == 0 {
@@ -152,7 +157,7 @@ func printVerboseList(entries []*irondb.Entry, key []byte, title string, clear b
         if err != nil {
             exit("Error:", err)
         }
-        
+
         if clear {
             fmt.Printf("  Password: %s\n", password)
         } else {

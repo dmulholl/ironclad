@@ -168,3 +168,13 @@ func addSpaces(input string) string {
 
     return strings.Join(words, "  ")
 }
+
+
+// Returns a string of asterisks of the specified length.
+func stars(length int) string {
+    runes := make([]rune, length)
+    for i := range runes {
+        runes[i] = '*'
+    }
+    return string(runes)
+}

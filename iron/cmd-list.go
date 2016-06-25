@@ -27,6 +27,7 @@ Options:
   -t, --tag <str>           List entries by tag.
 
 Flags:
+  -c, --clear               Print passwords in the clear.
       --help                Print this command's help text and exit.
   -v, --verbose             Use the verbose list format.
 `, filepath.Base(os.Args[0]))
@@ -79,7 +80,7 @@ func listCallback(parser *clio.ArgParser) {
 
     // Print the list of entries.
     if parser.GetFlag("verbose") {
-        printVerboseList(entries, key, title)
+        printVerboseList(entries, key, title, parser.GetFlag("clear"))
     } else {
         printCompactList(entries)
     }
@@ -119,7 +120,7 @@ func printCompactList(entries []*irondb.Entry) {
 
 
 // Print a verbose listing.
-func printVerboseList(entries []*irondb.Entry, key []byte, title string) {
+func printVerboseList(entries []*irondb.Entry, key []byte, title string, clear bool) {
 
     // Bail if we have no entries to display.
     if len(entries) == 0 {
@@ -149,9 +150,14 @@ func printVerboseList(entries []*irondb.Entry, key []byte, title string) {
 
         password, err := entry.GetPassword(key)
         if err != nil {
-            exit("Error:")
+            exit("Error:", err)
         }
-        fmt.Printf("  Password: %s\n", password)
+        
+        if clear {
+            fmt.Printf("  Password: %s\n", password)
+        } else {
+            fmt.Printf("  Password: %s\n", stars(len([]rune(password))))
+        }
 
         if entry.Email != "" {
             fmt.Printf("  Email:    %s\n", entry.Email)

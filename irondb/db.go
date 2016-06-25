@@ -196,7 +196,7 @@ func (db *DB) Lookup(queries ...string) []*Entry {
 // string. The query string may be (in order) an entry ID or a
 // (case-insensitive) exact, prefix, or substring match for an entry title.
 // This function returns a slice of entries; zero or multiple matches may be
-// interpreted as error conditions.
+// interpreted by the caller as error conditions.
 func (db *DB) LookupUnique(query string) []*Entry {
 
     // List of entries to return.

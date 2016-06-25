@@ -28,7 +28,7 @@ Arguments:
 
 Options:
   -f, --file <str>          Database file.
-  -t, --tag <str>           List entries by tag.
+  -t, --tag <str>           Filter entries using the specified tag.
 
 Flags:
   -c, --cleartext           Print passwords in cleartext.
@@ -73,26 +73,30 @@ func listCallback(parser *clio.ArgParser) {
 
     if parser.HasArgs() {
         entries = db.Lookup(parser.GetArgs()...)
-        title = "Matching Entries"
-    } else if parser.GetStr("tag") != "" {
-        entries = db.ByTag(parser.GetStr("tag"))
-        title = "Entries Tagged: " + parser.GetStr("tag")
+        title = fmt.Sprintf("%d Matching Entries", len(entries))
     } else {
         entries = db.Active()
         title = "All Entries"
     }
 
+    // Filter by tag.
+    if parser.GetStr("tag") != "" {
+        entries = irondb.FilterByTag(entries, parser.GetStr("tag"))
+        title = fmt.Sprintf("%d Matching Entries", len(entries))
+    }
+
     // Print the list of entries.
     if parser.GetFlag("verbose") {
-        printVerboseList(entries, key, title, parser.GetFlag("cleartext"))
+        clearflag := parser.GetFlag("cleartext")
+        printVerboseList(entries, db.Size(), key, title, clearflag)
     } else {
-        printCompactList(entries)
+        printCompactList(entries, db.Size())
     }
 }
 
 
 // Print a compact listing.
-func printCompactList(entries []*irondb.Entry) {
+func printCompactList(entries []*irondb.Entry, dbsize int) {
 
     // Bail if we have no entries to display.
     if len(entries) == 0 {
@@ -114,18 +118,14 @@ func printCompactList(entries []*irondb.Entry) {
 
     // Footer.
     line("-")
-    if len(entries) == 1 {
-        fmt.Println("  1 Entry")
-    } else {
-        fmt.Printf("  %d Entries\n", len(entries))
-    }
+    fmt.Printf("%4d/%d Entries\n", len(entries), dbsize)
     line("-")
 }
 
 
 // Print a verbose listing.
 func printVerboseList(
-    entries []*irondb.Entry, key []byte, title string, clear bool) {
+    entries []*irondb.Entry, dbsize int, key []byte, title string, clear bool) {
 
     // Bail if we have no entries to display.
     if len(entries) == 0 {
@@ -183,10 +183,6 @@ func printVerboseList(
     }
 
     // Footer.
-    if len(entries) == 1 {
-        fmt.Println("  1 Entry")
-    } else {
-        fmt.Printf("  %d Entries\n", len(entries))
-    }
+    fmt.Printf("  %d/%d Entries\n", len(entries), dbsize)
     line("-")
 }

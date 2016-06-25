@@ -70,7 +70,7 @@ func deleteCallback(parser *clio.ArgParser) {
     }
 
     // Print a listing and request confirmation.
-    printCompactList(entries)
+    printCompactList(entries, db.Size())
     confirm := input("  Delete the entries listed above? (y/n): ")
     if strings.ToLower(confirm)[0] == 'y' {
         for _, entry := range entries {

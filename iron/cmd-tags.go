@@ -56,7 +56,7 @@ func tagsCallback(parser *clio.ArgParser) {
     cacheLastFilename(filename)
 
     // Assemble a map of tags.
-    tagmap := db.Tags()
+    tagmap := db.TagMap()
 
     // Extract a sorted slice of tag strings.
     tags := make([]string, 0)

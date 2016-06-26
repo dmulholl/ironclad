@@ -14,7 +14,7 @@ import (
 
 
 // Application version number.
-const version = "0.10.0"
+const version = "0.10.1"
 
 
 // Application help text.
@@ -121,7 +121,7 @@ func main() {
     importParser.AddStr("db-password", "")
 
     // Register the 'list' command.
-    listParser := parser.AddCmd("list", listHelptext, listCallback)
+    listParser := parser.AddCmd("list show", listHelptext, listCallback)
     listParser.AddStr("file f", "")
     listParser.AddStr("db-password", "")
     listParser.AddStr("tag t", "")

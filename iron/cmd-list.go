@@ -23,6 +23,10 @@ Usage: %s list [FLAGS] [OPTIONS] [ARGUMENTS]
   If no arguments are specified, all the entries in the database will be
   listed.
 
+  The 'list' command has an alias, 'show', which is equivalent to:
+
+    list --verbose --cleartext
+
 Arguments:
   [entries]                 Entries to list by ID or title.
 
@@ -66,6 +70,12 @@ func listCallback(parser *clio.ArgParser) {
     }
     cacheLastPassword(password)
     cacheLastFilename(filename)
+
+    // Has the 'show' alias been used?
+    if parser.GetParent().GetCmdName() == "show" {
+        parser.SetFlag("verbose", true)
+        parser.SetFlag("cleartext", true)
+    }
 
     // Assemble a list of entries.
     var entries []*irondb.Entry

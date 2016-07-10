@@ -21,7 +21,7 @@ Arguments:
   <entry>                   Entry to edit by ID or title.
 
 Options:
-  -f, --file <str>          Database file.
+  -f, --file <str>          Database file. Defaults to the last used file.
 
 Flags:
   -e, --email               Edit the entry's email address.

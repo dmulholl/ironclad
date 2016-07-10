@@ -34,14 +34,14 @@ Commands:
   dump              Dump a database's internal JSON data store.
   edit              Edit an existing database entry.
   export            Export data from a database.
-  gen               Generate a random password.
+  gen               Generate a new random password.
   import            Import data into a database.
   list              List database entries.
   new               Create a new database.
-  pass              Print a password.
+  pass              Copy a password to the clipboard.
   purge             Purge deleted entries from a database.
   tags              List database tags.
-  user              Print a username.
+  user              Copy a username to the clipboard.
 
 Command Help:
   help <command>    Print the specified command's help text and exit.

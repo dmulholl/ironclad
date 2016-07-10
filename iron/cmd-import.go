@@ -21,7 +21,7 @@ Arguments:
   <file>                    File to import.
 
 Options:
-  -f, --file <str>          Database file.
+  -f, --file <str>          Database file. Defaults to the last used file.
 
 Flags:
       --help                Print this command's help text and exit.

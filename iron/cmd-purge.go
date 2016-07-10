@@ -17,7 +17,7 @@ Usage: %s purge [FLAGS] [OPTIONS]
   Purge deleted entries from a database.
 
 Options:
-  -f, --file <str>          Database file.
+  -f, --file <str>          Database file. Defaults to the last used file.
 
 Flags:
       --help                Print this command's help text and exit.

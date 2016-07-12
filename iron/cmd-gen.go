@@ -9,7 +9,6 @@ import (
     "crypto/rand"
     "math/big"
     "github.com/dmulholland/clio/go/clio"
-    "github.com/atotto/clipboard"
 )
 
 
@@ -28,7 +27,7 @@ var genHelptext = fmt.Sprintf(`
 Usage: %s gen [FLAGS] ARGUMENTS
 
   Generate a random ASCII password. The password is automatically copied to
-  the system clipboard. The password can also be printed to stdout.
+  the system clipboard. The password can alternatively be printed to stdout.
 
   The default password length is 24 characters. The default character pool
   consists of uppercase letters, lowercase letters, and digits.
@@ -109,6 +108,7 @@ func genCallback(parser *clio.ArgParser) {
     }
     password := string(passBytes)
 
+
     // Add spaces if required.
     if parser.GetFlag("readable") {
         password = addSpaces(password)
@@ -120,16 +120,11 @@ func genCallback(parser *clio.ArgParser) {
         if stdoutIsTerminal() {
             fmt.Println()
         }
+        return
     }
 
     // Copy the password to the clipboard.
-    if clipboard.Unsupported {
-        exit("Error: clipboard not supported on this system.")
-    }
-    err := clipboard.WriteAll(password)
-    if err != nil {
-        exit("Error:", err)
-    }
+    writeToClipboard(password)
 }
 
 

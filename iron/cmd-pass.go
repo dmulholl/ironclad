@@ -7,7 +7,6 @@ import (
     "path/filepath"
     "github.com/dmulholland/ironclad/irondb"
     "github.com/dmulholland/clio/go/clio"
-    "github.com/atotto/clipboard"
 )
 
 
@@ -15,8 +14,7 @@ import (
 var passHelptext = fmt.Sprintf(`
 Usage: %s pass [FLAGS] [OPTIONS] ARGUMENTS
 
-  Copy a password to the system clipboard. The password can additionally be
-  printed to stdout.
+  Copy a stored password to the system clipboard or print it to stdout.
 
 Arguments:
   <entry>                   Entry ID or title.
@@ -91,14 +89,9 @@ func passCallback(parser *clio.ArgParser) {
         if stdoutIsTerminal() {
             fmt.Println()
         }
+        return
     }
 
     // Copy the password to the clipboard.
-    if clipboard.Unsupported {
-        exit("Error: clipboard not supported on this system.")
-    }
-    err = clipboard.WriteAll(decrypted)
-    if err != nil {
-        exit("Error:", err)
-    }
+    writeToClipboard(decrypted)
 }

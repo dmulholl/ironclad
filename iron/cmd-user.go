@@ -7,7 +7,6 @@ import (
     "path/filepath"
     "github.com/dmulholland/ironclad/irondb"
     "github.com/dmulholland/clio/go/clio"
-    "github.com/atotto/clipboard"
 )
 
 
@@ -15,8 +14,7 @@ import (
 var userHelptext = fmt.Sprintf(`
 Usage: %s user [FLAGS] [OPTIONS] ARGUMENTS
 
-  Copy a username to the system clipboard. The username can additionally be
-  printed to stdout.
+  Copy a stored username to the system clipboard or print it to stdout.
 
 Arguments:
   <entry>                   Entry ID or title.
@@ -79,14 +77,9 @@ func userCallback(parser *clio.ArgParser) {
         if stdoutIsTerminal() {
             fmt.Println()
         }
+        return
     }
 
     // Copy the username to the clipboard.
-    if clipboard.Unsupported {
-        exit("Error: clipboard not supported on this system.")
-    }
-    err = clipboard.WriteAll(entries[0].Username)
-    if err != nil {
-        exit("Error:", err)
-    }
+    writeToClipboard(entries[0].Username)
 }

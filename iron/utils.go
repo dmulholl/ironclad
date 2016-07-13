@@ -178,3 +178,13 @@ func stars(length int) string {
     }
     return string(runes)
 }
+
+
+// Returns a string of the specified length containing the specified character.
+func charstring(length int, char rune) string {
+    runes := make([]rune, length)
+    for i := range runes {
+        runes[i] = char
+    }
+    return string(runes)
+}

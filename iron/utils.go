@@ -159,16 +159,6 @@ func addSpaces(input string) string {
 }
 
 
-// Returns a string of asterisks of the specified length.
-func stars(length int) string {
-    runes := make([]rune, length)
-    for i := range runes {
-        runes[i] = '*'
-    }
-    return string(runes)
-}
-
-
 // Returns a string of the specified length containing the specified character.
 func charstr(length int, char rune) string {
     runes := make([]rune, length)

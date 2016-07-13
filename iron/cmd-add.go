@@ -18,7 +18,7 @@ Usage: %s add [FLAGS] [OPTIONS]
   Add a new entry to a database.
 
 Options:
-  -f, --file <str>          Database file. Defaults to the last used file.
+  -f, --file <str>          Database file. Defaults to the most recent file.
 
 Flags:
       --help                Print this command's help text and exit.

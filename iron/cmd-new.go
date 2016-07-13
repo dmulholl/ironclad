@@ -39,7 +39,7 @@ func newCallback(parser *clio.ArgParser) {
         password = input("Password: ")
     }
 
-    // Create a new in-memory database.
+    // Initialize a new database.
     db, err := irondb.New()
     if err != nil {
         exit(err)

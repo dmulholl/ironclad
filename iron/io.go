@@ -10,7 +10,7 @@ import (
 
 
 // Load and decrypt a database.
-func loadDB(parser *clio.ArgParser) (db *irondb.DB, password, filename string) {
+func loadDB(parser *clio.ArgParser) (password, filename string, db *irondb.DB) {
 
     // Determine the filename to use. First check for a filename specified on
     // the command line, next look for a cached filename from the application's
@@ -41,7 +41,7 @@ func loadDB(parser *clio.ArgParser) (db *irondb.DB, password, filename string) {
         }
         setCachedPassword(password)
         setCachedFilename(filename)
-        return db, password, filename
+        return password, filename, db
     }
 
     // Look for a cached password from the application's last run. This
@@ -62,7 +62,7 @@ func loadDB(parser *clio.ArgParser) (db *irondb.DB, password, filename string) {
         }
         setCachedPassword(password)
         setCachedFilename(filename)
-        return db, password, filename
+        return password, filename, db
     }
 
     // No command-line or cached password. Prompt the user to enter one.
@@ -77,12 +77,12 @@ func loadDB(parser *clio.ArgParser) (db *irondb.DB, password, filename string) {
     }
     setCachedPassword(password)
     setCachedFilename(filename)
-    return db, password, filename
+    return password, filename, db
 }
 
 
 // Encrypt and save a database.
-func saveDB(db *irondb.DB, password, filename string) {
+func saveDB(password, filename string, db *irondb.DB) {
 
     // Serialize the database as a byte-slice of JSON.
     json, err := db.ToJSON()

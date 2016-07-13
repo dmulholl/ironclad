@@ -32,7 +32,7 @@ Flags:
 func exportCallback(parser *clio.ArgParser) {
 
     // Load the database.
-    db, password, _ := loadDB(parser)
+    password, _, db := loadDB(parser)
 
     // Assemble a list of entries to export.
     var entries []*irondb.Entry

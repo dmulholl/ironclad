@@ -28,7 +28,7 @@ Flags:
 func tagsCallback(parser *clio.ArgParser) {
 
     // Load the database.
-    db, _, _ := loadDB(parser)
+    _, _, db := loadDB(parser)
 
     // Assemble a map of tags.
     tagmap := db.TagMap()

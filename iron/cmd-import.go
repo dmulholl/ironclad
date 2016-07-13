@@ -36,7 +36,7 @@ func importCallback(parser *clio.ArgParser) {
     }
 
     // Load the database.
-    db, password, filename := loadDB(parser)
+    password, filename, db := loadDB(parser)
 
     // Read the JSON input file.
     input, err := ioutil.ReadFile(parser.GetArgs()[0])
@@ -48,5 +48,5 @@ func importCallback(parser *clio.ArgParser) {
     db.Import(db.Key(password), input)
 
     // Save the updated database to disk.
-    saveDB(db, password, filename)
+    saveDB(password, filename, db)
 }

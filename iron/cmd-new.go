@@ -50,5 +50,5 @@ func newCallback(parser *clio.ArgParser) {
     setCachedFilename(filename)
 
     // Save the new database to disk.
-    saveDB(db, password, filename)
+    saveDB(password, filename, db)
 }

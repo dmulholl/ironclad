@@ -43,7 +43,7 @@ func editCallback(parser *clio.ArgParser) {
     }
 
     // Load the database.
-    db, password, filename := loadDB(parser)
+    password, filename, db := loadDB(parser)
 
     // Search for an entry corresponding to the specified argument.
     entries := db.LookupUnique(parser.GetArgs()[0])
@@ -130,7 +130,7 @@ func editCallback(parser *clio.ArgParser) {
     }
 
     // Save the updated database to disk.
-    saveDB(db, password, filename)
+    saveDB(password, filename, db)
 
     // Footer.
     fmt.Println("  Entry updated.")

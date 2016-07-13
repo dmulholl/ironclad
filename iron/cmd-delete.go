@@ -36,7 +36,7 @@ func deleteCallback(parser *clio.ArgParser) {
     }
 
     // Load the database.
-    db, password, filename := loadDB(parser)
+    password, filename, db := loadDB(parser)
 
     // Grab the entries to delete.
     entries := db.Lookup(parser.GetArgs()...)
@@ -59,5 +59,5 @@ func deleteCallback(parser *clio.ArgParser) {
     }
 
     // Save the updated database to disk.
-    saveDB(db, password, filename)
+    saveDB(password, filename, db)
 }

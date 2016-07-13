@@ -45,7 +45,7 @@ Flags:
 func listCallback(parser *clio.ArgParser) {
 
     // Load the database.
-    db, password, _ := loadDB(parser)
+    password, _, db := loadDB(parser)
 
     // Has the 'show' alias been used?
     if parser.GetParent().GetCmdName() == "show" {

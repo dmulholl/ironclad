@@ -29,7 +29,7 @@ Flags:
 func addCallback(parser *clio.ArgParser) {
 
     // Load the database.
-    db, password, filename := loadDB(parser)
+    password, filename, db := loadDB(parser)
 
     // Create a new Entry object to add to the database.
     entry := irondb.NewEntry()
@@ -72,7 +72,7 @@ func addCallback(parser *clio.ArgParser) {
     db.Add(entry)
 
     // Save the updated database to disk.
-    saveDB(db, password, filename)
+    saveDB(password, filename, db)
 
     // Footer.
     line("-")

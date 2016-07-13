@@ -36,7 +36,7 @@ func userCallback(parser *clio.ArgParser) {
     }
 
     // Load the database.
-    db, _, _ := loadDB(parser)
+    _, _, db := loadDB(parser)
 
     // Search for an entry corresponding to the specified argument.
     entries := db.LookupUnique(parser.GetArgs()[0])

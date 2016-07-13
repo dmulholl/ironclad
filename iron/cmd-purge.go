@@ -27,11 +27,11 @@ Flags:
 func purgeCallback(parser *clio.ArgParser) {
 
     // Load the database.
-    db, password, filename := loadDB(parser)
+    password, filename, db := loadDB(parser)
 
     // Purge the database.
     db.Purge()
 
     // Save the updated database to disk.
-    saveDB(db, password, filename)
+    saveDB(password, filename, db)
 }

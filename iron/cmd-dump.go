@@ -29,7 +29,7 @@ Flags:
 func dumpCallback(parser *clio.ArgParser) {
 
     // Load the database.
-    db, _, _ := loadDB(parser)
+    _, _, db := loadDB(parser)
 
     // Serialize the database as a byte-slice of JSON.
     data, err := db.ToJSON()

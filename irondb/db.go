@@ -70,7 +70,7 @@ func (db *DB) Key(password string) []byte {
 }
 
 
-// Import adds entries from an exported byte-slice of JSON.
+// Import adds entries from a previously-exported byte-slice of JSON.
 func (db *DB) Import(key, data []byte) error {
 
     exports := make([]*ExportEntry, 0)

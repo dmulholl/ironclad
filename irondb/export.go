@@ -19,7 +19,7 @@ type ExportEntry struct {
 }
 
 
-// Export exports a list of entries in JSON format. Passwords are unencrypted.
+// Export exports a list of entries in JSON format. Passwords are decrypted.
 func Export(entries []*Entry, key []byte) (string, error) {
 
     // Assemble a list of ExportEntry objects with unencrypted passwords.

@@ -7,7 +7,6 @@ import (
     "strings"
     "path/filepath"
     "github.com/dmulholland/clio/go/clio"
-    "github.com/dmulholland/ironclad/irondb"
 )
 
 
@@ -31,42 +30,18 @@ Flags:
 // Callback for the 'delete' command.
 func deleteCallback(parser *clio.ArgParser) {
 
-    var filename, password string
-    var found bool
-
     // Check that at least one entry argument has been supplied.
     if !parser.HasArgs() {
-        exit("Error: you must specify at least one entry argument.")
+        exit("you must specify at least one entry argument")
     }
 
-    // Determine the filename to use.
-    filename = parser.GetStr("file")
-    if filename == "" {
-        if filename, found = fetchLastFilename(); !found {
-            filename = input("Filename: ")
-        }
-    }
-
-    // Determine the password to use.
-    password = parser.GetStr("db-password")
-    if password == "" {
-        if password, found = fetchLastPassword(); !found {
-            password = input("Password: ")
-        }
-    }
-
-    // Load the database file.
-    db, key, err := irondb.Load(password, filename)
-    if err != nil {
-        exit("Error:", err)
-    }
-    cacheLastPassword(password)
-    cacheLastFilename(filename)
+    // Load the database.
+    db, password, filename := loadDB(parser)
 
     // Grab the entries to delete.
     entries := db.Lookup(parser.GetArgs()...)
     if len(entries) == 0 {
-        exit("Error: no matching entries.")
+        exit("no matching entries")
     }
 
     // Print a listing and request confirmation.
@@ -83,6 +58,6 @@ func deleteCallback(parser *clio.ArgParser) {
         fmt.Println("  Deletion aborted.")
     }
 
-    // Save the altered database.
-    db.Save(key, password, filename)
+    // Save the updated database to disk.
+    saveDB(db, password, filename)
 }

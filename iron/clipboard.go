@@ -14,12 +14,12 @@ import (
 func writeToClipboard(value string) {
 
     if clipboard.Unsupported {
-        exit("Error: clipboard functionality is not supported on this system.")
+        exit("clipboard functionality is not supported on this system")
     }
 
     err := clipboard.WriteAll(value)
     if err != nil {
-        exit("Error:", err)
+        exit(err)
     }
 
     fmt.Fprint(os.Stderr, "Clearing clipboard: ")
@@ -32,8 +32,8 @@ func writeToClipboard(value string) {
     for count := 0; count <= intervals; count++ {
 
         fmt.Fprintf(os.Stderr, "|")
-        fmt.Fprintf(os.Stderr, charstring(count, '-'))
-        fmt.Fprintf(os.Stderr, charstring(intervals - count, ' '))
+        fmt.Fprintf(os.Stderr, charstr(count, '-'))
+        fmt.Fprintf(os.Stderr, charstr(intervals - count, ' '))
         fmt.Fprintf(os.Stderr, "|")
 
         ms_remaining := ms_total - count * ms_per_interval
@@ -41,20 +41,20 @@ func writeToClipboard(value string) {
 
         time.Sleep(time.Duration(ms_per_interval) * time.Millisecond)
 
-        fmt.Fprintf(os.Stderr, charstring(strlen, '\b'))
-        fmt.Fprintf(os.Stderr, charstring(strlen, ' '))
-        fmt.Fprintf(os.Stderr, charstring(strlen, '\b'))
+        fmt.Fprintf(os.Stderr, charstr(strlen, '\b'))
+        fmt.Fprintf(os.Stderr, charstr(strlen, ' '))
+        fmt.Fprintf(os.Stderr, charstr(strlen, '\b'))
     }
 
     clipContent, err := clipboard.ReadAll()
     if err != nil {
-        exit("Error:", err)
+        exit(err)
     }
 
     if clipContent == value {
         err = clipboard.WriteAll("[Clipboard overwritten by Ironclad]")
         if err != nil {
-            exit("Error:", err)
+            exit(err)
         }
         fmt.Fprintln(os.Stderr, "[CLEARED]")
     } else {

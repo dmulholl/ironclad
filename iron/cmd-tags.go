@@ -6,7 +6,6 @@ import (
     "os"
     "path/filepath"
     "github.com/dmulholland/clio/go/clio"
-    "github.com/dmulholland/ironclad/irondb"
     "sort"
 )
 
@@ -28,32 +27,8 @@ Flags:
 // Callback for the 'tags' command.
 func tagsCallback(parser *clio.ArgParser) {
 
-    var filename, password string
-    var found bool
-
-    // Determine the filename to use.
-    filename = parser.GetStr("file")
-    if filename == "" {
-        if filename, found = fetchLastFilename(); !found {
-            filename = input("Filename: ")
-        }
-    }
-
-    // Determine the password to use.
-    password = parser.GetStr("db-password")
-    if password == "" {
-        if password, found = fetchLastPassword(); !found {
-            password = input("Password: ")
-        }
-    }
-
-    // Load the database file.
-    db, _, err := irondb.Load(password, filename)
-    if err != nil {
-        exit("Error:", err)
-    }
-    cacheLastPassword(password)
-    cacheLastFilename(filename)
+    // Load the database.
+    db, _, _ := loadDB(parser)
 
     // Assemble a map of tags.
     tagmap := db.TagMap()

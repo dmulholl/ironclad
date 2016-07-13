@@ -6,7 +6,6 @@ import (
     "os"
     "path/filepath"
     "github.com/dmulholland/clio/go/clio"
-    "github.com/dmulholland/ironclad/irondb"
 )
 
 
@@ -27,36 +26,12 @@ Flags:
 // Callback for the 'purge' command.
 func purgeCallback(parser *clio.ArgParser) {
 
-    var filename, password string
-    var found bool
-
-    // Determine the filename to use.
-    filename = parser.GetStr("file")
-    if filename == "" {
-        if filename, found = fetchLastFilename(); !found {
-            filename = input("Filename: ")
-        }
-    }
-
-    // Determine the password to use.
-    password = parser.GetStr("db-password")
-    if password == "" {
-        if password, found = fetchLastPassword(); !found {
-            password = input("Password: ")
-        }
-    }
-
     // Load the database.
-    db, key, err := irondb.Load(password, filename)
-    if err != nil {
-        exit("Error:", err)
-    }
-    cacheLastPassword(password)
-    cacheLastFilename(filename)
+    db, password, filename := loadDB(parser)
 
     // Purge the database.
     db.Purge()
 
     // Save the updated database to disk.
-    db.Save(key, password, filename)
+    saveDB(db, password, filename)
 }

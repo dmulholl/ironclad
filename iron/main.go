@@ -14,7 +14,7 @@ import (
 
 
 // Application version number.
-const version = "0.11.0"
+const version = "0.12.0.dev"
 
 
 // Application help text.
@@ -155,9 +155,8 @@ func main() {
     userParser.AddStr("db-password", "")
     userParser.AddFlag("print p")
 
-    // Parse the application's command line arguments.
-    // If a command is found, control will be passed to its
-    // callback function.
+    // Parse the application's command line arguments.  If a command is found,
+    // control will be passed to its callback function.
     parser.Parse()
 
     // If no command has been found, print the help text and exit.

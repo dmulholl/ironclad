@@ -8,58 +8,73 @@ import (
     "encoding/json"
     "strings"
     "strconv"
-    "github.com/dmulholland/ironclad/ironio"
+    "github.com/dmulholland/ironclad/ironcrypt"
 )
+
+
+// Length of the key derivation salt in bytes.
+const SaltLength = 32
+
+
+// Number of iterations used by the key derivation function.
+const PBKDFIterations = 10000
 
 
 // DB represents an in-memory database of password records.
 type DB struct {
-    entries []*Entry
+    Salt []byte         `json:"salt"`
+    Entries []*Entry    `json:"entries"`
 }
 
 
-// New returns a new database.
-func New() *DB {
-    return &DB{ entries: make([]*Entry, 0) }
-}
+// New initializes and returns an empty database instance.
+func New() (db *DB, err error) {
 
-
-// Load loads a saved database from an encrypted file.
-func Load(password, filename string) (db *DB, key []byte, err error) {
-
-    // Load the JSON data store from the encrypted file.
-    data, key, err := ironio.Load(password, filename)
+    // Generate a random salt.
+    salt, err := ironcrypt.RandBytes(SaltLength)
     if err != nil {
-        return db, key, err
+        return
     }
 
-    // Unmarshal the stored JSON.
-    db = New()
-    err = json.Unmarshal(data, &db.entries)
+    // Initialize a new database instance.
+    db = &DB{
+        Salt: salt,
+        Entries: make([]*Entry, 0)}
 
-    return db, key, err
+    return db, err
 }
 
 
-// Save saves a database to an encrypted file.
-func (db *DB) Save(key []byte, password, filename string) error {
+// FromJSON initializes a new database instance from a byte-slice of JSON.
+func FromJSON(data []byte) (db *DB, err error) {
+    db = &DB{}
+    err = json.Unmarshal(data, db)
+    return db, err
+}
 
-    // Generate a JSON dump of the database.
-    data, err := json.Marshal(db.entries)
+
+// ToJSON serializes a database instance as a byte-slice of JSON.
+func (db *DB) ToJSON() (data []byte, err error) {
+    data, err = json.Marshal(db)
     if err != nil {
-        return err
+        return nil, err
     }
-
-    // Save the JSON dump as an encrypted file.
-    return ironio.Save(data, key, password, filename)
+    return data, nil
 }
 
 
-// Import adds entries from an exported JSON dump to the database.
-func (db *DB) Import(key []byte, dump string) error {
+// Key returns the encryption key corresponding to the specified password.
+// This key is used to encrypt passwords *within* the database.
+func (db *DB) Key(password string) []byte {
+    return ironcrypt.Key([]byte(password), db.Salt, PBKDFIterations)
+}
+
+
+// Import adds entries from an exported byte-slice of JSON.
+func (db *DB) Import(key, data []byte) error {
 
     entries := make([]*Entry, 0)
-    err := json.Unmarshal([]byte(dump), &entries)
+    err := json.Unmarshal(data, &entries)
     if err != nil {
         return err
     }
@@ -77,10 +92,56 @@ func (db *DB) Import(key []byte, dump string) error {
 }
 
 
+// Add inserts a new entry into the database.
+func (db *DB) Add(entry *Entry) {
+    if len(db.Entries) == 0 {
+        entry.Id = 1
+    } else {
+        entry.Id = db.Entries[len(db.Entries) - 1].Id + 1
+    }
+    db.Entries = append(db.Entries, entry)
+}
+
+
+// Delete removes an entry from the database.
+func (db *DB) Delete(id int) {
+    for _, entry := range db.Entries {
+        if entry.Id == id {
+            entry.Active = false
+        }
+    }
+}
+
+
+// Purge clears deleted entries from the database.
+func (db *DB) Purge() {
+    entries := db.Entries
+    db.Entries = make([]*Entry, 0)
+    for _, entry := range entries {
+        if entry.Active {
+            db.Add(entry)
+        }
+    }
+}
+
+
+// Size returns the number of active entries in the database.
+func (db *DB) Size() int {
+    return len(db.Active())
+}
+
+
+
+
+
+
+
+
+
 // Active returns a list of active entries.
 func (db *DB) Active() []*Entry {
     entries := make([]*Entry, 0)
-    for _, entry := range db.entries {
+    for _, entry := range db.Entries {
         if entry.Active {
             entries = append(entries, entry)
         }
@@ -88,11 +149,6 @@ func (db *DB) Active() []*Entry {
     return entries
 }
 
-
-// FilterByTag returns a list of active entries matching the specified tag.
-func (db *DB) FilterByTag(tag string) []*Entry {
-    return FilterByTag(db.Active(), tag)
-}
 
 
 // TagMap returns a map of tags to entry-lists.
@@ -110,42 +166,9 @@ func (db *DB) TagMap() map[string][]*Entry {
 }
 
 
-// Add inserts a new entry into the database.
-func (db *DB) Add(entry *Entry) {
-    if len(db.entries) == 0 {
-        entry.Id = 1
-    } else {
-        entry.Id = db.entries[len(db.entries) - 1].Id + 1
-    }
-    db.entries = append(db.entries, entry)
-}
-
-
-// Delete removes an entry from the database.
-func (db *DB) Delete(id int) {
-    for _, entry := range db.entries {
-        if entry.Id == id {
-            entry.Active = false
-        }
-    }
-}
-
-
-// Purge clears deleted entries from the database.
-func (db *DB) Purge() {
-    entries := db.entries
-    db.entries = make([]*Entry, 0)
-    for _, entry := range entries {
-        if entry.Active {
-            db.Add(entry)
-        }
-    }
-}
-
-
-// Lookup searches the database for entries matching the specified query
-// strings. A query string can be an entry ID or a case-insensitive substring
-// of an entry title.
+// Lookup searches the database for entries matching the specified query strings
+// Each query string can be an entry ID or a case-insensitive substring of an
+// entry title.
 func (db *DB) Lookup(queries ...string) []*Entry {
 
     // List of entries to return.
@@ -237,12 +260,6 @@ func (db *DB) LookupUnique(query string) []*Entry {
     }
 
     return matches
-}
-
-
-// Size returns the number of active entries in the database.
-func (db *DB) Size() int {
-    return len(db.Active())
 }
 
 

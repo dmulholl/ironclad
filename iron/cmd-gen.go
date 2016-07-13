@@ -132,7 +132,7 @@ func genCallback(parser *clio.ArgParser) {
 func randInt(max int) int {
     n, err := rand.Int(rand.Reader, big.NewInt(int64(max)))
     if err != nil {
-        exit("Error:", err)
+        exit(err)
     }
     return int(n.Int64())
 }

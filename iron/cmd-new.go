@@ -6,7 +6,6 @@ import (
     "os"
     "path/filepath"
     "github.com/dmulholland/clio/go/clio"
-    "github.com/dmulholland/ironclad/ironcrypt"
     "github.com/dmulholland/ironclad/irondb"
 )
 
@@ -30,7 +29,7 @@ func newCallback(parser *clio.ArgParser) {
 
     // Check that a filename argument has been supplied.
     if !parser.HasArgs() {
-        exit("Error: you must supply a filename.")
+        exit("you must supply a filename")
     }
     filename := parser.GetArgs()[0]
 
@@ -41,21 +40,15 @@ func newCallback(parser *clio.ArgParser) {
     }
 
     // Create a new in-memory database.
-    db := irondb.New()
-
-    // Generate a random master key.
-    key, err := ironcrypt.RandBytes(ironcrypt.KeySize)
+    db, err := irondb.New()
     if err != nil {
-        exit("Error:", err)
-    }
-
-    // Save the new database as an encrypted file.
-    err = db.Save(key, password, filename)
-    if err != nil {
-        exit("Error:", err)
+        exit(err)
     }
 
     // Cache the password and filename.
-    cacheLastPassword(password)
-    cacheLastFilename(filename)
+    setCachedPassword(password)
+    setCachedFilename(filename)
+
+    // Save the new database to disk.
+    saveDB(db, password, filename)
 }

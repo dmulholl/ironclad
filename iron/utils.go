@@ -26,7 +26,7 @@ func input(prompt string) string {
 
     input, err := stdinReader.ReadString('\n')
     if err != nil {
-        exit("Error reading input from stdin.")
+        exit(err)
     }
 
     return strings.TrimSpace(input)
@@ -43,7 +43,7 @@ func inputViaEditor(filename, text string) string {
     os.MkdirAll(ironpath, 0777)
     err := ioutil.WriteFile(filename, []byte(text), 0600)
     if err != nil {
-        exit("Error:", err)
+        exit(err)
     }
 
     // Determine the editor to use.
@@ -53,7 +53,7 @@ func inputViaEditor(filename, text string) string {
     }
     _, err = exec.LookPath(editor)
     if err != nil {
-        exit("Error: cannot locate text editor '" + editor + "'.")
+        exitf("cannot locate text editor '%v'", editor)
     }
 
     // Launch the editor and wait for it to complete.
@@ -63,19 +63,19 @@ func inputViaEditor(filename, text string) string {
     cmd.Stderr = os.Stderr
     err = cmd.Run()
     if err != nil {
-        exit("Error:", err)
+        exit(err)
     }
 
     // Load the editor's output.
     input, err := ioutil.ReadFile(filename)
     if err != nil {
-        exit("Error:", err)
+        exit(err)
     }
 
     // Delete the input file.
     err = os.Remove(filename)
     if err != nil {
-        exit("Error:", err)
+        exit(err)
     }
 
     return string(input)
@@ -88,28 +88,17 @@ func stdoutIsTerminal() bool {
 }
 
 
-// Exit with an optional error message.
-func exit(msg ...interface{}) {
-    if len(msg) > 0 {
-        elements := make([]string, 0)
-        for _, element := range msg {
-            elements = append(elements, fmt.Sprint(element))
-        }
-        output := strings.Join(elements, " ")
-        if !strings.HasSuffix(output, ".") {
-            output = output + "."
-        }
-        fmt.Fprintln(os.Stderr, output)
-        os.Exit(1)
-    } else {
-        os.Exit(0)
-    }
+// Exit with an error message and non-zero error code.
+func exit(reason interface{}) {
+    fmt.Fprintf(os.Stderr, "Error: %v.\n", reason)
+    os.Exit(1)
 }
 
 
-// Print a message to stderr.
-func errmsg(msg ...interface{}) {
-    fmt.Fprintln(os.Stderr, msg...)
+// Exit with a formatted error message and non-zero error code.
+func exitf(format string, reason interface{}) {
+    fmt.Fprintf(os.Stderr, "Error: %v.\n", fmt.Sprintf(format, reason))
+    os.Exit(1)
 }
 
 
@@ -181,7 +170,7 @@ func stars(length int) string {
 
 
 // Returns a string of the specified length containing the specified character.
-func charstring(length int, char rune) string {
+func charstr(length int, char rune) string {
     runes := make([]rune, length)
     for i := range runes {
         runes[i] = char

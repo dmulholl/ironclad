@@ -8,7 +8,6 @@ import (
     "github.com/dmulholland/clio/go/clio"
     "encoding/json"
     "bytes"
-    "github.com/dmulholland/ironclad/ironio"
 )
 
 
@@ -29,32 +28,14 @@ Flags:
 // Callback for the 'dump' command.
 func dumpCallback(parser *clio.ArgParser) {
 
-    var filename, password string
-    var found bool
+    // Load the database.
+    db, _, _ := loadDB(parser)
 
-    // Determine the filename to use.
-    filename = parser.GetStr("file")
-    if filename == "" {
-        if filename, found = fetchLastFilename(); !found {
-            filename = input("Filename: ")
-        }
-    }
-
-    // Determine the password to use.
-    password = parser.GetStr("db-password")
-    if password == "" {
-        if password, found = fetchLastPassword(); !found {
-            password = input("Password: ")
-        }
-    }
-
-    // Load the JSON data store from the encrypted database file.
-    data, _, err := ironio.Load(password, filename)
+    // Serialize the database as a byte-slice of JSON.
+    data, err := db.ToJSON()
     if err != nil {
-        exit("Error:", err)
+        exit(err)
     }
-    cacheLastPassword(password)
-    cacheLastFilename(filename)
 
     // Format the JSON for display.
     var formatted bytes.Buffer

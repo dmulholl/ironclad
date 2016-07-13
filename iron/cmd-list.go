@@ -44,32 +44,8 @@ Flags:
 // Callback for the 'list' command.
 func listCallback(parser *clio.ArgParser) {
 
-    var filename, password string
-    var found bool
-
-    // Determine the filename to use.
-    filename = parser.GetStr("file")
-    if filename == "" {
-        if filename, found = fetchLastFilename(); !found {
-            filename = input("Filename: ")
-        }
-    }
-
-    // Determine the password to use.
-    password = parser.GetStr("db-password")
-    if password == "" {
-        if password, found = fetchLastPassword(); !found {
-            password = input("Password: ")
-        }
-    }
-
-    // Load the database file.
-    db, key, err := irondb.Load(password, filename)
-    if err != nil {
-        exit("Error:", err)
-    }
-    cacheLastPassword(password)
-    cacheLastFilename(filename)
+    // Load the database.
+    db, password, _ := loadDB(parser)
 
     // Has the 'show' alias been used?
     if parser.GetParent().GetCmdName() == "show" {
@@ -98,7 +74,7 @@ func listCallback(parser *clio.ArgParser) {
     // Print the list of entries.
     if parser.GetFlag("verbose") {
         clearflag := parser.GetFlag("cleartext")
-        printVerboseList(entries, db.Size(), key, title, clearflag)
+        printVerboseList(entries, db.Size(), db.Key(password), title, clearflag)
     } else {
         printCompactList(entries, db.Size())
     }
@@ -128,7 +104,7 @@ func printCompactList(entries []*irondb.Entry, dbsize int) {
 
     // Footer.
     line("-")
-    fmt.Printf("%4d/%d Entries\n", len(entries), dbsize)
+    fmt.Printf("  %d/%d Entries\n", len(entries), dbsize)
     line("-")
 }
 
@@ -165,13 +141,13 @@ func printVerboseList(
 
         password, err := entry.GetPassword(key)
         if err != nil {
-            exit("Error:", err)
+            exit(err)
         }
 
         if clear {
             fmt.Printf("  Password: %s\n", password)
         } else {
-            fmt.Printf("  Password: %s\n", stars(len([]rune(password))))
+            fmt.Printf("  Password: %s\n", charstr(len([]rune(password)), '*'))
         }
 
         if entry.Email != "" {

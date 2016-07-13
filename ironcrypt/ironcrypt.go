@@ -54,7 +54,7 @@ const (
 
 var (
     ErrInvalidPadding = errors.New("invalid padding length")
-    ErrInvalidKey = errors.New("invalid key length")
+    ErrInvalidKeySize = errors.New("invalid key length")
     ErrIV = errors.New("error generating initialization vector")
     ErrInvalidCiphertext = errors.New("invalid ciphertext length")
     ErrInvalidHMAC = errors.New("invalid authentication code")
@@ -98,7 +98,7 @@ func Encrypt(key, plaintext []byte) ([]byte, error) {
 
     // Check the key size.
     if len(key) != KeySize {
-        return nil, ErrInvalidKey
+        return nil, ErrInvalidKeySize
     }
 
     // Create a random initialization vector.
@@ -132,7 +132,7 @@ func Decrypt(key, ciphertext []byte) ([]byte, error) {
 
     // Check the key size.
     if len(key) != KeySize {
-        return nil, ErrInvalidKey
+        return nil, ErrInvalidKeySize
     }
 
     // HMAC-SHA-256 returns a 32-byte MAC so the overall message length

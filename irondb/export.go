@@ -20,7 +20,7 @@ type ExportEntry struct {
 
 
 // Export exports a list of entries in JSON format. Passwords are unencrypted.
-func Export(entries []*Entry, key []byte) (dump string, err error) {
+func Export(entries []*Entry, key []byte) (string, error) {
 
     // Assemble a list of ExportEntry objects with unencrypted passwords.
     exports := make([]ExportEntry, 0)
@@ -33,10 +33,11 @@ func Export(entries []*Entry, key []byte) (dump string, err error) {
             Notes: entry.Notes,
             Tags: entry.Tags,
         }
-        export.Password, err = entry.GetPassword(key)
+        password, err := entry.GetPassword(key)
         if err != nil {
             return "", err
         }
+        export.Password = password
         exports = append(exports, export)
     }
 

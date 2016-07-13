@@ -31,32 +31,8 @@ Flags:
 // Callback for the 'export' command.
 func exportCallback(parser *clio.ArgParser) {
 
-    var filename, password string
-    var found bool
-
-    // Determine the filename to use.
-    filename = parser.GetStr("file")
-    if filename == "" {
-        if filename, found = fetchLastFilename(); !found {
-            filename = input("Filepath: ")
-        }
-    }
-
-    // Determine the password to use.
-    password = parser.GetStr("db-password")
-    if password == "" {
-        if password, found = fetchLastPassword(); !found {
-            password = input("Password: ")
-        }
-    }
-
-    // Load the database file.
-    db, key, err := irondb.Load(password, filename)
-    if err != nil {
-        exit("Error:", err)
-    }
-    cacheLastPassword(password)
-    cacheLastFilename(filename)
+    // Load the database.
+    db, password, _ := loadDB(parser)
 
     // Assemble a list of entries to export.
     var entries []*irondb.Entry
@@ -67,9 +43,9 @@ func exportCallback(parser *clio.ArgParser) {
     }
 
     // Create the JSON dump.
-    dump, err := irondb.Export(entries, key)
+    dump, err := irondb.Export(entries, db.Key(password))
     if err != nil {
-        exit("Error:", err)
+        exit(err)
     }
 
     // Print the JSON to stdout.

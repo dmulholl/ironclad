@@ -29,22 +29,22 @@ Flags:
 func configCallback(parser *clio.ArgParser) {
 
     if !parser.HasArgs() {
-        exit("Error: you must supply at least one argument.")
+        exit("you must supply at least one argument")
     }
 
     if parser.LenArgs() == 1 {
         value, found, err := ironconfig.Get(parser.GetArg(0))
         if err != nil {
-            exit("Error:", err)
+            exit(err)
         }
         if !found {
-            exit("Error: key not found.")
+            exit("key not found")
         }
         fmt.Println(value)
     } else {
         err := ironconfig.Set(parser.GetArg(0), parser.GetArg(1))
         if err != nil {
-            exit("Error:", err)
+            exit(err)
         }
     }
 }

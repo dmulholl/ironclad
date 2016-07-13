@@ -7,7 +7,6 @@ import (
     "path/filepath"
     "github.com/dmulholland/clio/go/clio"
     "strings"
-    "github.com/dmulholland/ironclad/irondb"
 )
 
 
@@ -38,48 +37,25 @@ Flags:
 // Callback for the 'edit' command.
 func editCallback(parser *clio.ArgParser) {
 
-    var filename, password string
-    var found, allFields bool
-
     // Make sure an argument has been specified.
     if !parser.HasArgs() {
-        exit("Error: missing entry argument.")
-    }
-
-    // Determine the filename to use.
-    filename = parser.GetStr("file")
-    if filename == "" {
-        if filename, found = fetchLastFilename(); !found {
-            filename = input("Filename: ")
-        }
-    }
-
-    // Determine the password to use.
-    password = parser.GetStr("db-password")
-    if password == "" {
-        if password, found = fetchLastPassword(); !found {
-            password = input("Password: ")
-        }
+        exit("missing entry argument")
     }
 
     // Load the database.
-    db, key, err := irondb.Load(password, filename)
-    if err != nil {
-        exit("Error:", err)
-    }
-    cacheLastPassword(password)
-    cacheLastFilename(filename)
+    db, password, filename := loadDB(parser)
 
     // Search for an entry corresponding to the specified argument.
     entries := db.LookupUnique(parser.GetArgs()[0])
     if len(entries) == 0 {
-        exit("Error: no matching entry.")
+        exit("no matching entry")
     } else if len(entries) > 1 {
-        exit("Error: query matches multiple entries.")
+        exit("query matches multiple entries")
     }
     entry := entries[0]
 
     // Default to editing all fields if no flags are present.
+    allFields := false
     if !parser.GetFlag("title") && !parser.GetFlag("url") &&
         !parser.GetFlag("username") && !parser.GetFlag("password") &&
         !parser.GetFlag("tags") && !parser.GetFlag("notes") &&
@@ -115,14 +91,14 @@ func editCallback(parser *clio.ArgParser) {
 
     if parser.GetFlag("password") || (allFields && editField("password")) {
         fmt.Println("  PASSWORD")
-        oldpass, err := entry.GetPassword(key)
+        oldpassword, err := entry.GetPassword(db.Key(password))
         if err != nil {
-            exit("Error: ", err)
+            exit(err)
         }
-        fmt.Println("  Old value: " + oldpass)
-        err = entry.SetPassword(key, input("  New value: "))
+        fmt.Println("  Old value: " + oldpassword)
+        err = entry.SetPassword(db.Key(password), input("  New value: "))
         if err != nil {
-            exit("Error: ", err)
+            exit(err)
         }
         line("-")
     }
@@ -154,7 +130,7 @@ func editCallback(parser *clio.ArgParser) {
     }
 
     // Save the updated database to disk.
-    db.Save(key, password, filename)
+    saveDB(db, password, filename)
 
     // Footer.
     fmt.Println("  Entry updated.")

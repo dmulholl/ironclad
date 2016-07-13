@@ -30,12 +30,12 @@ func cacheCallback(parser *clio.ArgParser) {
     // Check if a cache timeout has been set in the config file.
     timeout, found, err := ironconfig.Get("timeout")
     if err != nil {
-        exit("Error:", err)
+        exit(err)
     }
     if found {
         minutes, err := strconv.ParseInt(timeout, 10, 64)
         if err != nil {
-            exit("Error:", err)
+            exit(err)
         }
         ironrpc.ServerTimeout = time.Duration(minutes) * time.Minute
     }
@@ -43,6 +43,6 @@ func cacheCallback(parser *clio.ArgParser) {
     // Run the cache server.
     err = ironrpc.Serve(ironaddress)
     if err != nil {
-        exit("Error:", err)
+        exit(err)
     }
 }

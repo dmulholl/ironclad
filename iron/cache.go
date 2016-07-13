@@ -10,34 +10,35 @@ import (
     "os/exec"
     "path/filepath"
     "os"
+    "fmt"
 )
 
 
-// Cache the last-used filename for the application's next run.
-func cacheLastFilename(filename string) {
+// Cache the current filename for the application's next run.
+func setCachedFilename(filename string) {
     filename, err := filepath.Abs(filename)
     if err != nil {
-        exit("Error:", err)
+        exit(err)
     }
     err = ironconfig.Set("file", filename)
     if err != nil {
-        exit("Error:", err)
+        exit(err)
     }
 }
 
 
-// Fetch the last-used filename from the application's last run.
-func fetchLastFilename() (string, bool) {
+// Fetch the cached filename (if it exists) from the application's last run.
+func getCachedFilename() (filename string, found bool) {
     filename, found, err := ironconfig.Get("file")
     if err != nil {
-        exit("Error:", err)
+        exit(err)
     }
     return filename, found
 }
 
 
-// Temporarily cache the last-used password for the application's next run.
-func cacheLastPassword(password string) {
+// Cache the database password for the application's next run.
+func setCachedPassword(password string) {
 
     // Attempt to make a connection to the password server.
     // If we can't make a connection, launch a new server.
@@ -55,7 +56,8 @@ func cacheLastPassword(password string) {
         // Try making a connection again.
         client, err = ironrpc.NewClient(ironaddress)
         if err != nil {
-            errmsg("Error connecting to password server: ", err)
+            fmt.Fprintf(os.Stderr,
+                "Error connecting to password server: %v\n", err)
             return
         }
     }
@@ -63,31 +65,31 @@ func cacheLastPassword(password string) {
     // Generate a random 32-byte token.
     bytes, err := ironcrypt.RandBytes(32)
     if err != nil {
-        exit("Error:", err)
+        exit(err)
     }
     token := base64.StdEncoding.EncodeToString(bytes)
 
     // Save the token in the application's config file.
     err = ironconfig.Set("token", token)
     if err != nil {
-        exit("Error:", err)
+        exit(err)
     }
 
     // Cache the token and password pair.
     _, err = client.Set(token, password)
     if err != nil {
-        errmsg("Error caching password: ", err)
+        fmt.Fprintf(os.Stderr, "Error caching password: %v\n", err)
     }
 }
 
 
-// Fetch the last-used password from the application's last run.
-func fetchLastPassword() (password string, found bool) {
+// Fetch the cached password (if it exists) from the application's last run.
+func getCachedPassword() (password string, found bool) {
 
     // Fetch the password token from the application's config file.
     token, found, err := ironconfig.Get("token")
     if err != nil {
-        exit("Error:", err)
+        exit(err)
     }
     if !found {
         return "", false
@@ -102,7 +104,7 @@ func fetchLastPassword() (password string, found bool) {
     // Retrieve the password from the server.
     password, err = client.Get(token)
     if err != nil {
-        errmsg("Error fetching password: ", err)
+        fmt.Fprintf(os.Stderr, "Error fetching password: %v\n", err)
         return "", false
     }
 

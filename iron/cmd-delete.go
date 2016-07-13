@@ -32,23 +32,23 @@ func deleteCallback(parser *clio.ArgParser) {
 
     // Check that at least one entry argument has been supplied.
     if !parser.HasArgs() {
-        exit("you must specify at least one entry argument")
+        exit("you must specify at least one entry to delete")
     }
 
     // Load the database.
     password, filename, db := loadDB(parser)
 
     // Grab the entries to delete.
-    entries := db.Lookup(parser.GetArgs()...)
-    if len(entries) == 0 {
+    list := db.Active().FilterByQuery(parser.GetArgs()...)
+    if len(list) == 0 {
         exit("no matching entries")
     }
 
     // Print a listing and request confirmation.
-    printCompactList(entries, db.Size())
+    printCompact(list, db.Size())
     confirm := input("  Delete the entries listed above? (y/n): ")
     if strings.ToLower(confirm)[0] == 'y' {
-        for _, entry := range entries {
+        for _, entry := range list {
             db.Delete(entry.Id)
         }
         line("-")

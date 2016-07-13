@@ -20,7 +20,19 @@ type Entry struct {
 }
 
 
-// NewEntry returns a new Entry object.
+// An ExportEntry object represents a database record prepared for export.
+type ExportEntry struct {
+    Title string        `json:"title"`
+    Url string          `json:"url"`
+    Username string     `json:"username"`
+    Password string     `json:"password"`
+    Email string        `json:"email"`
+    Tags []string       `json:"tags"`
+    Notes string        `json:"notes"`
+}
+
+
+// NewEntry initializes a new Entry object.
 func NewEntry() *Entry {
     return &Entry{
         Active: true,
@@ -29,7 +41,7 @@ func NewEntry() *Entry {
 }
 
 
-// GetPassword returns an entry's (decrypted) password.
+// GetPassword returns an entry's decrypted password.
 func (entry *Entry) GetPassword(key []byte) (string, error) {
     decrypted, err := ironcrypt.Decrypt(key, entry.Password)
     if err != nil {

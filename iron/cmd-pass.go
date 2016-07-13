@@ -40,15 +40,16 @@ func passCallback(parser *clio.ArgParser) {
     password, _, db := loadDB(parser)
 
     // Search for an entry corresponding to the specified argument.
-    entries := db.LookupUnique(parser.GetArgs()[0])
-    if len(entries) == 0 {
+    list := db.Active().FilterProgressive(parser.GetArgs()[0])
+    if len(list) == 0 {
         exit("no matching entry")
-    } else if len(entries) > 1 {
+    } else if len(list) > 1 {
         exit("query matches multiple entries")
     }
+    entry := list[0]
 
     // Decrypt the stored password.
-    decrypted, err := entries[0].GetPassword(db.Key(password))
+    decrypted, err := entry.GetPassword(db.Key(password))
     if err != nil {
         exit(err)
     }

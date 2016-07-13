@@ -6,8 +6,6 @@ package irondb
 
 import (
     "encoding/json"
-    "strings"
-    "strconv"
     "github.com/dmulholland/ironclad/ironcrypt"
 )
 
@@ -27,7 +25,7 @@ type DB struct {
 }
 
 
-// New initializes and returns an empty database instance.
+// New initializes a new database instance.
 func New() (db *DB, err error) {
 
     // Generate a random salt.
@@ -45,7 +43,7 @@ func New() (db *DB, err error) {
 }
 
 
-// FromJSON initializes a new database instance from a byte-slice of JSON.
+// FromJSON initializes a new database instance from a serialized byte-slice.
 func FromJSON(data []byte) (db *DB, err error) {
     db = &DB{}
     err = json.Unmarshal(data, db)
@@ -108,7 +106,7 @@ func (db *DB) Add(entry *Entry) {
 }
 
 
-// Delete removes an entry from the database.
+// Delete sets an entry's active status to false.
 func (db *DB) Delete(id int) {
     for _, entry := range db.Entries {
         if entry.Id == id {
@@ -136,29 +134,21 @@ func (db *DB) Size() int {
 }
 
 
-
-
-
-
-
-
-
-// Active returns a list of active entries.
-func (db *DB) Active() []*Entry {
-    entries := make([]*Entry, 0)
-    for _, entry := range db.Entries {
-        if entry.Active {
-            entries = append(entries, entry)
-        }
-    }
-    return entries
+// All returns a list containing all the database's entries.
+func (db *DB) All() EntryList {
+    return db.Entries
 }
 
 
+// Active returns a list containing all the database's active entries.
+func (db *DB) Active() EntryList {
+    return db.All().FilterActive()
+}
+
 
 // TagMap returns a map of tags to entry-lists.
-func (db *DB) TagMap() map[string][]*Entry {
-    tags := make(map[string][]*Entry)
+func (db *DB) TagMap() map[string]EntryList {
+    tags := make(map[string]EntryList)
     for _, entry := range db.Active() {
         for _, tag := range entry.Tags {
             if _, ok := tags[tag]; !ok {
@@ -168,116 +158,4 @@ func (db *DB) TagMap() map[string][]*Entry {
         }
     }
     return tags
-}
-
-
-// Lookup searches the database for entries matching the specified query strings
-// Each query string can be an entry ID or a case-insensitive substring of an
-// entry title.
-func (db *DB) Lookup(queries ...string) []*Entry {
-
-    // List of entries to return.
-    matches := make([]*Entry, 0)
-
-    // We only want to look for active entries.
-    active := db.Active()
-
-    for _, query := range queries {
-
-        // String comparisons will be case-insensitive.
-        query = strings.ToLower(query)
-
-        // First, see if we can parse the query string as an integer ID.
-        if i, err := strconv.ParseInt(query, 10, 32); err == nil {
-            id := int(i)
-            for _, entry := range active {
-                if id == entry.Id {
-                    matches = append(matches, entry)
-                    break
-                }
-            }
-        }
-
-        // Check for a case-insensitive substring match on the entry title.
-        for _, entry := range active {
-            if strings.Contains(strings.ToLower(entry.Title), query) {
-                matches = append(matches, entry)
-            }
-        }
-    }
-
-    return matches
-}
-
-
-// LookupUnique searches the database for a single entry matching the query
-// string. The query string may be (in order) an entry ID or a
-// (case-insensitive) exact, prefix, or substring match for an entry title.
-// This function returns a slice of entries; zero or multiple matches may be
-// interpreted by the caller as error conditions.
-func (db *DB) LookupUnique(query string) []*Entry {
-
-    // List of entries to return.
-    matches := make([]*Entry, 0)
-
-    // We only want to look for active entries.
-    active := db.Active()
-
-    // String comparisons will be case-insensitive.
-    query = strings.ToLower(query)
-
-    // First, see if we can parse the query string as an integer ID.
-    if i, err := strconv.ParseInt(query, 10, 32); err == nil {
-        id := int(i)
-        for _, entry := range active {
-            if id == entry.Id {
-                matches = append(matches, entry)
-                return matches
-            }
-        }
-    }
-
-    // Check for an exact match on the entry title.
-    for _, entry := range active {
-        if query == strings.ToLower(entry.Title) {
-            matches = append(matches, entry)
-        }
-    }
-    if len(matches) > 0 {
-        return matches
-    }
-
-    // No exact match so check for a prefix match on the entry title.
-    for _, entry := range active {
-        if strings.HasPrefix(strings.ToLower(entry.Title), query) {
-            matches = append(matches, entry)
-        }
-    }
-    if len(matches) > 0 {
-        return matches
-    }
-
-    // No exact or prefix match so check for a substring match.
-    for _, entry := range active {
-        if strings.Contains(strings.ToLower(entry.Title), query) {
-            matches = append(matches, entry)
-        }
-    }
-
-    return matches
-}
-
-
-// FilterByTag filters a list of entries by the specified tag.
-func FilterByTag(entries []*Entry, tag string) []*Entry {
-    matches := make([]*Entry, 0)
-    searchtag := strings.ToLower(tag)
-    for _, entry := range entries {
-        for _, entrytag := range entry.Tags {
-            if strings.ToLower(entrytag) == searchtag {
-                matches = append(matches, entry)
-            }
-        }
-    }
-    return matches
 }

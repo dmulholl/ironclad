@@ -6,7 +6,6 @@ import (
     "os"
     "path/filepath"
     "github.com/dmulholland/clio/go/clio"
-    "github.com/dmulholland/ironclad/irondb"
 )
 
 
@@ -22,6 +21,7 @@ Arguments:
 
 Options:
   -f, --file <str>          Database file. Defaults to the last used file.
+  -t, --tag <str>           Filter entries using the specified tag.
 
 Flags:
       --help                Print this command's help text and exit.
@@ -34,16 +34,21 @@ func exportCallback(parser *clio.ArgParser) {
     // Load the database.
     password, _, db := loadDB(parser)
 
-    // Assemble a list of entries to export.
-    var entries []*irondb.Entry
+    // Default to exporting all active entries.
+    list := db.Active()
+
+    // Do we have query strings to filter on?
     if parser.HasArgs() {
-        entries = db.Lookup(parser.GetArgs()...)
-    } else {
-        entries = db.Active()
+        list = list.FilterByQuery(parser.GetArgs()...)
+    }
+
+    // Are we filtering by tag?
+    if parser.GetStr("tag") != "" {
+        list = list.FilterByTag(parser.GetStr("tag"))
     }
 
     // Create the JSON dump.
-    dump, err := irondb.Export(entries, db.Key(password))
+    dump, err := list.Export(db.Key(password))
     if err != nil {
         exit(err)
     }

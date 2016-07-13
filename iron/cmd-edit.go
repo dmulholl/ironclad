@@ -46,13 +46,13 @@ func editCallback(parser *clio.ArgParser) {
     password, filename, db := loadDB(parser)
 
     // Search for an entry corresponding to the specified argument.
-    entries := db.LookupUnique(parser.GetArgs()[0])
-    if len(entries) == 0 {
+    list := db.Active().FilterProgressive(parser.GetArgs()[0])
+    if len(list) == 0 {
         exit("no matching entry")
-    } else if len(entries) > 1 {
+    } else if len(list) > 1 {
         exit("query matches multiple entries")
     }
-    entry := entries[0]
+    entry := list[0]
 
     // Default to editing all fields if no flags are present.
     allFields := false

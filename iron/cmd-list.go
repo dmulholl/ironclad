@@ -6,10 +6,6 @@ import (
     "os"
     "path/filepath"
     "github.com/dmulholland/clio/go/clio"
-    "github.com/dmulholland/ironclad/irondb"
-    "strings"
-    "github.com/tonnerre/golang-text"
-    "github.com/mitchellh/go-wordwrap"
 )
 
 
@@ -53,122 +49,27 @@ func listCallback(parser *clio.ArgParser) {
         parser.SetFlag("cleartext", true)
     }
 
-    // Assemble a list of entries.
-    var entries []*irondb.Entry
-    var title string
+    // Default to displaying all active entries.
+    list := db.Active()
+    title := "All Entries"
 
+    // Do we have query strings to filter on?
     if parser.HasArgs() {
-        entries = db.Lookup(parser.GetArgs()...)
-        title = fmt.Sprintf("%d Matching Entries", len(entries))
-    } else {
-        entries = db.Active()
-        title = "All Entries"
+        list = list.FilterByQuery(parser.GetArgs()...)
+        title = "Matching Entries"
     }
 
-    // Filter by tag.
+    // Are we filtering by tag?
     if parser.GetStr("tag") != "" {
-        entries = irondb.FilterByTag(entries, parser.GetStr("tag"))
-        title = fmt.Sprintf("%d Matching Entries", len(entries))
+        list = list.FilterByTag(parser.GetStr("tag"))
+        title = "Matching Entries"
     }
 
     // Print the list of entries.
     if parser.GetFlag("verbose") {
-        clearflag := parser.GetFlag("cleartext")
-        printVerboseList(entries, db.Size(), db.Key(password), title, clearflag)
+        cleartext := parser.GetFlag("cleartext")
+        printVerbose(list, db.Size(), db.Key(password), title, cleartext)
     } else {
-        printCompactList(entries, db.Size())
+        printCompact(list, db.Size())
     }
-}
-
-
-// Print a compact listing.
-func printCompactList(entries []*irondb.Entry, dbsize int) {
-
-    // Bail if we have no entries to display.
-    if len(entries) == 0 {
-        line("-")
-        fmt.Println("  No Entries")
-        line("-")
-        return
-    }
-
-    // Header.
-    line("-")
-    fmt.Println("  ID  |  TITLE")
-    line("-")
-
-    // Print the entry listing.
-    for _, entry := range entries {
-        fmt.Printf("%4d  |  %s\n", entry.Id, entry.Title)
-    }
-
-    // Footer.
-    line("-")
-    fmt.Printf("  %d/%d Entries\n", len(entries), dbsize)
-    line("-")
-}
-
-
-// Print a verbose listing.
-func printVerboseList(
-    entries []*irondb.Entry, dbsize int, key []byte, title string, clear bool) {
-
-    // Bail if we have no entries to display.
-    if len(entries) == 0 {
-        line("-")
-        fmt.Println("  No Entries")
-        line("-")
-        return
-    }
-
-    // Header.
-    line("-")
-    fmt.Println("  " + title)
-    line("-")
-
-    // Print the entry listing.
-    for _, entry := range entries {
-        fmt.Printf("  ID:       %d\n", entry.Id)
-        fmt.Printf("  Title:    %s\n", entry.Title)
-
-        if entry.Url != "" {
-            fmt.Printf("  URL:      %s\n", entry.Url)
-        }
-
-        if entry.Username != "" {
-            fmt.Printf("  Username: %s\n", entry.Username)
-        }
-
-        password, err := entry.GetPassword(key)
-        if err != nil {
-            exit(err)
-        }
-
-        if clear {
-            fmt.Printf("  Password: %s\n", password)
-        } else {
-            fmt.Printf("  Password: %s\n", charstr(len([]rune(password)), '*'))
-        }
-
-        if entry.Email != "" {
-            fmt.Printf("  Email:    %s\n", entry.Email)
-        }
-
-        if len(entry.Tags) > 0 {
-            fmt.Printf("  Tags:     %s\n", strings.Join(entry.Tags, ", "))
-        }
-
-        if entry.Notes != "" {
-            iline("~")
-            wrapped := wordwrap.WrapString(entry.Notes, 76)
-            indented := text.Indent(wrapped, "  ")
-            fmt.Println(strings.Trim(indented, "\r\n"))
-        }
-
-        line("-")
-    }
-
-    // Footer.
-    fmt.Printf("  %d/%d Entries\n", len(entries), dbsize)
-    line("-")
 }

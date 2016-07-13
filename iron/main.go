@@ -102,6 +102,7 @@ func main() {
     exportParser := parser.AddCmd("export", exportHelptext, exportCallback)
     exportParser.AddStr("file f", "")
     exportParser.AddStr("db-password", "")
+    exportParser.AddStr("tag t", "")
 
     // Register the 'gen' command.
     genParser := parser.AddCmd("gen", genHelptext, genCallback)

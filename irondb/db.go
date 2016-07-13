@@ -73,18 +73,23 @@ func (db *DB) Key(password string) []byte {
 // Import adds entries from an exported byte-slice of JSON.
 func (db *DB) Import(key, data []byte) error {
 
-    entries := make([]*Entry, 0)
-    err := json.Unmarshal(data, &entries)
+    exports := make([]*ExportEntry, 0)
+    err := json.Unmarshal(data, &exports)
     if err != nil {
         return err
     }
 
-    for _, entry := range entries {
-        err = entry.SetPassword(key, entry.Password)
+    for _, export := range exports {
+        entry := NewEntry()
+        entry.Title = export.Title
+        entry.Url = export.Url
+        entry.Email = export.Email
+        entry.Tags = export.Tags
+        entry.Notes = export.Notes
+        err = entry.SetPassword(key, export.Password)
         if err != nil {
             return err
         }
-        entry.Active = true
         db.Add(entry)
     }
 

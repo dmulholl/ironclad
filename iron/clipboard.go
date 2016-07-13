@@ -22,10 +22,10 @@ func writeToClipboard(value string) {
         exit("Error:", err)
     }
 
-    fmt.Fprint(os.Stderr, "Clearing clipboard in: ")
+    fmt.Fprint(os.Stderr, "Clearing clipboard: ")
 
     ms_total := 10000
-    intervals := 48
+    intervals := 51
     ms_per_interval := ms_total / intervals
     strlen := intervals + 7
 

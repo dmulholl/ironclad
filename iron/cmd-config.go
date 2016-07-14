@@ -5,6 +5,8 @@ import (
     "fmt"
     "os"
     "path/filepath"
+    "io/ioutil"
+    "strings"
     "github.com/dmulholland/ironclad/ironconfig"
     "github.com/dmulholland/clio/go/clio"
 )
@@ -14,7 +16,12 @@ import (
 var configHelptext = fmt.Sprintf(`
 Usage: %s config [FLAGS] ARGUMENTS
 
-  Set or print a configuration option.
+  Print or set the value of a configuration option.
+
+  If a single argument is supplied, the value of that key will be printed. If
+  two arguments are supplied, the first will be treated as a key and the
+  second as a value to be set. If no arguments are supplied, the content of the
+  configuration file itself will be printed.
 
 Arguments:
   <key>                     Key to set or print.
@@ -29,10 +36,12 @@ Flags:
 func configCallback(parser *clio.ArgParser) {
 
     if !parser.HasArgs() {
-        exit("you must supply at least one argument")
-    }
-
-    if parser.LenArgs() == 1 {
+        content, err := ioutil.ReadFile(configfile)
+        if err != nil {
+            exit(err)
+        }
+        fmt.Println(strings.TrimSpace(string(content)))
+    } else if parser.LenArgs() == 1 {
         value, found, err := ironconfig.Get(parser.GetArg(0))
         if err != nil {
             exit(err)
@@ -41,10 +50,12 @@ func configCallback(parser *clio.ArgParser) {
             exit("key not found")
         }
         fmt.Println(value)
-    } else {
+    } else if parser.LenArgs() == 2 {
         err := ironconfig.Set(parser.GetArg(0), parser.GetArg(1))
         if err != nil {
             exit(err)
         }
+    } else {
+        exit("too many arguments")
     }
 }

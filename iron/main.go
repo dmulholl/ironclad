@@ -14,7 +14,7 @@ import (
 
 
 // Application version number.
-const version = "0.12.0"
+const version = "0.12.1"
 
 
 // Application help text.
@@ -52,6 +52,10 @@ Command Help:
 var ironpath = filepath.Join(os.Getenv("HOME"), ".config", "ironclad")
 
 
+// Path to the application's configuration file.
+var configfile = filepath.Join(ironpath, "goconfig.toml")
+
+
 // Address for the cached-password server.
 const ironaddress = "localhost:54512"
 
@@ -60,7 +64,7 @@ const ironaddress = "localhost:54512"
 func main() {
 
     // Set the location of the application's configuration file.
-    ironconfig.Configfile = filepath.Join(ironpath, "goconfig.toml")
+    ironconfig.ConfigFile = configfile
 
     // Instantiate an argument parser.
     parser := clio.NewParser(helptext, version)

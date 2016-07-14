@@ -14,13 +14,13 @@ import (
 
 
 // Location of the configuration file.
-var Configfile string
+var ConfigFile string
 
 
 // Load a config file's TOML content.
 func load() (*toml.TomlTree, error) {
-    if _, err := os.Stat(Configfile); err == nil {
-        tree, err := toml.LoadFile(Configfile)
+    if _, err := os.Stat(ConfigFile); err == nil {
+        tree, err := toml.LoadFile(ConfigFile)
         if err != nil {
             return nil, err
         }
@@ -33,11 +33,11 @@ func load() (*toml.TomlTree, error) {
 
 // Save a TOML tree to file.
 func save(tree *toml.TomlTree) error {
-    err := os.MkdirAll(filepath.Dir(Configfile), 0777)
+    err := os.MkdirAll(filepath.Dir(ConfigFile), 0777)
     if err != nil {
         return err
     }
-    return ioutil.WriteFile(Configfile, []byte(tree.ToString()), 0600)
+    return ioutil.WriteFile(ConfigFile, []byte(tree.ToString()), 0600)
 }
 
 

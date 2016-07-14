@@ -22,22 +22,22 @@ func writeToClipboard(value string) {
         exit(err)
     }
 
-    fmt.Fprint(os.Stderr, "Clearing clipboard: ")
+    fmt.Fprint(os.Stderr, "Clipboard: ")
 
     ms_total := 10000
-    intervals := 51
+    intervals := 60
     ms_per_interval := ms_total / intervals
     strlen := intervals + 7
 
     for count := 0; count <= intervals; count++ {
 
         fmt.Fprintf(os.Stderr, "|")
-        fmt.Fprintf(os.Stderr, charstr(count, '-'))
+        fmt.Fprintf(os.Stderr, charstr(count, '='))
         fmt.Fprintf(os.Stderr, charstr(intervals - count, ' '))
         fmt.Fprintf(os.Stderr, "|")
 
         ms_remaining := ms_total - count * ms_per_interval
-        fmt.Fprintf(os.Stderr, " %2.fs ", float64(ms_remaining)/1000)
+        fmt.Fprintf(os.Stderr, " %02.fs ", float64(ms_remaining)/1000)
 
         time.Sleep(time.Duration(ms_per_interval) * time.Millisecond)
 

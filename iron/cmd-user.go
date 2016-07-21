@@ -13,7 +13,8 @@ import (
 var userHelptext = fmt.Sprintf(`
 Usage: %s user [FLAGS] [OPTIONS] ARGUMENTS
 
-  Copy a stored username to the system clipboard or print it to stdout.
+  Copy a stored username to the system clipboard or print it to stdout. This
+  command will fall back on the email address if the username field is empty.
 
 Arguments:
   <entry>                   Entry ID or title.
@@ -47,9 +48,15 @@ func userCallback(parser *clio.ArgParser) {
     }
     entry := list[0]
 
+    // Return the email field if the username field is empty.
+    user := entry.Username
+    if user == "" {
+        user = entry.Email
+    }
+
     // Print the username to stdout.
     if parser.GetFlag("print") {
-        fmt.Print(entry.Username)
+        fmt.Print(user)
         if stdoutIsTerminal() {
             fmt.Println()
         }
@@ -57,5 +64,5 @@ func userCallback(parser *clio.ArgParser) {
     }
 
     // Copy the username to the clipboard.
-    writeToClipboard(entry.Username)
+    writeToClipboard(user)
 }

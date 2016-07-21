@@ -10,6 +10,7 @@ import (
     "path/filepath"
     "golang.org/x/crypto/ssh/terminal"
     "io/ioutil"
+    "github.com/howeyc/gopass"
 )
 
 
@@ -30,6 +31,19 @@ func input(prompt string) string {
     }
 
     return strings.TrimSpace(input)
+}
+
+
+// Read a masked password from stdin.
+func inputPass(prompt string) string {
+    fmt.Fprint(os.Stderr, prompt)
+
+    bytes, err := gopass.GetPasswdMasked()
+    if err != nil {
+        exit(err)
+    }
+
+    return strings.TrimSpace(string(bytes))
 }
 
 

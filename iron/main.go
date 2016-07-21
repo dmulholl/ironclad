@@ -14,7 +14,7 @@ import (
 
 
 // Application version number.
-const version = "0.12.1"
+const version = "0.13.0"
 
 
 // Application help text.

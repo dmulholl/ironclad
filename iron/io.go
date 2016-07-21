@@ -50,7 +50,7 @@ func loadDB(parser *clio.ArgParser) (password, filename string, db *irondb.DB) {
     if password, found := getCachedPassword(); found {
         data, err := ironio.Load(password, filename)
         if err != nil {
-            password = input("Password: ")
+            password = inputPass("Password: ")
             data, err = ironio.Load(password, filename)
             if err != nil {
                 exit(err)
@@ -66,7 +66,7 @@ func loadDB(parser *clio.ArgParser) (password, filename string, db *irondb.DB) {
     }
 
     // No command-line or cached password. Prompt the user to enter one.
-    password = input("Password: ")
+    password = inputPass("Password: ")
     data, err := ironio.Load(password, filename)
     if err != nil {
         exit(err)

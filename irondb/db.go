@@ -81,6 +81,7 @@ func (db *DB) Import(key, data []byte) error {
         entry := NewEntry()
         entry.Title = export.Title
         entry.Url = export.Url
+        entry.Username = export.Username
         entry.Email = export.Email
         entry.Tags = export.Tags
         entry.Notes = export.Notes

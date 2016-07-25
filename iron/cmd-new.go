@@ -36,7 +36,7 @@ func newCallback(parser *clio.ArgParser) {
     // Prompt for a password if none has been supplied.
     password := parser.GetStr("db-password")
     if password == "" {
-        password = input("Password: ")
+        password = inputPass("Password: ")
     }
 
     // Initialize a new database.

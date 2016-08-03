@@ -40,7 +40,7 @@ func passCallback(parser *clio.ArgParser) {
     password, _, db := loadDB(parser)
 
     // Search for an entry corresponding to the specified argument.
-    list := db.Active().FilterProgressive(parser.GetArgs()[0])
+    list := db.Active().FilterProgressive(parser.GetArg(0))
     if len(list) == 0 {
         exit("no matching entry")
     } else if len(list) > 1 {

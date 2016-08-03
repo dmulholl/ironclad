@@ -3,6 +3,7 @@ package main
 
 import (
     "os"
+    "os/signal"
     "fmt"
     "strconv"
     "time"
@@ -24,8 +25,24 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
-// Callback for the 'serve' command.
+// Callback for the 'cache' command.
 func cacheCallback(parser *clio.ArgParser) {
+
+    // Set up a handler to intercept SIGINT interrupts. This fixes an annoying
+    // bug where hitting Ctrl-C to short-circuit a clipboard countdown could
+    // kill the cache server, forcing the user to re-enter his password.
+    //
+    // > What's happening is that if you send a process SIGINT (as e.g.
+    // > os.Interrupt does), all proceses in the same process group will also
+    // > get that signal (which includes child processes) - SIGINT will by
+    // > default terminate a process.
+    c := make(chan os.Signal, 1)
+    signal.Notify(c, os.Interrupt)
+    go func() {
+        for _ = range c {
+            // Do nothing.
+        }
+    }()
 
     // Check if a cache timeout has been set in the config file.
     timeout, found, err := ironconfig.Get("timeout")

@@ -49,7 +49,7 @@ var (
     ErrInvalidKeySize = errors.New("invalid key size")
     ErrInvalidIV = errors.New("error generating initialization vector")
     ErrInvalidCipherLength = errors.New("invalid ciphertext length")
-    ErrInvalidHMAC = errors.New("invalid authentication code")
+    ErrInvalidHMAC = errors.New("authentication failed")
 )
 
 

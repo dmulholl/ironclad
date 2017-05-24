@@ -3,16 +3,16 @@ package main
 
 import (
     "fmt"
+    "strings"
     "os"
     "path/filepath"
     "github.com/dmulholland/clio/go/clio"
-    "strings"
     "github.com/dmulholland/ironclad/irondb"
 )
 
 
 // Help text for the 'add' command.
-var addHelptext = fmt.Sprintf(`
+var addHelp = fmt.Sprintf(`
 Usage: %s add [FLAGS] [OPTIONS]
 
   Add a new entry to a database.
@@ -29,7 +29,7 @@ Flags:
 func addCallback(parser *clio.ArgParser) {
 
     // Load the database.
-    password, filename, db := loadDB(parser)
+    filename, password, db := loadDB(parser)
 
     // Create a new Entry object to add to the database.
     entry := irondb.NewEntry()
@@ -44,9 +44,7 @@ func addCallback(parser *clio.ArgParser) {
     entry.Url      = input("  URL:        ")
     entry.Username = input("  Username:   ")
     entry.Email    = input("  Email:      ")
-
-    // Fetch and encrypt the password.
-    entry.SetPassword(db.Key(password), input("  Password:   "))
+    entry.Password = input("  Password:   ")
 
     // Split tags on commas.
     line("-")
@@ -72,7 +70,7 @@ func addCallback(parser *clio.ArgParser) {
     db.Add(entry)
 
     // Save the updated database to disk.
-    saveDB(password, filename, db)
+    saveDB(filename, password, db)
 
     // Footer.
     line("-")

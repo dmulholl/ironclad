@@ -9,12 +9,11 @@ import (
 )
 
 
-// Help text for the 'user' command.
-var userHelptext = fmt.Sprintf(`
-Usage: %s user [FLAGS] [OPTIONS] ARGUMENTS
+// Help text for the 'pass' command.
+var passHelp = fmt.Sprintf(`
+Usage: %s pass [FLAGS] [OPTIONS] ARGUMENTS
 
-  Copy a stored username to the system clipboard or print it to stdout. This
-  command will fall back on the email address if the username field is empty.
+  Copy a stored password to the system clipboard or print it to stdout.
 
 Arguments:
   <entry>                   Entry ID or title.
@@ -24,16 +23,17 @@ Options:
 
 Flags:
       --help                Print this command's help text and exit.
-  -p, --print               Print the username to stdout.
+  -p, --print               Print the password to stdout.
+  -r, --readable            Add spaces to the password for readability.
 `, filepath.Base(os.Args[0]))
 
 
-// Callback for the 'user' command.
-func userCallback(parser *clio.ArgParser) {
+// Callback for the 'pass' command.
+func passCallback(parser *clio.ArgParser) {
 
     // Make sure an argument has been specified.
     if !parser.HasArgs() {
-        exit("Error: missing entry argument.")
+        exit("missing entry argument")
     }
 
     // Load the database.
@@ -48,21 +48,21 @@ func userCallback(parser *clio.ArgParser) {
     }
     entry := list[0]
 
-    // Return the email field if the username field is empty.
-    user := entry.Username
-    if user == "" {
-        user = entry.Email
+    // Add spaces if required.
+    password := entry.Password
+    if parser.GetFlag("readable") {
+        password = addSpaces(password)
     }
 
-    // Print the username to stdout.
+    // Print the password to stdout.
     if parser.GetFlag("print") {
-        fmt.Print(user)
+        fmt.Print(password)
         if stdoutIsTerminal() {
             fmt.Println()
         }
         return
     }
 
-    // Copy the username to the clipboard.
-    writeToClipboard(user)
+    // Copy the password to the clipboard.
+    writeToClipboard(password)
 }

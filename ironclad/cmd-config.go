@@ -13,15 +13,15 @@ import (
 
 
 // Help text for the 'config' command.
-var configHelptext = fmt.Sprintf(`
+var configHelp = fmt.Sprintf(`
 Usage: %s config [FLAGS] ARGUMENTS
 
-  Print or set the value of a configuration option.
+  Display or set the value of a configuration option.
 
   If a single argument is supplied, the value of that key will be printed. If
   two arguments are supplied, the first will be treated as a key and the
-  second as a value to be set. If no arguments are supplied, the content of the
-  configuration file itself will be printed.
+  second as a value to be set. If no arguments are supplied, the content of
+  the configuration file itself will be printed.
 
 Arguments:
   <key>                     Key to set or print.

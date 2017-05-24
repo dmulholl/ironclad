@@ -6,44 +6,22 @@ package irondb
 
 import (
     "encoding/json"
-    "github.com/dmulholland/ironclad/ironcrypt"
 )
-
-
-// Length of the key derivation salt in bytes.
-const SaltLength = 32
-
-
-// Number of iterations used by the key derivation function.
-const PBKDFIterations = 10000
 
 
 // DB represents an in-memory database of password records.
 type DB struct {
-    Salt []byte         `json:"salt"`
     Entries []*Entry    `json:"entries"`
 }
 
 
 // New initializes a new database instance.
-func New() (db *DB, err error) {
-
-    // Generate a random salt.
-    salt, err := ironcrypt.RandBytes(SaltLength)
-    if err != nil {
-        return
-    }
-
-    // Initialize a new database instance.
-    db = &DB{
-        Salt: salt,
-        Entries: make([]*Entry, 0)}
-
-    return db, err
+func New() (db *DB) {
+    return &DB{Entries: make([]*Entry, 0)}
 }
 
 
-// FromJSON initializes a new database instance from a serialized byte-slice.
+// FromJSON initializes a database instance from a serialized byte-slice.
 func FromJSON(data []byte) (db *DB, err error) {
     db = &DB{}
     err = json.Unmarshal(data, db)
@@ -61,15 +39,8 @@ func (db *DB) ToJSON() (data []byte, err error) {
 }
 
 
-// Key returns the encryption key corresponding to the specified password.
-// This key is used to encrypt passwords *within* the database.
-func (db *DB) Key(password string) []byte {
-    return ironcrypt.Key([]byte(password), db.Salt, PBKDFIterations)
-}
-
-
 // Import adds entries from a previously-exported byte-slice of JSON.
-func (db *DB) Import(key, data []byte) error {
+func (db *DB) Import(data []byte) error {
 
     exports := make([]*ExportEntry, 0)
     err := json.Unmarshal(data, &exports)
@@ -82,13 +53,10 @@ func (db *DB) Import(key, data []byte) error {
         entry.Title = export.Title
         entry.Url = export.Url
         entry.Username = export.Username
+        entry.Password = export.Password
         entry.Email = export.Email
         entry.Tags = export.Tags
         entry.Notes = export.Notes
-        err = entry.SetPassword(key, export.Password)
-        if err != nil {
-            return err
-        }
         db.Add(entry)
     }
 

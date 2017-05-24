@@ -39,12 +39,7 @@ func printCompact(list irondb.EntryList, dbsize int) {
 
 
 // Print a list of entries in verbose format.
-func printVerbose(
-    list irondb.EntryList,
-    dbsize int,
-    key []byte,
-    title string,
-    cleartext bool) {
+func printVerbose(list irondb.EntryList, dbsize int, title string) {
 
     // Bail if we have no entries to display.
     if len(list) == 0 {
@@ -72,15 +67,8 @@ func printVerbose(
             fmt.Printf("  Username: %s\n", entry.Username)
         }
 
-        password, err := entry.GetPassword(key)
-        if err != nil {
-            exit(err)
-        }
-
-        if cleartext {
-            fmt.Printf("  Password: %s\n", password)
-        } else {
-            fmt.Printf("  Password: %s\n", charstr(len([]rune(password)), '*'))
+        if entry.Password != "" {
+            fmt.Printf("  Password: %s\n", entry.Password)
         }
 
         if entry.Email != "" {
@@ -92,7 +80,7 @@ func printVerbose(
         }
 
         if entry.Notes != "" {
-            iline("~")
+            indentedLine("~")
             wrapped := wordwrap.WrapString(entry.Notes, 76)
             indented := text.Indent(wrapped, "  ")
             fmt.Println(strings.Trim(indented, "\r\n"))

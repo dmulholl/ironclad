@@ -10,7 +10,7 @@ import (
 
 
 // Help text for the 'list' command.
-var listHelptext = fmt.Sprintf(`
+var listHelp = fmt.Sprintf(`
 Usage: %s list [FLAGS] [OPTIONS] [ARGUMENTS]
 
   Print a list of entries from a database. Entries to list can be specified by
@@ -21,7 +21,7 @@ Usage: %s list [FLAGS] [OPTIONS] [ARGUMENTS]
 
   The 'list' command has an alias, 'show', which is equivalent to:
 
-    list --verbose --cleartext
+    list --verbose
 
 Arguments:
   [entries]                 Entries to list by ID or title.
@@ -31,7 +31,6 @@ Options:
   -t, --tag <str>           Filter entries using the specified tag.
 
 Flags:
-  -c, --cleartext           Print passwords in cleartext.
       --help                Print this command's help text and exit.
   -v, --verbose             Use the verbose list format.
 `, filepath.Base(os.Args[0]))
@@ -41,12 +40,11 @@ Flags:
 func listCallback(parser *clio.ArgParser) {
 
     // Load the database.
-    password, _, db := loadDB(parser)
+    _, _, db := loadDB(parser)
 
     // Has the 'show' alias been used?
     if parser.GetParent().GetCmdName() == "show" {
         parser.SetFlag("verbose", true)
-        parser.SetFlag("cleartext", true)
     }
 
     // Default to displaying all active entries.
@@ -67,8 +65,7 @@ func listCallback(parser *clio.ArgParser) {
 
     // Print the list of entries.
     if parser.GetFlag("verbose") {
-        cleartext := parser.GetFlag("cleartext")
-        printVerbose(list, db.Size(), db.Key(password), title, cleartext)
+        printVerbose(list, db.Size(), title)
     } else {
         printCompact(list, db.Size())
     }

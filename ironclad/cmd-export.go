@@ -10,7 +10,7 @@ import (
 
 
 // Help text for the 'export' command.
-var exportHelptext = fmt.Sprintf(`
+var exportHelp = fmt.Sprintf(`
 Usage: %s export [FLAGS] [OPTIONS] [ARGUMENTS]
 
   Export a list of entries in JSON format. Entries can be specified by ID or
@@ -32,7 +32,7 @@ Flags:
 func exportCallback(parser *clio.ArgParser) {
 
     // Load the database.
-    password, _, db := loadDB(parser)
+    _, _, db := loadDB(parser)
 
     // Default to exporting all active entries.
     list := db.Active()
@@ -48,7 +48,7 @@ func exportCallback(parser *clio.ArgParser) {
     }
 
     // Create the JSON dump.
-    dump, err := list.Export(db.Key(password))
+    dump, err := list.Export()
     if err != nil {
         exit(err)
     }

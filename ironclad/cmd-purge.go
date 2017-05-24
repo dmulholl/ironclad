@@ -10,7 +10,7 @@ import (
 
 
 // Help text for the 'purge' command.
-var purgeHelptext = fmt.Sprintf(`
+var purgeHelp = fmt.Sprintf(`
 Usage: %s purge [FLAGS] [OPTIONS]
 
   Purge deleted entries from a database.
@@ -27,11 +27,11 @@ Flags:
 func purgeCallback(parser *clio.ArgParser) {
 
     // Load the database.
-    password, filename, db := loadDB(parser)
+    filename, password, db := loadDB(parser)
 
     // Purge the database.
     db.Purge()
 
     // Save the updated database to disk.
-    saveDB(password, filename, db)
+    saveDB(filename, password, db)
 }

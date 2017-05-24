@@ -11,7 +11,7 @@ import (
 
 
 // Help text for the 'edit' command.
-var editHelptext = fmt.Sprintf(`
+var editHelp = fmt.Sprintf(`
 Usage: %s edit [FLAGS] [OPTIONS] ARGUMENTS
 
   Edit an existing database entry.
@@ -43,7 +43,7 @@ func editCallback(parser *clio.ArgParser) {
     }
 
     // Load the database.
-    password, filename, db := loadDB(parser)
+    filename, password, db := loadDB(parser)
 
     // Search for an entry corresponding to the specified argument.
     list := db.Active().FilterProgressive(parser.GetArgs()[0])
@@ -91,15 +91,8 @@ func editCallback(parser *clio.ArgParser) {
 
     if parser.GetFlag("password") || (allFields && editField("password")) {
         fmt.Println("  PASSWORD")
-        oldpassword, err := entry.GetPassword(db.Key(password))
-        if err != nil {
-            exit(err)
-        }
-        fmt.Println("  Old value: " + oldpassword)
-        err = entry.SetPassword(db.Key(password), input("  New value: "))
-        if err != nil {
-            exit(err)
-        }
+        fmt.Println("  Old value: " + entry.Password)
+        entry.Password = input("  New value: ")
         line("-")
     }
 
@@ -130,7 +123,7 @@ func editCallback(parser *clio.ArgParser) {
     }
 
     // Save the updated database to disk.
-    saveDB(password, filename, db)
+    saveDB(filename, password, db)
 
     // Footer.
     fmt.Println("  Entry updated.")

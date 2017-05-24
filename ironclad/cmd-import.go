@@ -11,7 +11,7 @@ import (
 
 
 // Help text for the 'import' command.
-var importHelptext = fmt.Sprintf(`
+var importHelp = fmt.Sprintf(`
 Usage: %s import [FLAGS] [OPTIONS] ARGUMENTS
 
   Import a list of entries in JSON format.
@@ -36,7 +36,7 @@ func importCallback(parser *clio.ArgParser) {
     }
 
     // Load the database.
-    password, filename, db := loadDB(parser)
+    filename, password, db := loadDB(parser)
 
     // Read the JSON input file.
     input, err := ioutil.ReadFile(parser.GetArgs()[0])
@@ -45,8 +45,10 @@ func importCallback(parser *clio.ArgParser) {
     }
 
     // Import the entries into the database.
-    db.Import(db.Key(password), input)
-
+    err = db.Import(input)
+    if err != nil {
+        exit(err)
+    }
     // Save the updated database to disk.
-    saveDB(password, filename, db)
+    saveDB(filename, password, db)
 }

@@ -11,7 +11,7 @@ import (
 
 
 // Help text for the 'delete' command.
-var deleteHelptext = fmt.Sprintf(`
+var deleteHelp = fmt.Sprintf(`
 Usage: %s delete [FLAGS] [OPTIONS] ARGUMENTS
 
   Delete one or more entries from a database.
@@ -36,7 +36,7 @@ func deleteCallback(parser *clio.ArgParser) {
     }
 
     // Load the database.
-    password, filename, db := loadDB(parser)
+    filename, password, db := loadDB(parser)
 
     // Grab the entries to delete.
     list := db.Active().FilterByQuery(parser.GetArgs()...)
@@ -59,5 +59,5 @@ func deleteCallback(parser *clio.ArgParser) {
     }
 
     // Save the updated database to disk.
-    saveDB(password, filename, db)
+    saveDB(filename, password, db)
 }

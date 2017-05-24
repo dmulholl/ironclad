@@ -7,6 +7,7 @@ package ironio
 
 import (
     "github.com/dmulholland/ironclad/ironcrypt"
+    "github.com/dmulholland/ironclad/ironcrypt/aes"
     "os"
     "io/ioutil"
     "compress/gzip"
@@ -23,7 +24,7 @@ const PBKDFIterations = 10000
 
 
 // Load reads data from an encrypted file.
-func Load(password, filename string) (data []byte, err error) {
+func Load(filename, password string) (data []byte, err error) {
 
     // Load the file content.
     content, err := ioutil.ReadFile(filename)
@@ -36,10 +37,10 @@ func Load(password, filename string) (data []byte, err error) {
     ciphertext := content[SaltLength:]
 
     // Use the password and salt to regenerate the file encryption key.
-    filekey := ironcrypt.Key([]byte(password), salt, PBKDFIterations)
+    key := ironcrypt.Key(password, salt, PBKDFIterations, aes.KeySize)
 
     // Use the key to decrypt the ciphertext.
-    plaintext, err := ironcrypt.Decrypt(filekey, ciphertext)
+    plaintext, err := aes.Decrypt(ciphertext, key)
     if err != nil {
         return
     }
@@ -59,8 +60,8 @@ func Load(password, filename string) (data []byte, err error) {
 }
 
 
-// Save writes data to disk as an encrypted file.
-func Save(password, filename string, data []byte) (err error) {
+// Save compresses and writes a slice of data to disk as an encrypted file.
+func Save(filename, password string, data []byte) (err error) {
 
     // Zip the plaintext before encrypting.
     var zipped bytes.Buffer
@@ -77,11 +78,11 @@ func Save(password, filename string, data []byte) (err error) {
         return
     }
 
-    // Use the password and salt to generate a new file encryption key.
-    filekey := ironcrypt.Key([]byte(password), salt, PBKDFIterations)
+    // Use the password and salt to generate a file encryption key.
+    key := ironcrypt.Key(password, salt, PBKDFIterations, aes.KeySize)
 
     // Encrypt the data using the key.
-    ciphertext, err := ironcrypt.Encrypt(filekey, zipped.Bytes())
+    ciphertext, err := aes.Encrypt(zipped.Bytes(), key)
     if err != nil {
         return
     }

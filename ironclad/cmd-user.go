@@ -9,11 +9,12 @@ import (
 )
 
 
-// Help text for the 'pass' command.
-var passHelptext = fmt.Sprintf(`
-Usage: %s pass [FLAGS] [OPTIONS] ARGUMENTS
+// Help text for the 'user' command.
+var userHelp = fmt.Sprintf(`
+Usage: %s user [FLAGS] [OPTIONS] ARGUMENTS
 
-  Copy a stored password to the system clipboard or print it to stdout.
+  Copy a stored username to the system clipboard or print it to stdout. This
+  command will fall back on the email address if the username field is empty.
 
 Arguments:
   <entry>                   Entry ID or title.
@@ -23,13 +24,12 @@ Options:
 
 Flags:
       --help                Print this command's help text and exit.
-  -p, --print               Print the password to stdout.
-  -r, --readable            Add spaces to the password for readability.
+  -p, --print               Print the username to stdout.
 `, filepath.Base(os.Args[0]))
 
 
-// Callback for the 'pass' command.
-func passCallback(parser *clio.ArgParser) {
+// Callback for the 'user' command.
+func userCallback(parser *clio.ArgParser) {
 
     // Make sure an argument has been specified.
     if !parser.HasArgs() {
@@ -37,7 +37,7 @@ func passCallback(parser *clio.ArgParser) {
     }
 
     // Load the database.
-    password, _, db := loadDB(parser)
+    _, _, db := loadDB(parser)
 
     // Search for an entry corresponding to the specified argument.
     list := db.Active().FilterProgressive(parser.GetArg(0))
@@ -48,26 +48,21 @@ func passCallback(parser *clio.ArgParser) {
     }
     entry := list[0]
 
-    // Decrypt the stored password.
-    decrypted, err := entry.GetPassword(db.Key(password))
-    if err != nil {
-        exit(err)
+    // Return the email field if the username field is empty.
+    user := entry.Username
+    if user == "" {
+        user = entry.Email
     }
 
-    // Add spaces if required.
-    if parser.GetFlag("readable") {
-        decrypted = addSpaces(decrypted)
-    }
-
-    // Print the password to stdout.
+    // Print the username to stdout.
     if parser.GetFlag("print") {
-        fmt.Print(decrypted)
+        fmt.Print(user)
         if stdoutIsTerminal() {
             fmt.Println()
         }
         return
     }
 
-    // Copy the password to the clipboard.
-    writeToClipboard(decrypted)
+    // Copy the username to the clipboard.
+    writeToClipboard(user)
 }

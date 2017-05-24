@@ -42,7 +42,7 @@ func setCachedPassword(password string) {
 
     // Attempt to make a connection to the password server.
     // If we can't make a connection, launch a new server.
-    client, err := ironrpc.NewClient(ironaddress)
+    client, err := ironrpc.NewClient(serveraddress)
     if err != nil {
         cmd := exec.Command(os.Args[0], "cache")
         cmd.Stdin = os.Stdin
@@ -54,7 +54,7 @@ func setCachedPassword(password string) {
         time.Sleep(time.Millisecond * 100)
 
         // Try making a connection again.
-        client, err = ironrpc.NewClient(ironaddress)
+        client, err = ironrpc.NewClient(serveraddress)
         if err != nil {
             fmt.Fprintf(os.Stderr,
                 "Error connecting to password server: %v\n", err)
@@ -96,7 +96,7 @@ func getCachedPassword() (password string, found bool) {
     }
 
     // Attempt to make a connection to the password server.
-    client, err := ironrpc.NewClient(ironaddress)
+    client, err := ironrpc.NewClient(serveraddress)
     if err != nil {
         return "", false
     }

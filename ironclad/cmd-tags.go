@@ -11,7 +11,7 @@ import (
 
 
 // Help text for the 'tags' command.
-var tagsHelptext = fmt.Sprintf(`
+var tagsHelp = fmt.Sprintf(`
 Usage: %s tags [FLAGS] [OPTIONS]
 
   List the tags in a database.

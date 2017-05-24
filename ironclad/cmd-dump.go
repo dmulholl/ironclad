@@ -12,7 +12,7 @@ import (
 
 
 // Help text for the 'dump' command.
-var dumpHelptext = fmt.Sprintf(`
+var dumpHelp = fmt.Sprintf(`
 Usage: %s dump [FLAGS] [OPTIONS]
 
   Dump a database's internal JSON data store to stdout.

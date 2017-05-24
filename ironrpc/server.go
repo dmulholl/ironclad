@@ -77,7 +77,7 @@ func (server *Server) Set(pair TokenPair, ok *bool) error {
 }
 
 
-// timeout automatically shuts the server down after the specified duration.
+// Automatically shuts the server down after the specified duration.
 func (server *Server) timeout() {
     for {
         server.mutex.Lock()

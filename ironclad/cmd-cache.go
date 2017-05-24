@@ -15,7 +15,7 @@ import (
 
 
 // Help text for the 'cache' command.
-var cacheHelptext = fmt.Sprintf(`
+var cacheHelp = fmt.Sprintf(`
 Usage: %s cache [FLAGS]
 
   Run the cached-password server. This command should not be run manually.
@@ -58,7 +58,7 @@ func cacheCallback(parser *clio.ArgParser) {
     }
 
     // Run the cache server.
-    err = ironrpc.Serve(ironaddress)
+    err = ironrpc.Serve(serveraddress)
     if err != nil {
         exit(err)
     }

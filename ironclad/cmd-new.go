@@ -11,7 +11,7 @@ import (
 
 
 // Help text for the 'new' command.
-var newHelptext = fmt.Sprintf(`
+var newHelp = fmt.Sprintf(`
 Usage: %s new [FLAGS] ARGUMENTS
 
   Create a new password database.
@@ -34,21 +34,18 @@ func newCallback(parser *clio.ArgParser) {
     filename := parser.GetArgs()[0]
 
     // Prompt for a password if none has been supplied.
-    password := parser.GetStr("db-password")
+    password := parser.GetStr("masterpass")
     if password == "" {
         password = inputPass("Password: ")
     }
 
     // Initialize a new database.
-    db, err := irondb.New()
-    if err != nil {
-        exit(err)
-    }
+    db := irondb.New()
 
     // Cache the password and filename.
     setCachedPassword(password)
     setCachedFilename(filename)
 
     // Save the new database to disk.
-    saveDB(password, filename, db)
+    saveDB(filename, password, db)
 }

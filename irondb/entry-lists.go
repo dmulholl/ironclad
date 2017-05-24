@@ -26,8 +26,8 @@ func (list EntryList) FilterActive() EntryList {
 }
 
 
-// FilterByTag filters an EntryList returning only those entries which match the
-// specified tag. Matches are case-insensitive.
+// FilterByTag filters an EntryList returning only those entries which match
+// the specified tag. Matches are case-insensitive.
 func (list EntryList) FilterByTag(tag string) EntryList {
     matches := make([]*Entry, 0)
     target := strings.ToLower(tag)
@@ -43,8 +43,8 @@ func (list EntryList) FilterByTag(tag string) EntryList {
 
 
 // FilterByQuery filters an EntryList returning only those entries which match
-// the specified query strings. Each query string can be an entry ID or a case-
-// insensitive substring of an entry title.
+// the specified query strings. Each query string can be an entry ID or a
+// case-insensitive substring of an entry title.
 func (list EntryList) FilterByQuery(queries ...string) EntryList {
     matches := make([]*Entry, 0)
     for _, query := range queries {
@@ -128,25 +128,21 @@ func (list EntryList) FilterProgressive(query string) EntryList {
 }
 
 
-// Export exports a list of entries as a JSON string. Passwords are decrypted.
-func (list EntryList) Export(key []byte) (string, error) {
+// Export exports a list of entries as a JSON string.
+func (list EntryList) Export() (string, error) {
 
-    // Assemble a list of ExportEntry objects with unencrypted passwords.
+    // Assemble a list of ExportEntry objects.
     exports := make([]ExportEntry, 0)
     for _, entry := range list {
         export := ExportEntry{
             Title: entry.Title,
             Url: entry.Url,
             Username: entry.Username,
+            Password: entry.Password,
             Email: entry.Email,
             Notes: entry.Notes,
             Tags: entry.Tags,
         }
-        password, err := entry.GetPassword(key)
-        if err != nil {
-            return "", err
-        }
-        export.Password = password
         exports = append(exports, export)
     }
 

@@ -1,5 +1,5 @@
 /*
-    Command line tool for managing Ironclad password databases.
+    Ironclad: a command line tool for managing encrypted password databases.
 */
 package main
 
@@ -14,14 +14,14 @@ import (
 
 
 // Application version number.
-const version = "0.13.6"
+const version = "0.14.0.dev"
 
 
 // Application help text.
 var helptext = fmt.Sprintf(`
 Usage: %s [FLAGS] [COMMAND]
 
-  Command line utility for managing Ironclad password databases.
+  A utility for managing encrypted password databases.
 
 Flags:
   --help            Print the application's help text and exit.
@@ -30,12 +30,14 @@ Flags:
 Commands:
   add               Add a new entry to a database.
   config            Set or print a configuration option.
-  delete            Delete an entry from a database.
+  decrypt           Decrypt a file.
+  delete            Delete entries from a database.
   dump              Dump a database's internal JSON data store.
   edit              Edit an existing database entry.
-  export            Export data from a database.
+  encrypt           Encrypt a file.
+  export            Export entries from a database.
   gen               Generate a new random password.
-  import            Import data into a database.
+  import            Import entries into a database.
   list              List database entries.
   new               Create a new database.
   pass              Copy a password to the clipboard.
@@ -49,15 +51,15 @@ Command Help:
 
 
 // Path to the application's configuration directory.
-var ironpath = filepath.Join(os.Getenv("HOME"), ".config", "ironclad")
+var configdir = filepath.Join(os.Getenv("HOME"), ".config", "ironclad")
 
 
 // Path to the application's configuration file.
-var configfile = filepath.Join(ironpath, "goconfig.toml")
+var configfile = filepath.Join(configdir, "goconfig.toml")
 
 
 // Address for the cached-password server.
-const ironaddress = "localhost:54512"
+const serveraddress = "localhost:54513"
 
 
 // Application entry point.
@@ -70,30 +72,34 @@ func main() {
     parser := clio.NewParser(helptext, version)
 
     // Register the 'add' command.
-    addParser := parser.AddCmd("add", addHelptext, addCallback)
+    addParser := parser.AddCmd("add", addHelp, addCallback)
     addParser.AddStr("file f", "")
-    addParser.AddStr("db-password", "")
+    addParser.AddStr("masterpass", "")
 
     // Register the 'cache' command.
-    parser.AddCmd("cache", cacheHelptext, cacheCallback)
+    parser.AddCmd("cache", cacheHelp, cacheCallback)
 
     // Register the 'config' command.
-    parser.AddCmd("config", configHelptext, configCallback)
+    parser.AddCmd("config", configHelp, configCallback)
+
+    // Register the 'decrypt' command.
+    decryptParser := parser.AddCmd("decrypt", decryptHelp, decryptCallback)
+    decryptParser.AddStr("out o", "")
 
     // Register the 'delete' command.
-    deleteParser := parser.AddCmd("delete", deleteHelptext, deleteCallback)
+    deleteParser := parser.AddCmd("delete", deleteHelp, deleteCallback)
     deleteParser.AddStr("file f", "")
-    deleteParser.AddStr("db-password", "")
+    deleteParser.AddStr("masterpass", "")
 
     // Register the 'dump' command.
-    dumpParser := parser.AddCmd("dump", dumpHelptext, dumpCallback)
+    dumpParser := parser.AddCmd("dump", dumpHelp, dumpCallback)
     dumpParser.AddStr("file f", "")
-    dumpParser.AddStr("db-password", "")
+    dumpParser.AddStr("masterpass", "")
 
     // Register the 'edit' command.
-    editParser := parser.AddCmd("edit", editHelptext, editCallback)
+    editParser := parser.AddCmd("edit", editHelp, editCallback)
     editParser.AddStr("file f", "")
-    editParser.AddStr("db-password", "")
+    editParser.AddStr("masterpass", "")
     editParser.AddFlag("title t")
     editParser.AddFlag("url l")
     editParser.AddFlag("username u")
@@ -102,16 +108,20 @@ func main() {
     editParser.AddFlag("tags s")
     editParser.AddFlag("email e")
 
+    // Register the 'encrypt' command.
+    encryptParser := parser.AddCmd("encrypt", encryptHelp, encryptCallback)
+    encryptParser.AddStr("out o", "")
+
     // Register the 'export' command.
-    exportParser := parser.AddCmd("export", exportHelptext, exportCallback)
+    exportParser := parser.AddCmd("export", exportHelp, exportCallback)
     exportParser.AddStr("file f", "")
-    exportParser.AddStr("db-password", "")
+    exportParser.AddStr("masterpass", "")
     exportParser.AddStr("tag t", "")
 
     // Register the 'gen' command.
-    genParser := parser.AddCmd("gen", genHelptext, genCallback)
+    genParser := parser.AddCmd("gen", genHelp, genCallback)
     genParser.AddStr("file f", "")
-    genParser.AddStr("db-password", "")
+    genParser.AddStr("masterpass", "")
     genParser.AddFlag("digits d")
     genParser.AddFlag("exclude-similar d")
     genParser.AddFlag("lowercase l")
@@ -121,43 +131,42 @@ func main() {
     genParser.AddFlag("print p")
 
     // Register the 'import' command.
-    importParser := parser.AddCmd("import", importHelptext, importCallback)
+    importParser := parser.AddCmd("import", importHelp, importCallback)
     importParser.AddStr("file f", "")
-    importParser.AddStr("db-password", "")
+    importParser.AddStr("masterpass", "")
 
     // Register the 'list' command.
-    listParser := parser.AddCmd("list show", listHelptext, listCallback)
+    listParser := parser.AddCmd("list show", listHelp, listCallback)
     listParser.AddStr("file f", "")
-    listParser.AddStr("db-password", "")
+    listParser.AddStr("masterpass", "")
     listParser.AddStr("tag t", "")
     listParser.AddFlag("verbose v")
-    listParser.AddFlag("cleartext c")
 
     // Register the 'new' command.
-    newParser := parser.AddCmd("new", newHelptext, newCallback)
-    newParser.AddStr("db-password", "")
+    newParser := parser.AddCmd("new", newHelp, newCallback)
+    newParser.AddStr("masterpass", "")
 
     // Register the 'pass' command.
-    passParser := parser.AddCmd("pass", passHelptext, passCallback)
+    passParser := parser.AddCmd("pass", passHelp, passCallback)
     passParser.AddStr("file f", "")
-    passParser.AddStr("db-password", "")
+    passParser.AddStr("masterpass", "")
     passParser.AddFlag("readable r")
     passParser.AddFlag("print p")
 
     // Register the 'purge' command.
-    purgeParser := parser.AddCmd("purge", purgeHelptext, purgeCallback)
+    purgeParser := parser.AddCmd("purge", purgeHelp, purgeCallback)
     purgeParser.AddStr("file f", "")
-    purgeParser.AddStr("db-password", "")
+    purgeParser.AddStr("masterpass", "")
 
     // Register the 'tags' command.
-    tagsParser := parser.AddCmd("tags", tagsHelptext, tagsCallback)
+    tagsParser := parser.AddCmd("tags", tagsHelp, tagsCallback)
     tagsParser.AddStr("file f", "")
-    tagsParser.AddStr("db-password", "")
+    tagsParser.AddStr("masterpass", "")
 
     // Register the 'user' command.
-    userParser := parser.AddCmd("user", userHelptext, userCallback)
+    userParser := parser.AddCmd("user", userHelp, userCallback)
     userParser.AddStr("file f", "")
-    userParser.AddStr("db-password", "")
+    userParser.AddStr("masterpass", "")
     userParser.AddFlag("print p")
 
     // Parse the application's command line arguments.  If a command is found,

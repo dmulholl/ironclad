@@ -48,14 +48,14 @@ func inputPass(prompt string) string {
 
 
 // Launch a text editor and capture its output.
-func inputViaEditor(filename, text string) string {
+func inputViaEditor(file, template string) string {
 
-    // Set the filename for the editor to open.
-    filename = filepath.Join(ironpath, filename)
+    // Set the file for the editor to open.
+    file = filepath.Join(configdir, file)
 
     // Create a file for the editor to open.
-    os.MkdirAll(ironpath, 0777)
-    err := ioutil.WriteFile(filename, []byte(text), 0600)
+    os.MkdirAll(configdir, 0777)
+    err := ioutil.WriteFile(file, []byte(template), 0600)
     if err != nil {
         exit(err)
     }
@@ -67,11 +67,11 @@ func inputViaEditor(filename, text string) string {
     }
     _, err = exec.LookPath(editor)
     if err != nil {
-        exitf("cannot locate text editor '%v'", editor)
+        exitfmt("cannot locate text editor '%v'", editor)
     }
 
     // Launch the editor and wait for it to complete.
-    cmd := exec.Command(editor, filename)
+    cmd := exec.Command(editor, file)
     cmd.Stdin = os.Stdin
     cmd.Stdout = os.Stdout
     cmd.Stderr = os.Stderr
@@ -81,13 +81,13 @@ func inputViaEditor(filename, text string) string {
     }
 
     // Load the editor's output.
-    input, err := ioutil.ReadFile(filename)
+    input, err := ioutil.ReadFile(file)
     if err != nil {
         exit(err)
     }
 
     // Delete the input file.
-    err = os.Remove(filename)
+    err = os.Remove(file)
     if err != nil {
         exit(err)
     }
@@ -110,15 +110,28 @@ func exit(reason interface{}) {
 
 
 // Exit with a formatted error message and non-zero error code.
-func exitf(format string, reason interface{}) {
+func exitfmt(format string, reason interface{}) {
     fmt.Fprintf(os.Stderr, "Error: %v.\n", fmt.Sprintf(format, reason))
     os.Exit(1)
 }
 
 
+// Returns the width of the terminal window.
+func terminalWidth() int {
+    if terminal.IsTerminal(int(os.Stdout.Fd())) {
+        width, _, err := terminal.GetSize(int(os.Stdout.Fd()))
+        if err == nil {
+            return width
+        }
+    }
+    return 80
+}
+
+
 // Print a line of characters.
 func line(char string) {
-    for i := 0; i < 80; i++ {
+    length := terminalWidth()
+    for i := 0; i < length; i++ {
         fmt.Print(char)
     }
     fmt.Println()
@@ -126,9 +139,10 @@ func line(char string) {
 
 
 // Print an indented line of characters.
-func iline(char string) {
+func indentedLine(char string) {
+    length := terminalWidth() - 4
     fmt.Print("  ")
-    for i := 0; i < 76; i++ {
+    for i := 0; i < length; i++ {
         fmt.Print(char)
     }
     fmt.Println()
@@ -173,7 +187,7 @@ func addSpaces(input string) string {
 }
 
 
-// Returns a string of the specified length containing the specified character.
+// Returns a string of the specified length.
 func charstr(length int, char rune) string {
     runes := make([]rune, length)
     for i := range runes {

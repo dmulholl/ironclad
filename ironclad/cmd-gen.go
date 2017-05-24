@@ -23,7 +23,7 @@ const (
 
 
 // Help text for the 'gen' command.
-var genHelptext = fmt.Sprintf(`
+var genHelp = fmt.Sprintf(`
 Usage: %s gen [FLAGS] ARGUMENTS
 
   Generate a random ASCII password. The password is automatically copied to

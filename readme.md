@@ -22,7 +22,7 @@ A command line utility for creating and managing encrypted password databases.
       edit              Edit an existing database entry.
       encrypt           Encrypt a file.
       export            Export entries from a database.
-      gen               Generate a new random password.
+      gen               Generate a random password.
       import            Import entries into a database.
       list              List database entries.
       new               Create a new database.
@@ -38,7 +38,11 @@ Database files are encrypted using industry-standard cryptographic protocols.
 
 * Data is encrypted using 256-bit AES in CBC mode.
 * Padding is performed using the PKCS #7 padding scheme.
-* Authentication is performed using the HMAC-SHA-256 algorithm.
+* Authentication is performed using the HMAC-SHA-256 protocol.
 * Encryption keys are generated using the PBKDF2 key derivation algorithm with an SHA-256 hash.
 
-This application is a cross-platform utility written in a high-level, garbage-collected language. It has *not* been hardened against system-local threats, e.g. malicious code running with user-level privileges on the user's system, or attackers with physical access to the user's hardware.
+This application is a cross-platform utility written in a high-level, garbage-collected language. It has *not* been hardened against system-local threats, e.g. malicious code running with user-level privileges on the user's system, or adversaries with physical access to the user's hardware.
+
+See the application's [homepage][] for details and binary downloads.
+
+[homepage]: http://mulholland.xyz/dev/ironclad/

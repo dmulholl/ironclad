@@ -34,15 +34,6 @@ Ironclad is a command line tool for creating and managing encrypted password dat
     Command Help:
       help <command>    Print the specified command's help text and exit.
 
-Database files are encrypted using industry-standard cryptographic protocols.
-
-* Data is encrypted using 256-bit AES in CBC mode.
-* Padding is performed using the PKCS #7 padding scheme.
-* Authentication is performed using the HMAC-SHA-256 protocol.
-* Encryption keys are generated using the PBKDF2 key derivation algorithm with an SHA-256 hash.
-
-This application is a cross-platform utility written in a high-level, garbage-collected language. It has *not* been hardened against system-local threats, e.g. malicious code running with user-level privileges on the user's system, or adversaries with physical access to the user's hardware.
-
 See the application's [homepage][] for details and binary downloads.
 
 [homepage]: http://mulholland.xyz/dev/ironclad/

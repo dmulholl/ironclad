@@ -12,7 +12,7 @@ import (
 
 
 // Write a string to the system clipboard. Automatically overwrite the
-// clipboard after a ten second delay.
+// clipboard after a fifteen second delay.
 func writeToClipboard(value string) {
 
     if clipboard.Unsupported {
@@ -26,8 +26,8 @@ func writeToClipboard(value string) {
 
     fmt.Fprint(os.Stderr, "Clipboard: ")
 
-    ms_total := 10000
-    intervals := 60
+    ms_total := 15000
+    intervals := terminalWidth() - 20
     ms_per_interval := ms_total / intervals
     strlen := intervals + 7
 

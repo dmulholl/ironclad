@@ -37,7 +37,7 @@ A command line utility for creating and managing encrypted password databases.
 Database files are encrypted using industry-standard cryptographic protocols.
 
 * Data is encrypted using 256-bit AES in CBC mode.
-* Padding is performed using the PKCS#7 padding scheme.
+* Padding is performed using the PKCS #7 padding scheme.
 * Authentication is performed using the HMAC-SHA-256 algorithm.
 * Encryption keys are generated using the PBKDF2 key derivation algorithm with an SHA-256 hash.
 

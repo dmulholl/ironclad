@@ -39,7 +39,7 @@ Commands:
   edit              Edit an existing database entry.
   encrypt           Encrypt a file.
   export            Export entries from a database.
-  gen               Generate a new random password.
+  gen               Generate a random password.
   import            Import entries into a database.
   list              List database entries.
   new               Create a new database.

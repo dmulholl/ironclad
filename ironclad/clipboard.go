@@ -1,11 +1,13 @@
 package main
 
 
+import "github.com/atotto/clipboard"
+
+
 import (
     "os"
     "fmt"
     "time"
-    "github.com/atotto/clipboard"
 )
 
 

@@ -1,6 +1,9 @@
 package main
 
 
+import "github.com/dmulholland/clio/go/clio"
+
+
 import (
     "os"
     "os/signal"
@@ -8,7 +11,10 @@ import (
     "strconv"
     "time"
     "path/filepath"
-    "github.com/dmulholland/clio/go/clio"
+)
+
+
+import (
     "github.com/dmulholland/ironclad/ironrpc"
     "github.com/dmulholland/ironclad/ironconfig"
 )

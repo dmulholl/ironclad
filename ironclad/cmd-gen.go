@@ -1,6 +1,9 @@
 package main
 
 
+import "github.com/dmulholland/clio/go/clio"
+
+
 import (
     "fmt"
     "os"
@@ -8,7 +11,6 @@ import (
     "path/filepath"
     "crypto/rand"
     "math/big"
-    "github.com/dmulholland/clio/go/clio"
 )
 
 

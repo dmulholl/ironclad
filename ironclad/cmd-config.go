@@ -1,14 +1,20 @@
 package main
 
 
+import "github.com/dmulholland/clio/go/clio"
+
+
 import (
     "fmt"
     "os"
     "path/filepath"
     "io/ioutil"
     "strings"
+)
+
+
+import (
     "github.com/dmulholland/ironclad/ironconfig"
-    "github.com/dmulholland/clio/go/clio"
 )
 
 

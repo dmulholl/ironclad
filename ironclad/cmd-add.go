@@ -1,14 +1,21 @@
 package main
 
 
+import "github.com/dmulholland/clio/go/clio"
+
+
 import (
     "fmt"
     "strings"
     "os"
     "path/filepath"
-    "github.com/dmulholland/clio/go/clio"
+)
+
+
+import (
     "github.com/dmulholland/ironclad/irondb"
 )
+
 
 
 // Help text for the 'add' command.

@@ -1,6 +1,10 @@
 package main
 
 
+import "github.com/howeyc/gopass"
+import "golang.org/x/crypto/ssh/terminal"
+
+
 import (
     "fmt"
     "bufio"
@@ -8,9 +12,11 @@ import (
     "os"
     "os/exec"
     "path/filepath"
-    "golang.org/x/crypto/ssh/terminal"
     "io/ioutil"
-    "github.com/howeyc/gopass"
+)
+
+
+import (
     "github.com/dmulholland/ironclad/ironconfig"
 )
 

@@ -5,8 +5,10 @@
 package ironconfig
 
 
+import "github.com/pelletier/go-toml"
+
+
 import (
-    "github.com/pelletier/go-toml"
     "os"
     "io/ioutil"
     "path/filepath"

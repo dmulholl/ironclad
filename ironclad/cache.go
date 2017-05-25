@@ -2,15 +2,19 @@ package main
 
 
 import (
-    "github.com/dmulholland/ironclad/ironconfig"
-    "github.com/dmulholland/ironclad/ironcrypt"
-    "github.com/dmulholland/ironclad/ironrpc"
     "encoding/base64"
     "time"
     "os/exec"
     "path/filepath"
     "os"
     "fmt"
+)
+
+
+import (
+    "github.com/dmulholland/ironclad/ironconfig"
+    "github.com/dmulholland/ironclad/ironcrypt"
+    "github.com/dmulholland/ironclad/ironrpc"
 )
 
 

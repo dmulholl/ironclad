@@ -1,9 +1,15 @@
 package main
 
 
+import "github.com/dmulholland/clio/go/clio"
+
+
 import (
     "os"
-    "github.com/dmulholland/clio/go/clio"
+)
+
+
+import (
     "github.com/dmulholland/ironclad/irondb"
     "github.com/dmulholland/ironclad/ironio"
 )

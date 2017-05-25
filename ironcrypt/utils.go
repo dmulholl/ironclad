@@ -5,10 +5,12 @@
 package ironcrypt
 
 
+import "golang.org/x/crypto/pbkdf2"
+
+
 import (
     "io"
     "errors"
-    "golang.org/x/crypto/pbkdf2"
     "crypto/rand"
     "crypto/sha256"
 )

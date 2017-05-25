@@ -6,12 +6,16 @@ package ironio
 
 
 import (
-    "github.com/dmulholland/ironclad/ironcrypt"
-    "github.com/dmulholland/ironclad/ironcrypt/aes"
     "os"
     "io/ioutil"
     "compress/gzip"
     "bytes"
+)
+
+
+import (
+    "github.com/dmulholland/ironclad/ironcrypt"
+    "github.com/dmulholland/ironclad/ironcrypt/aes"
 )
 
 

@@ -1,12 +1,14 @@
 package main
 
 
+import "github.com/dmulholland/clio/go/clio"
+
+
 import (
     "fmt"
     "os"
     "path/filepath"
     "io/ioutil"
-    "github.com/dmulholland/clio/go/clio"
 )
 
 

@@ -1,11 +1,13 @@
 package main
 
 
+import "github.com/dmulholland/clio/go/clio"
+
+
 import (
     "fmt"
     "os"
     "path/filepath"
-    "github.com/dmulholland/clio/go/clio"
     "sort"
 )
 

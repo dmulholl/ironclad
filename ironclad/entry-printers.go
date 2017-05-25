@@ -1,12 +1,18 @@
 package main
 
 
+import "github.com/tonnerre/golang-text"
+import "github.com/mitchellh/go-wordwrap"
+
+
 import (
     "fmt"
-    "github.com/dmulholland/ironclad/irondb"
     "strings"
-    "github.com/tonnerre/golang-text"
-    "github.com/mitchellh/go-wordwrap"
+)
+
+
+import (
+    "github.com/dmulholland/ironclad/irondb"
 )
 
 

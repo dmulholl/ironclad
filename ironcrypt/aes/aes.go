@@ -22,7 +22,9 @@
 
     Lengths are given in bytes. The length of the payload will be a multiple
     of the AES block size (16 bytes). (Note that the padding algorithm
-    appends a null block to the plaintext when the length of the plaintext is a multiple of the block size. This padding is automatically removed during decryption.)
+    appends a null block to the plaintext when the length of the plaintext is
+    a multiple of the block size. This padding is automatically removed
+    during decryption.)
 */
 package aes
 

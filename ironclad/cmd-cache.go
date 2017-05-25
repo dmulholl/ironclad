@@ -60,6 +60,9 @@ func cacheCallback(parser *clio.ArgParser) {
         if err != nil {
             exit(err)
         }
+        if minutes == 0 {
+            os.Exit(0)
+        }
         ironrpc.ServerTimeout = time.Duration(minutes) * time.Minute
     }
 

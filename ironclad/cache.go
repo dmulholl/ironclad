@@ -57,11 +57,10 @@ func setCachedPassword(password string) {
         // Give the new sever time to warm up.
         time.Sleep(time.Millisecond * 100)
 
-        // Try making a connection again.
+        // Try making a connection again. If this fails, the timeout is
+        // probably set to zero.
         client, err = ironrpc.NewClient(serverAddress())
         if err != nil {
-            fmt.Fprintf(os.Stderr,
-                "Error connecting to password server: %v\n", err)
             return
         }
     }

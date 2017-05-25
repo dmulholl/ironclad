@@ -20,7 +20,8 @@ import (
 var newHelp = fmt.Sprintf(`
 Usage: %s new [FLAGS] ARGUMENTS
 
-  Create a new password database.
+  Create a new encrypted password database. You will be prompted to supply
+  a master password.
 
 Arguments:
   <file>                    Filename for the new database.

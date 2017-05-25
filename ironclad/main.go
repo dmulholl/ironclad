@@ -24,7 +24,7 @@ const version = "0.14.0.dev"
 var helptext = fmt.Sprintf(`
 Usage: %s [FLAGS] [COMMAND]
 
-  A utility for managing encrypted password databases.
+  A utility for creating and managing encrypted password databases.
 
 Flags:
   --help            Print the application's help text and exit.

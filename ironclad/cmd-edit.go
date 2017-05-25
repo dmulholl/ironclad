@@ -18,6 +18,11 @@ Usage: %s edit [FLAGS] [OPTIONS] ARGUMENTS
 
   Edit an existing database entry.
 
+  You can specify the fields to edit using the flags listed below. If no
+  flags are specified you will be prompted to edit each field in turn.
+  Enter 'y' to edit a field or 'n' (or simply hit return) to leave the
+  field unchanged.
+
 Arguments:
   <entry>                   Entry to edit by ID or title.
 
@@ -29,9 +34,9 @@ Flags:
       --help                Print this command's help text and exit.
   -n, --notes               Edit the entry's notes.
   -p, --password            Edit the entry's password.
-  -s, --tags                Edit the entry's tags.
+      --tags                Edit the entry's tags.
   -t, --title               Edit the entry's title.
-  -l, --url                 Edit the entry's url.
+      --url                 Edit the entry's url.
   -u, --username            Edit the entry's username.
 `, filepath.Base(os.Args[0]))
 
@@ -129,6 +134,7 @@ func editCallback(parser *clio.ArgParser) {
 
     // Footer.
     fmt.Println("  Entry updated.")
+    line("-")
 }
 
 

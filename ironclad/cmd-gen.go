@@ -51,7 +51,7 @@ Character Flags:
   -u, --uppercase           Include uppercase letters [A-Z].
 
 Flags:
-  -e, --exclude-similar     Exclude similar characters.
+  -x, --exclude-similar     Exclude similar characters.
       --help                Print this command's help text and exit.
   -p, --print               Print the password to stdout.
   -r, --readable            Add spaces for readability.

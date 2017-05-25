@@ -58,8 +58,8 @@ var configdir = filepath.Join(os.Getenv("HOME"), ".config", "ironclad")
 var configfile = filepath.Join(configdir, "goconfig.toml")
 
 
-// Address for the cached-password server.
-const serveraddress = "localhost:54513"
+// Default port for the cached-password server.
+const defaultport = "54313"
 
 
 // Application entry point.
@@ -123,7 +123,7 @@ func main() {
     genParser.AddStr("file f", "")
     genParser.AddStr("masterpass", "")
     genParser.AddFlag("digits d")
-    genParser.AddFlag("exclude-similar d")
+    genParser.AddFlag("exclude-similar x")
     genParser.AddFlag("lowercase l")
     genParser.AddFlag("symbols s")
     genParser.AddFlag("uppercase u")

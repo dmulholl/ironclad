@@ -58,7 +58,7 @@ func cacheCallback(parser *clio.ArgParser) {
     }
 
     // Run the cache server.
-    err = ironrpc.Serve(serveraddress)
+    err = ironrpc.Serve(serverAddress())
     if err != nil {
         exit(err)
     }

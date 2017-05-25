@@ -11,6 +11,7 @@ import (
     "golang.org/x/crypto/ssh/terminal"
     "io/ioutil"
     "github.com/howeyc/gopass"
+    "github.com/dmulholland/ironclad/ironconfig"
 )
 
 
@@ -194,4 +195,18 @@ func charstr(length int, char rune) string {
         runes[i] = char
     }
     return string(runes)
+}
+
+
+// Returns the address for the cached-password server.
+func serverAddress() string {
+    port, found, err := ironconfig.Get("port")
+    if err != nil {
+        exit(err)
+    }
+    if found {
+        return "localhost:" + port
+    } else {
+        return "localhost:" + defaultport
+    }
 }

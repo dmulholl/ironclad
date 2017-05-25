@@ -1,7 +1,7 @@
 
 # Ironclad
 
-A command line utility for creating and managing encrypted password databases.
+Ironclad is a command line tool for creating and managing encrypted password databases.
 
     $ ironclad --help
 

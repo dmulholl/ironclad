@@ -21,7 +21,7 @@ import (
 var encryptHelp = fmt.Sprintf(`
 Usage: %s encrypt [FLAGS] [OPTIONS] [ARGUMENTS]
 
-  Encrypt a file.
+  Encrypt a file using 256-bit AES encryption.
 
 Arguments:
   <file>                    File to encrypt.

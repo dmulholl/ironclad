@@ -24,7 +24,7 @@ const version = "0.14.0"
 var helptext = fmt.Sprintf(`
 Usage: %s [FLAGS] [COMMAND]
 
-  A utility for creating and managing encrypted password databases.
+  Ironclad is a command line password manager.
 
 Flags:
   --help            Print the application's help text and exit.
@@ -42,7 +42,7 @@ Commands:
   gen               Generate a random password.
   import            Import entries into a database.
   list              List database entries.
-  new               Create a new database.
+  new               Create a new password database.
   pass              Copy a password to the clipboard.
   purge             Purge deleted entries from a database.
   tags              List database tags.

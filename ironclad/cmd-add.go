@@ -43,9 +43,9 @@ func addCallback(parser *clio.ArgParser) {
     entry := irondb.NewEntry()
 
     // Print header.
-    line("-")
+    line("─")
     fmt.Println("  Add Entry")
-    line("-")
+    line("─")
 
     // Fetch user input.
     entry.Title    = input("  Title:      ")
@@ -55,7 +55,7 @@ func addCallback(parser *clio.ArgParser) {
     entry.Password = input("  Password:   ")
 
     // Split tags on commas.
-    line("-")
+    line("─")
     tagstring := input(
         "  Enter a comma-separated list of tags for this entry:\n> ")
     for _, tag := range strings.Split(tagstring, ",") {
@@ -66,7 +66,7 @@ func addCallback(parser *clio.ArgParser) {
     }
 
     // Do we need to launch a text editor to add notes?
-    line("-")
+    line("─")
     answer := input("  Add a note to this entry? (y/n): ")
     if len(answer) > 0 && strings.ToLower(answer)[0] == 'y' {
         entry.Notes = inputViaEditor("add-note", "")
@@ -81,5 +81,5 @@ func addCallback(parser *clio.ArgParser) {
     saveDB(filename, password, db)
 
     // Footer.
-    line("-")
+    line("─")
 }

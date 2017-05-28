@@ -71,43 +71,43 @@ func editCallback(parser *clio.ArgParser) {
     }
 
     // Header.
-    line("-")
+    line("─")
     fmt.Println("  Editing Entry: " + entry.Title)
-    line("-")
+    line("─")
 
     if parser.GetFlag("title") || (allFields && editField("title")) {
         fmt.Println("  TITLE")
         fmt.Println("  Old value: " + entry.Title)
         entry.Title = input("  New value: ")
-        line("-")
+        line("·")
     }
 
     if parser.GetFlag("url") || (allFields && editField("url")) {
         fmt.Println("  URL")
         fmt.Println("  Old value: " + entry.Url)
         entry.Url = input("  New value: ")
-        line("-")
+        line("·")
     }
 
     if parser.GetFlag("username") || (allFields && editField("username")) {
         fmt.Println("  USERNAME")
         fmt.Println("  Old value: " + entry.Username)
         entry.Username = input("  New value: ")
-        line("-")
+        line("·")
     }
 
     if parser.GetFlag("password") || (allFields && editField("password")) {
         fmt.Println("  PASSWORD")
         fmt.Println("  Old value: " + entry.Password)
         entry.Password = input("  New value: ")
-        line("-")
+        line("·")
     }
 
     if parser.GetFlag("email") || (allFields && editField("email")) {
         fmt.Println("  EMAIL")
         fmt.Println("  Old value: " + entry.Email)
         entry.Email = input("  New value: ")
-        line("-")
+        line("·")
     }
 
     if parser.GetFlag("tags") || (allFields && editField("tags")) {
@@ -122,7 +122,7 @@ func editCallback(parser *clio.ArgParser) {
                 entry.Tags = append(entry.Tags, tag)
             }
         }
-        line("-")
+        line("·")
     }
 
     if parser.GetFlag("notes") || (allFields && editField("notes")) {
@@ -134,13 +134,13 @@ func editCallback(parser *clio.ArgParser) {
 
     // Footer.
     fmt.Println("  Entry updated.")
-    line("-")
+    line("─")
 }
 
 
 // Ask the user whether they want to edit the specified field.
 func editField(field string) bool {
     answer := input("  Edit " + field + "? (y/n) ")
-    line("-")
+    line("·")
     return strings.ToLower(answer) == "y"
 }

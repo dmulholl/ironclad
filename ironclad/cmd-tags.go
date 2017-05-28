@@ -44,16 +44,16 @@ func tagsCallback(parser *clio.ArgParser) {
 
     // Print the tag list.
     if len(tags) > 0 {
-        line("-")
+        line("─")
         fmt.Println("  Tags")
-        line("-")
+        line("─")
         for _, tag := range tags {
             fmt.Printf("  %s [%d]\n", tag, len(tagmap[tag]))
         }
-        line("-")
+        line("─")
     } else {
-        line("-")
+        line("─")
         fmt.Println("  No Tags")
-        line("-")
+        line("─")
     }
 }

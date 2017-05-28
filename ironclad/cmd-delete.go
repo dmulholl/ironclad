@@ -53,11 +53,11 @@ func deleteCallback(parser *clio.ArgParser) {
         for _, entry := range list {
             db.Delete(entry.Id)
         }
-        line("-")
         fmt.Println("  Entries deleted.")
+        line("─")
     } else {
-        line("-")
         fmt.Println("  Deletion aborted.")
+        line("─")
     }
 
     // Save the updated database to disk.

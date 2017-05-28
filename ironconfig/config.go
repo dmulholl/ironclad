@@ -1,6 +1,6 @@
 /*
     Package ironconfig provides read and write access to the application's
-    configuration file.
+    TOML configuration file.
 */
 package ironconfig
 
@@ -17,30 +17,6 @@ import (
 
 // Location of the configuration file.
 var ConfigFile string
-
-
-// Load a config file's TOML content.
-func load() (*toml.TomlTree, error) {
-    if _, err := os.Stat(ConfigFile); err == nil {
-        tree, err := toml.LoadFile(ConfigFile)
-        if err != nil {
-            return nil, err
-        }
-        return tree, nil
-    } else {
-        return toml.TreeFromMap(make(map[string]interface{})), nil
-    }
-}
-
-
-// Save a TOML tree to file.
-func save(tree *toml.TomlTree) error {
-    err := os.MkdirAll(filepath.Dir(ConfigFile), 0777)
-    if err != nil {
-        return err
-    }
-    return ioutil.WriteFile(ConfigFile, []byte(tree.ToString()), 0600)
-}
 
 
 // Get reads a value from the configuration file.
@@ -66,4 +42,28 @@ func Set(key, value string) error {
     }
     config.Set(key, value)
     return save(config)
+}
+
+
+// Load a config file's TOML content.
+func load() (*toml.TomlTree, error) {
+    if _, err := os.Stat(ConfigFile); err == nil {
+        tree, err := toml.LoadFile(ConfigFile)
+        if err != nil {
+            return nil, err
+        }
+        return tree, nil
+    } else {
+        return toml.TreeFromMap(make(map[string]interface{})), nil
+    }
+}
+
+
+// Save a TOML tree to file.
+func save(tree *toml.TomlTree) error {
+    err := os.MkdirAll(filepath.Dir(ConfigFile), 0777)
+    if err != nil {
+        return err
+    }
+    return ioutil.WriteFile(ConfigFile, []byte(tree.ToString()), 0600)
 }

@@ -16,7 +16,7 @@ import (
 var deleteHelp = fmt.Sprintf(`
 Usage: %s delete [FLAGS] [OPTIONS] ARGUMENTS
 
-  Delete entries from a database. Entries to delete are specified by ID.
+  Delete entries from a database. Entries should be specified by ID.
 
 Arguments:
   <entries>                 List of entry IDs.

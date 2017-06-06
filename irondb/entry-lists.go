@@ -74,6 +74,25 @@ func (list EntryList) FilterByQuery(queries ...string) EntryList {
 }
 
 
+// FilterByIDString filters an EntryList returning only those entries which
+// match the specified query strings where each query string is an entry ID.
+func (list EntryList) FilterByIDString(queries ...string) EntryList {
+    matches := make([]*Entry, 0)
+    for _, query := range queries {
+        if i, err := strconv.ParseInt(query, 10, 32); err == nil {
+            id := int(i)
+            for _, entry := range list {
+                if id == entry.Id {
+                    matches = append(matches, entry)
+                    break
+                }
+            }
+        }
+    }
+    return matches
+}
+
+
 // FilterProgressive filters an EntryList using progressively less restrictive
 // criteria until it finds one or more matches or runs out of criteria. The
 // query string may be (in order) an entry ID or a case-insensitive exact,

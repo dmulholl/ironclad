@@ -16,10 +16,10 @@ import (
 var deleteHelp = fmt.Sprintf(`
 Usage: %s delete [FLAGS] [OPTIONS] ARGUMENTS
 
-  Delete one or more entries from a database.
+  Delete entries from a database. Entries to delete are specified by ID.
 
 Arguments:
-  <entries>                 List of entries to delete by ID or title.
+  <entries>                 List of entry IDs.
 
 Options:
   -f, --file <str>          Database file. Defaults to the last used file.
@@ -41,15 +41,15 @@ func deleteCallback(parser *clio.ArgParser) {
     filename, password, db := loadDB(parser)
 
     // Grab the entries to delete.
-    list := db.Active().FilterByQuery(parser.GetArgs()...)
+    list := db.Active().FilterByIDString(parser.GetArgs()...)
     if len(list) == 0 {
         exit("no matching entries")
     }
 
     // Print a listing and request confirmation.
     printCompact(list, db.Size())
-    confirm := input("  Delete the entries listed above? (y/n): ")
-    if strings.ToLower(confirm)[0] == 'y' {
+    answer := input("  Delete the entries listed above? (y/n): ")
+    if strings.ToLower(answer) == "y" {
         for _, entry := range list {
             db.Delete(entry.Id)
         }

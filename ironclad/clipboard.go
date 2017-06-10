@@ -33,10 +33,10 @@ func writeToClipboard(value string) {
 
     for count := 0; count <= intervals; count++ {
 
-        fmt.Fprintf(os.Stderr, "|")
-        fmt.Fprintf(os.Stderr, charstr(count, '='))
+        fmt.Fprintf(os.Stderr, "▌")
+        fmt.Fprintf(os.Stderr, charstr(count, '█'))
         fmt.Fprintf(os.Stderr, charstr(intervals - count, ' '))
-        fmt.Fprintf(os.Stderr, "|")
+        fmt.Fprintf(os.Stderr, "▐")
 
         ms_remaining := ms_total - count * ms_per_interval
         fmt.Fprintf(os.Stderr, " %02.fs ", float64(ms_remaining)/1000)

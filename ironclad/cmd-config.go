@@ -22,12 +22,16 @@ import (
 var configHelp = fmt.Sprintf(`
 Usage: %s config [FLAGS] ARGUMENTS
 
-  Display or set the value of a configuration option.
+  Set or display a configuration value.
 
-  If a single argument is supplied, the value of that key will be printed. If
-  two arguments are supplied, the first will be treated as a key and the
-  second as a value to be set. If no arguments are supplied, the content of
-  the configuration file itself will be printed.
+  A single argument will be treated as a key and the associated value
+  displayed. Two arguments will be treated as a key-value pair to be set.
+  If no arguments are supplied, the config file itself will be printed.
+
+  The following options are supported:
+
+  clip-timeout              Clipboard timeout in seconds.
+  timeout                   Password timeout in minutes.
 
 Arguments:
   <key>                     Key to set or print.

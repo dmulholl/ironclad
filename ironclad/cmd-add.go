@@ -48,11 +48,11 @@ func addCallback(parser *clio.ArgParser) {
     line("─")
 
     // Fetch user input.
-    entry.Title    = input("  Title:      ")
-    entry.Url      = input("  URL:        ")
-    entry.Username = input("  Username:   ")
-    entry.Email    = input("  Email:      ")
-    entry.Password = input("  Password:   ")
+    entry.Title     = input("  Title:      ")
+    entry.Url       = input("  URL:        ")
+    entry.Username  = input("  Username:   ")
+    entry.Email     = input("  Email:      ")
+    entry.SetPassword(input("  Password:   "))
 
     // Split tags on commas.
     line("─")

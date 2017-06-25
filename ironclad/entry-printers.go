@@ -73,8 +73,8 @@ func printVerbose(list irondb.EntryList, dbsize int, title string) {
             fmt.Printf("  Username: %s\n", entry.Username)
         }
 
-        if entry.Password != "" {
-            fmt.Printf("  Password: %s\n", entry.Password)
+        if entry.GetPassword() != "" {
+            fmt.Printf("  Password: %s\n", entry.GetPassword())
         }
 
         if entry.Email != "" {

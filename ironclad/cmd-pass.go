@@ -51,7 +51,7 @@ func passCallback(parser *clio.ArgParser) {
     entry := list[0]
 
     // Add spaces if required.
-    password := entry.Password
+    password := entry.GetPassword()
     if parser.GetFlag("readable") {
         password = addSpaces(password)
     }

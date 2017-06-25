@@ -50,7 +50,7 @@ func (db *DB) Import(data []byte) error {
         entry.Title = export.Title
         entry.Url = export.Url
         entry.Username = export.Username
-        entry.Password = export.Password
+        entry.Passwords = export.Passwords
         entry.Email = export.Email
         entry.Tags = export.Tags
         entry.Notes = export.Notes

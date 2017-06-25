@@ -157,7 +157,7 @@ func (list EntryList) Export() (string, error) {
             Title: entry.Title,
             Url: entry.Url,
             Username: entry.Username,
-            Password: entry.Password,
+            Passwords: entry.Passwords,
             Email: entry.Email,
             Notes: entry.Notes,
             Tags: entry.Tags,

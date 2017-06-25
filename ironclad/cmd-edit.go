@@ -98,8 +98,8 @@ func editCallback(parser *clio.ArgParser) {
 
     if parser.GetFlag("password") || (allFields && editField("password")) {
         fmt.Println("  PASSWORD")
-        fmt.Println("  Old value: " + entry.Password)
-        entry.Password = input("  New value: ")
+        fmt.Println("  Old value: " + entry.GetPassword())
+        entry.SetPassword(input("  New value: "))
         line("·")
     }
 

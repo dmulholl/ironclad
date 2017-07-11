@@ -49,8 +49,8 @@ func newCallback(parser *clio.ArgParser) {
     // Initialize a new database.
     db := irondb.New()
 
-    // Cache the password and filename.
-    setCachedPassword(password)
+    // Cache the filename. We don't cache the password when creating a
+    // new database file in case the user has accidentally mistyped it.
     setCachedFilename(filename)
 
     // Save the new database to disk.

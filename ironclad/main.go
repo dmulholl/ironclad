@@ -17,7 +17,7 @@ import (
 
 
 // Application version number.
-const version = "0.17.1"
+const version = "0.18.0"
 
 
 // Application help text.
@@ -41,8 +41,8 @@ Commands:
   export            Export entries from a database.
   gen               Generate a random password.
   import            Import entries into a database.
+  init              Initialize a new password database.
   list              List database entries.
-  new               Create a new password database.
   pass              Copy a password to the clipboard.
   purge             Purge deleted entries from a database.
   tags              List database tags.
@@ -138,16 +138,16 @@ func main() {
     importParser.AddStr("file f", "")
     importParser.AddStr("masterpass", "")
 
+    // Register the 'init' command.
+    initParser := parser.AddCmd("init", initHelp, initCallback)
+    initParser.AddStr("masterpass", "")
+
     // Register the 'list' command.
     listParser := parser.AddCmd("list show", listHelp, listCallback)
     listParser.AddStr("file f", "")
     listParser.AddStr("masterpass", "")
     listParser.AddStr("tag t", "")
     listParser.AddFlag("verbose v")
-
-    // Register the 'new' command.
-    newParser := parser.AddCmd("new", newHelp, newCallback)
-    newParser.AddStr("masterpass", "")
 
     // Register the 'pass' command.
     passParser := parser.AddCmd("pass", passHelp, passCallback)

@@ -18,6 +18,9 @@ Usage: %s user [FLAGS] [OPTIONS] ARGUMENTS
   Copy a stored username to the system clipboard or print it to stdout. This
   command will fall back on the email address if the username field is empty.
 
+  The entry can be specified by its ID or by any unique case-insensitive
+  subtring of its title.
+
 Arguments:
   <entry>                   Entry ID or title.
 

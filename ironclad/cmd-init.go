@@ -16,9 +16,9 @@ import (
 )
 
 
-// Help text for the 'new' command.
-var newHelp = fmt.Sprintf(`
-Usage: %s new [FLAGS] ARGUMENTS
+// Help text for the 'init' command.
+var initHelp = fmt.Sprintf(`
+Usage: %s init [FLAGS] ARGUMENTS
 
   Create a new encrypted password database. You will be prompted to supply
   a master password.
@@ -31,8 +31,8 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
-// Callback for the 'new' command.
-func newCallback(parser *clio.ArgParser) {
+// Callback for the 'init' command.
+func initCallback(parser *clio.ArgParser) {
 
     // Check that a filename argument has been supplied.
     if !parser.HasArgs() {

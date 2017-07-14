@@ -20,11 +20,11 @@ type Client struct {
 
 // NewClient returns an initialized RPC client.
 func NewClient(address string) (*Client, error) {
-    connection, err := net.DialTimeout("tcp", address, ClientTimeout)
+    conn, err := net.DialTimeout("tcp", address, ClientTimeout)
     if err != nil {
         return nil, err
     }
-    return &Client{connection: rpc.NewClient(connection)}, nil
+    return &Client{connection: rpc.NewClient(conn)}, nil
 }
 
 
@@ -40,4 +40,12 @@ func (client *Client) Set(token, password string) (ok bool, err error) {
     pair := TokenPair{ Token: token, Password: password }
     err = client.connection.Call("Server.Set", pair, &ok)
     return ok, err
+}
+
+
+// Close calls the underlying net/rpc.Client's Close() method.
+func (client *Client) Close() {
+    if client.connection != nil {
+        client.connection.Close()
+    }
 }

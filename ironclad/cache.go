@@ -64,6 +64,7 @@ func setCachedPassword(password string) {
             return
         }
     }
+    defer client.Close()
 
     // Generate a random 32-byte token.
     bytes, err := ironcrypt.RandBytes(32)
@@ -72,7 +73,7 @@ func setCachedPassword(password string) {
     }
     token := base64.StdEncoding.EncodeToString(bytes)
 
-    // Save the token in the application's config file.
+    // Save the token in the config file.
     err = ironconfig.Set("token", token)
     if err != nil {
         exit(err)
@@ -103,6 +104,7 @@ func getCachedPassword() (password string, found bool) {
     if err != nil {
         return "", false
     }
+    defer client.Close()
 
     // Retrieve the password from the server.
     password, err = client.Get(token)

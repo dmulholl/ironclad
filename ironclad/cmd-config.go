@@ -44,7 +44,6 @@ Flags:
 
 // Callback for the 'config' command.
 func configCallback(parser *clio.ArgParser) {
-
     if !parser.HasArgs() {
         content, err := ioutil.ReadFile(configfile)
         if err != nil {

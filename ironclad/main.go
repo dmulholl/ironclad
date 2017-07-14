@@ -77,7 +77,6 @@ func main() {
     // Register the 'add' command.
     addParser := parser.AddCmd("add", addHelp, addCallback)
     addParser.AddStr("file f", "")
-    addParser.AddStr("masterpass", "")
 
     // Register the 'cache' command.
     parser.AddCmd("cache", cacheHelp, cacheCallback)
@@ -92,17 +91,14 @@ func main() {
     // Register the 'delete' command.
     deleteParser := parser.AddCmd("delete", deleteHelp, deleteCallback)
     deleteParser.AddStr("file f", "")
-    deleteParser.AddStr("masterpass", "")
 
     // Register the 'dump' command.
     dumpParser := parser.AddCmd("dump", dumpHelp, dumpCallback)
     dumpParser.AddStr("file f", "")
-    dumpParser.AddStr("masterpass", "")
 
     // Register the 'edit' command.
     editParser := parser.AddCmd("edit", editHelp, editCallback)
     editParser.AddStr("file f", "")
-    editParser.AddStr("masterpass", "")
     editParser.AddFlag("title t")
     editParser.AddFlag("url l")
     editParser.AddFlag("username u")
@@ -118,13 +114,11 @@ func main() {
     // Register the 'export' command.
     exportParser := parser.AddCmd("export", exportHelp, exportCallback)
     exportParser.AddStr("file f", "")
-    exportParser.AddStr("masterpass", "")
     exportParser.AddStr("tag t", "")
 
     // Register the 'gen' command.
     genParser := parser.AddCmd("gen", genHelp, genCallback)
     genParser.AddStr("file f", "")
-    genParser.AddStr("masterpass", "")
     genParser.AddFlag("digits d")
     genParser.AddFlag("exclude-similar x")
     genParser.AddFlag("lowercase l")
@@ -136,40 +130,33 @@ func main() {
     // Register the 'import' command.
     importParser := parser.AddCmd("import", importHelp, importCallback)
     importParser.AddStr("file f", "")
-    importParser.AddStr("masterpass", "")
 
     // Register the 'init' command.
-    initParser := parser.AddCmd("init", initHelp, initCallback)
-    initParser.AddStr("masterpass", "")
+    parser.AddCmd("init", initHelp, initCallback)
 
     // Register the 'list' command.
     listParser := parser.AddCmd("list show", listHelp, listCallback)
     listParser.AddStr("file f", "")
-    listParser.AddStr("masterpass", "")
     listParser.AddStr("tag t", "")
     listParser.AddFlag("verbose v")
 
     // Register the 'pass' command.
     passParser := parser.AddCmd("pass", passHelp, passCallback)
     passParser.AddStr("file f", "")
-    passParser.AddStr("masterpass", "")
     passParser.AddFlag("readable r")
     passParser.AddFlag("print p")
 
     // Register the 'purge' command.
     purgeParser := parser.AddCmd("purge", purgeHelp, purgeCallback)
     purgeParser.AddStr("file f", "")
-    purgeParser.AddStr("masterpass", "")
 
     // Register the 'tags' command.
     tagsParser := parser.AddCmd("tags", tagsHelp, tagsCallback)
     tagsParser.AddStr("file f", "")
-    tagsParser.AddStr("masterpass", "")
 
     // Register the 'user' command.
     userParser := parser.AddCmd("user", userHelp, userCallback)
     userParser.AddStr("file f", "")
-    userParser.AddStr("masterpass", "")
     userParser.AddFlag("print p")
 
     // Parse the application's command line arguments.  If a command is found,

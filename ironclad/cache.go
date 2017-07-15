@@ -2,29 +2,21 @@ package main
 
 
 import (
-    "encoding/base64"
     "time"
     "os/exec"
-    "path/filepath"
     "os"
-    "fmt"
 )
 
 
 import (
     "github.com/dmulholland/ironclad/ironconfig"
-    "github.com/dmulholland/ironclad/ironcrypt"
     "github.com/dmulholland/ironclad/ironrpc"
 )
 
 
 // Cache the current filename for the application's next run.
 func setCachedFilename(filename string) {
-    filename, err := filepath.Abs(filename)
-    if err != nil {
-        exit(err)
-    }
-    err = ironconfig.Set("file", filename)
+    err := ironconfig.Set("file", filename)
     if err != nil {
         exit(err)
     }
@@ -42,56 +34,41 @@ func getCachedFilename() (filename string, found bool) {
 
 
 // Cache the database password for the application's next run.
-func setCachedPassword(password string) {
+func setCachedPassword(filename, password string) {
 
-    // Attempt to make a connection to the password server.
-    // If we can't make a connection, launch a new server.
-    client, err := ironrpc.NewClient(serverAddress())
+    // If the cache timeout has been set to 0, do nothing.
+    timeout, found, _ := ironconfig.Get("timeout")
+    if found && timeout == "0" {
+        return
+    }
+
+    // Attempt to connect to the cache server. If we can't make a connection,
+    // launch a new server.
+    client, err := ironrpc.NewClient()
     if err != nil {
         cmd := exec.Command(os.Args[0], "cache")
-        cmd.Stdin = os.Stdin
-        cmd.Stdout = os.Stdout
         cmd.Stderr = os.Stderr
         cmd.Start()
 
-        // Give the new sever time to warm up.
+        // Give the new server time to warm up and try again.
         time.Sleep(time.Millisecond * 100)
-
-        // Try making a connection again. If this fails, the timeout is
-        // probably set to zero.
-        client, err = ironrpc.NewClient(serverAddress())
+        client, err = ironrpc.NewClient()
         if err != nil {
             return
         }
     }
     defer client.Close()
 
-    // Generate a random 32-byte token.
-    bytes, err := ironcrypt.RandBytes(32)
-    if err != nil {
-        exit(err)
-    }
-    token := base64.StdEncoding.EncodeToString(bytes)
-
-    // Save the token in the config file.
-    err = ironconfig.Set("token", token)
-    if err != nil {
-        exit(err)
-    }
-
     // Cache the token and password pair.
-    _, err = client.Set(token, password)
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error caching password: %v\n", err)
-    }
+    client.SetPass(filename, password)
 }
 
 
 // Fetch the cached password (if it exists) from the application's last run.
-func getCachedPassword() (password string, found bool) {
+func getCachedPassword(filename string) (password string, found bool) {
 
-    // Fetch the password token from the application's config file.
-    token, found, err := ironconfig.Get("token")
+    // Fetch the authentication nonce.
+    nonce, found, err := ironconfig.Get("nonce")
     if err != nil {
         exit(err)
     }
@@ -100,16 +77,15 @@ func getCachedPassword() (password string, found bool) {
     }
 
     // Attempt to make a connection to the password server.
-    client, err := ironrpc.NewClient(serverAddress())
+    client, err := ironrpc.NewClient()
     if err != nil {
         return "", false
     }
     defer client.Close()
 
     // Retrieve the password from the server.
-    password, err = client.Get(token)
+    password, err = client.GetPass(filename, nonce)
     if err != nil {
-        fmt.Fprintf(os.Stderr, "Error fetching password: %v\n", err)
         return "", false
     }
 

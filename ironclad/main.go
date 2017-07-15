@@ -11,16 +11,9 @@ import (
 )
 
 
-import (
-    "github.com/dmulholland/ironclad/ironconfig"
-)
+const version = "0.19.0.dev"
 
 
-// Application version number.
-const version = "0.18.1"
-
-
-// Application help text.
 var helptext = fmt.Sprintf(`
 Usage: %s [FLAGS] [COMMAND]
 
@@ -53,23 +46,7 @@ Command Help:
 `, filepath.Base(os.Args[0]))
 
 
-// Path to the application's configuration directory.
-var configdir = filepath.Join(os.Getenv("HOME"), ".config", "ironclad")
-
-
-// Path to the application's configuration file.
-var configfile = filepath.Join(configdir, "goconfig.toml")
-
-
-// Default port for the cached-password server.
-const defaultport = "54313"
-
-
-// Application entry point.
 func main() {
-
-    // Set the location of the application's configuration file.
-    ironconfig.ConfigFile = configfile
 
     // Instantiate an argument parser.
     parser := clio.NewParser(helptext, version)
@@ -159,11 +136,9 @@ func main() {
     userParser.AddStr("file f", "")
     userParser.AddFlag("print p")
 
-    // Parse the application's command line arguments.  If a command is found,
-    // control will be passed to its callback function.
+    // Parse the command line arguments. If no command is found, print the
+    // help text and exit.
     parser.Parse()
-
-    // If no command has been found, print the help text and exit.
     if !parser.HasCmd() {
         parser.Help()
     }

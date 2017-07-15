@@ -16,7 +16,8 @@ import (
 
 
 // Location of the configuration file.
-var ConfigFile string
+var ConfigDir = filepath.Join(os.Getenv("HOME"), ".config", "ironclad")
+var ConfigFile = filepath.Join(ConfigDir, "goconfig.toml")
 
 
 // Get reads a value from the configuration file.
@@ -45,9 +46,18 @@ func Set(key, value string) error {
 }
 
 
+// FileExists returns true if the configuration file exists.
+func FileExists() bool {
+    if _, err := os.Stat(ConfigFile); err == nil {
+        return true
+    }
+    return false
+}
+
+
 // Load a config file's TOML content.
 func load() (*toml.TomlTree, error) {
-    if _, err := os.Stat(ConfigFile); err == nil {
+    if FileExists() {
         tree, err := toml.LoadFile(ConfigFile)
         if err != nil {
             return nil, err

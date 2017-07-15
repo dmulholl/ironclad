@@ -36,15 +36,12 @@ func initCallback(parser *clio.ArgParser) {
 
     // Check that a filename argument has been supplied.
     if !parser.HasArgs() {
-        exit("you must supply a filename")
+        exit("you must supply a filename for the database")
     }
     filename := parser.GetArgs()[0]
 
-    // Prompt for a password if none has been supplied.
-    password := parser.GetStr("masterpass")
-    if password == "" {
-        password = inputPass("Master Password: ")
-    }
+    // Prompt for a master password for the new database.
+    password := inputPass("Master Password: ")
 
     // Initialize a new database.
     db := irondb.New()

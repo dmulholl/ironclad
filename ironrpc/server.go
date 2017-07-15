@@ -2,6 +2,7 @@ package ironrpc
 
 
 import (
+    "encoding/base64"
     "net"
     "net/rpc"
     "time"
@@ -11,74 +12,98 @@ import (
 )
 
 
-// Error returned when an invalid token is presented to the server.
-var TokenError = errors.New("invalid token")
+import (
+    "github.com/dmulholland/ironclad/ironconfig"
+    "github.com/dmulholland/ironclad/ironcrypt"
+)
 
 
-// Default duration after which the server will automatically shut down.
-var ServerTimeout = 15 * time.Minute
+var CacheTimeout = 15 * time.Minute
 
 
-// TokenPair instances are used internally by the RPC implementation.
-type TokenPair struct {
-    Token string
+type GetData struct {
+    Filename string
+    Nonce string
+}
+
+
+type SetData struct {
+    Filename string
     Password string
 }
 
 
-// RPC password server.
-type Server struct {
-    password string
-    token string
+type CacheServer struct {
+    cache map[string]string
     mutex *sync.Mutex
     lastaccess time.Time
 }
 
 
 // NewServer returns an initialized RPC password server.
-func NewServer() *Server {
-    return &Server{
+func NewServer() *CacheServer {
+    return &CacheServer{
+        cache: make(map[string]string),
         mutex: &sync.Mutex{},
         lastaccess: time.Now(),
     }
 }
 
 
-// Get method exposed by the RPC server.
-func (server *Server) Get(token string, password *string) error {
+// GetPass method exposed by the RPC server.
+func (server *CacheServer) GetPass(data GetData, password *string) error {
     server.mutex.Lock()
     defer server.mutex.Unlock()
 
-    if token != server.token {
+    nonce, found, err := ironconfig.Get("nonce")
+    if err != nil {
+        return errors.New("GetPass: cannot read config file")
+    }
+    if !found {
+        return errors.New("GetPass: nonce not found in file")
+    }
+    if nonce != data.Nonce {
         time.Sleep(time.Second)
-        return TokenError
+        return errors.New("GetPass: invalid nonce")
     }
 
-    *password = server.password
-    server.lastaccess = time.Now()
-    return nil
+    cachedpass, found := server.cache[data.Filename]
+    if found {
+        *password = cachedpass
+        server.lastaccess = time.Now()
+        return nil
+    } else {
+        return errors.New("GetPass: filename not in cache")
+    }
 }
 
 
-// Set method exposed by the RPC server.
-func (server *Server) Set(pair TokenPair, ok *bool) error {
+// SetPass method exposed by the RPC server.
+func (server *CacheServer) SetPass(data SetData, notused *bool) error {
     server.mutex.Lock()
     defer server.mutex.Unlock()
 
-    server.token = pair.Token
-    server.password = pair.Password
+    bytes, err := ironcrypt.RandBytes(32)
+    if err != nil {
+        return errors.New("SetPass: cannot generate random bytes")
+    }
 
-    *ok = true
-    server.lastaccess = time.Now()
+    nonce := base64.StdEncoding.EncodeToString(bytes)
+    err = ironconfig.Set("nonce", nonce)
+    if err != nil {
+        return errors.New("SetPass: cannot set nonce")
+    }
+
+    server.cache[data.Filename] = data.Password
     return nil
 }
 
 
 // Automatically shuts the server down after the specified duration.
-func (server *Server) timeout() {
+func (server *CacheServer) timeout() {
     for {
         server.mutex.Lock()
-        if time.Since(server.lastaccess) > ServerTimeout {
+        if time.Since(server.lastaccess) > CacheTimeout {
             os.Exit(0)
         }
         server.mutex.Unlock()
@@ -88,8 +113,8 @@ func (server *Server) timeout() {
 
 
 // Serve launches a new RPC password server and blocks until the server
-// automatically shuts itself down.
-func Serve(address string) error {
+// automatically shuts itself down via the timeout() function.
+func Serve() error {
     server := NewServer()
     go server.timeout()
 
@@ -98,9 +123,16 @@ func Serve(address string) error {
         return err
     }
 
-    listener, err := net.Listen("tcp", address)
+    listener, err := net.Listen("tcp", "localhost:0")
     if err != nil {
         return err
+    }
+    defer listener.Close()
+
+    address := listener.Addr().String()
+    err = ironconfig.Set("address", address)
+    if err != nil {
+        return errors.New("Serve: cannot set address")
     }
 
     rpc.Accept(listener)

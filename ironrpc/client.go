@@ -2,50 +2,67 @@ package ironrpc
 
 
 import (
+    "errors"
     "net"
     "net/rpc"
     "time"
 )
 
 
-// Timeout duration for client connections.
+import (
+    "github.com/dmulholland/ironclad/ironconfig"
+)
+
+
+// Timeout for client connections.
 var ClientTimeout = 100 * time.Millisecond
 
 
 // RPC client for connecting to the password server.
-type Client struct {
-    connection *rpc.Client
+type CacheClient struct {
+    rpcc *rpc.Client
 }
 
 
 // NewClient returns an initialized RPC client.
-func NewClient(address string) (*Client, error) {
+func NewClient() (*CacheClient, error) {
+    address, found, err := ironconfig.Get("address")
+    if err != nil {
+        return nil, errors.New("NewClient: cannot read config file")
+    }
+    if !found {
+        return nil, errors.New("NewClient: address not found")
+    }
+
     conn, err := net.DialTimeout("tcp", address, ClientTimeout)
     if err != nil {
         return nil, err
     }
-    return &Client{connection: rpc.NewClient(conn)}, nil
+
+    return &CacheClient{rpcc: rpc.NewClient(conn)}, nil
 }
 
 
-// Get attempts to fetch a cached password from the server.
-func (client *Client) Get(token string) (password string, err error) {
-    err = client.connection.Call("Server.Get", token, &password)
+// GetPass attempts to fetch a cached password from the server.
+func (client *CacheClient) GetPass(filename, nonce string) (string, error) {
+    var password string
+    data := GetData{ Filename: filename, Nonce: nonce }
+    err := client.rpcc.Call("CacheServer.GetPass", data, &password)
     return password, err
 }
 
 
-// Set passes a token and password pair to the server.
-func (client *Client) Set(token, password string) (ok bool, err error) {
-    pair := TokenPair{ Token: token, Password: password }
-    err = client.connection.Call("Server.Set", pair, &ok)
-    return ok, err
+// SetPass attempts to cache a password to the server.
+func (client *CacheClient) SetPass(filename, password string) error {
+    var notused bool
+    data := SetData{ Filename: filename, Password: password }
+    return client.rpcc.Call("CacheServer.SetPass", data, &notused)
 }
 
 
 // Close calls the underlying net/rpc.Client's Close() method.
-func (client *Client) Close() {
-    if client.connection != nil {
-        client.connection.Close()
+func (client *CacheClient) Close() {
+    if client.rpcc != nil {
+        client.rpcc.Close()
     }
 }

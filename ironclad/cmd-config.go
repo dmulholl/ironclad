@@ -45,7 +45,10 @@ Flags:
 // Callback for the 'config' command.
 func configCallback(parser *clio.ArgParser) {
     if !parser.HasArgs() {
-        content, err := ioutil.ReadFile(configfile)
+        if !ironconfig.FileExists() {
+            exit("no config file exists")
+        }
+        content, err := ioutil.ReadFile(ironconfig.ConfigFile)
         if err != nil {
             exit(err)
         }

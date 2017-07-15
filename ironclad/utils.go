@@ -31,12 +31,10 @@ var stdinReader = bufio.NewReader(os.Stdin)
 // cleanly piped to files when required.
 func input(prompt string) string {
     fmt.Fprint(os.Stderr, prompt)
-
     input, err := stdinReader.ReadString('\n')
     if err != nil {
         exit(err)
     }
-
     return strings.TrimSpace(input)
 }
 
@@ -44,12 +42,10 @@ func input(prompt string) string {
 // Read a masked password from stdin.
 func inputPass(prompt string) string {
     fmt.Fprint(os.Stderr, prompt)
-
     bytes, err := gopass.GetPasswdMasked()
     if err != nil {
         exit(err)
     }
-
     return strings.TrimSpace(string(bytes))
 }
 
@@ -58,10 +54,10 @@ func inputPass(prompt string) string {
 func inputViaEditor(file, template string) string {
 
     // Set the file for the editor to open.
-    file = filepath.Join(configdir, file)
+    file = filepath.Join(ironconfig.ConfigDir, file)
 
     // Create a file for the editor to open.
-    os.MkdirAll(configdir, 0777)
+    os.MkdirAll(ironconfig.ConfigDir, 0777)
     err := ioutil.WriteFile(file, []byte(template), 0600)
     if err != nil {
         exit(err)
@@ -74,7 +70,7 @@ func inputViaEditor(file, template string) string {
     }
     _, err = exec.LookPath(editor)
     if err != nil {
-        exitfmt("cannot locate text editor '%v'", editor)
+        exit("cannot locate text editor:", editor)
     }
 
     // Launch the editor and wait for it to complete.
@@ -110,15 +106,12 @@ func stdoutIsTerminal() bool {
 
 
 // Exit with an error message and non-zero error code.
-func exit(reason interface{}) {
-    fmt.Fprintf(os.Stderr, "Error: %v.\n", reason)
-    os.Exit(1)
-}
-
-
-// Exit with a formatted error message and non-zero error code.
-func exitfmt(format string, reason interface{}) {
-    fmt.Fprintf(os.Stderr, "Error: %v.\n", fmt.Sprintf(format, reason))
+func exit(objects ...interface{}) {
+    fmt.Fprint(os.Stderr, "Error:")
+    for _, obj := range objects {
+        fmt.Fprintf(os.Stderr, " %v", obj)
+    }
+    fmt.Fprint(os.Stderr, "\n")
     os.Exit(1)
 }
 
@@ -201,18 +194,4 @@ func charstr(length int, char rune) string {
         runes[i] = char
     }
     return string(runes)
-}
-
-
-// Returns the address for the cached-password server.
-func serverAddress() string {
-    port, found, err := ironconfig.Get("port")
-    if err != nil {
-        exit(err)
-    }
-    if found {
-        return "localhost:" + port
-    } else {
-        return "localhost:" + defaultport
-    }
 }

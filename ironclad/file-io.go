@@ -6,6 +6,7 @@ import "github.com/dmulholland/clio/go/clio"
 
 import (
     "os"
+    "path/filepath"
 )
 
 
@@ -29,16 +30,21 @@ func loadDB(args *clio.ArgParser) (filename, password string, db *irondb.DB) {
             filename = input("File: ")
         }
     }
+    filename, err := filepath.Abs(filename)
+    if err != nil {
+        exit("loadDB:", err)
+    }
 
-    // Make sure the specified file exists.
+    // Make sure the file exists.
     if _, err := os.Stat(filename); os.IsNotExist(err) {
-        exitfmt("'%v' does not exist", filename)
+        exit("file does not exist:", filename)
     }
 
     // Look for a cached password from the application's last run. This
-    // password may be invalid for the current file so if it fails prompt the
-    // user to enter a new one.
-    if password, found := getCachedPassword(); found {
+    // password may be invalid for the current file so if it fails prompt
+    // the user to enter a new one.
+    if password, found := getCachedPassword(filename); found {
+        println("password found")
         data, err := ironio.Load(filename, password)
         if err != nil {
             password = inputPass("Password: ")
@@ -51,12 +57,12 @@ func loadDB(args *clio.ArgParser) (filename, password string, db *irondb.DB) {
         if err != nil {
             exit(err)
         }
-        setCachedPassword(password)
+        setCachedPassword(filename, password)
         setCachedFilename(filename)
         return filename, password, db
     }
 
-    // No command-line or cached password. Prompt the user to enter one.
+    // No cached password. Prompt the user to enter one.
     password = inputPass("Password: ")
     data, err := ironio.Load(filename, password)
     if err != nil {
@@ -66,14 +72,14 @@ func loadDB(args *clio.ArgParser) (filename, password string, db *irondb.DB) {
     if err != nil {
         exit(err)
     }
-    setCachedPassword(password)
+    setCachedPassword(filename, password)
     setCachedFilename(filename)
     return filename, password, db
 }
 
 
 // Encrypt and save a database file.
-func saveDB(file, password string, db *irondb.DB) {
+func saveDB(filename, password string, db *irondb.DB) {
 
     // Serialize the database as a byte-slice of JSON.
     json, err := db.ToJSON()
@@ -82,7 +88,7 @@ func saveDB(file, password string, db *irondb.DB) {
     }
 
     // Encrypt the serialized database and write it to disk.
-    err = ironio.Save(file, password, json)
+    err = ironio.Save(filename, password, json)
     if err != nil {
         exit(err)
     }

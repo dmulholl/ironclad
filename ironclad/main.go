@@ -52,8 +52,8 @@ func main() {
     parser := clio.NewParser(helptext, version)
 
     // Register the 'add' command.
-    addParser := parser.AddCmd("add", addHelp, addCallback)
-    addParser.AddStr("file f", "")
+    addCmd := parser.AddCmd("add", addHelp, addCallback)
+    addCmd.AddStr("file f", "")
 
     // Register the 'cache' command.
     parser.AddCmd("cache", cacheHelp, cacheCallback)
@@ -62,79 +62,79 @@ func main() {
     parser.AddCmd("config", configHelp, configCallback)
 
     // Register the 'decrypt' command.
-    decryptParser := parser.AddCmd("decrypt", decryptHelp, decryptCallback)
-    decryptParser.AddStr("out o", "")
+    decryptCmd := parser.AddCmd("decrypt", decryptHelp, decryptCallback)
+    decryptCmd.AddStr("out o", "")
 
     // Register the 'delete' command.
-    deleteParser := parser.AddCmd("delete", deleteHelp, deleteCallback)
-    deleteParser.AddStr("file f", "")
+    deleteCmd := parser.AddCmd("delete", deleteHelp, deleteCallback)
+    deleteCmd.AddStr("file f", "")
 
     // Register the 'dump' command.
-    dumpParser := parser.AddCmd("dump", dumpHelp, dumpCallback)
-    dumpParser.AddStr("file f", "")
+    dumpCmd := parser.AddCmd("dump", dumpHelp, dumpCallback)
+    dumpCmd.AddStr("file f", "")
 
     // Register the 'edit' command.
-    editParser := parser.AddCmd("edit", editHelp, editCallback)
-    editParser.AddStr("file f", "")
-    editParser.AddFlag("title t")
-    editParser.AddFlag("url l")
-    editParser.AddFlag("username u")
-    editParser.AddFlag("password p")
-    editParser.AddFlag("notes n")
-    editParser.AddFlag("tags s")
-    editParser.AddFlag("email e")
+    editCmd := parser.AddCmd("edit", editHelp, editCallback)
+    editCmd.AddStr("file f", "")
+    editCmd.AddFlag("title t")
+    editCmd.AddFlag("url l")
+    editCmd.AddFlag("username u")
+    editCmd.AddFlag("password p")
+    editCmd.AddFlag("notes n")
+    editCmd.AddFlag("tags s")
+    editCmd.AddFlag("email e")
 
     // Register the 'encrypt' command.
-    encryptParser := parser.AddCmd("encrypt", encryptHelp, encryptCallback)
-    encryptParser.AddStr("out o", "")
+    encryptCmd := parser.AddCmd("encrypt", encryptHelp, encryptCallback)
+    encryptCmd.AddStr("out o", "")
 
     // Register the 'export' command.
-    exportParser := parser.AddCmd("export", exportHelp, exportCallback)
-    exportParser.AddStr("file f", "")
-    exportParser.AddStr("tag t", "")
+    exportCmd := parser.AddCmd("export", exportHelp, exportCallback)
+    exportCmd.AddStr("file f", "")
+    exportCmd.AddStr("tag t", "")
 
     // Register the 'gen' command.
-    genParser := parser.AddCmd("gen", genHelp, genCallback)
-    genParser.AddStr("file f", "")
-    genParser.AddFlag("digits d")
-    genParser.AddFlag("exclude-similar x")
-    genParser.AddFlag("lowercase l")
-    genParser.AddFlag("symbols s")
-    genParser.AddFlag("uppercase u")
-    genParser.AddFlag("readable r")
-    genParser.AddFlag("print p")
+    genCmd := parser.AddCmd("gen", genHelp, genCallback)
+    genCmd.AddStr("file f", "")
+    genCmd.AddFlag("digits d")
+    genCmd.AddFlag("exclude-similar x")
+    genCmd.AddFlag("lowercase l")
+    genCmd.AddFlag("symbols s")
+    genCmd.AddFlag("uppercase u")
+    genCmd.AddFlag("readable r")
+    genCmd.AddFlag("print p")
 
     // Register the 'import' command.
-    importParser := parser.AddCmd("import", importHelp, importCallback)
-    importParser.AddStr("file f", "")
+    importCmd := parser.AddCmd("import", importHelp, importCallback)
+    importCmd.AddStr("file f", "")
 
     // Register the 'init' command.
     parser.AddCmd("init", initHelp, initCallback)
 
     // Register the 'list' command.
-    listParser := parser.AddCmd("list show", listHelp, listCallback)
-    listParser.AddStr("file f", "")
-    listParser.AddStr("tag t", "")
-    listParser.AddFlag("verbose v")
+    listCmd := parser.AddCmd("list show", listHelp, listCallback)
+    listCmd.AddStr("file f", "")
+    listCmd.AddStr("tag t", "")
+    listCmd.AddFlag("verbose v")
 
     // Register the 'pass' command.
-    passParser := parser.AddCmd("pass", passHelp, passCallback)
-    passParser.AddStr("file f", "")
-    passParser.AddFlag("readable r")
-    passParser.AddFlag("print p")
+    passCmd := parser.AddCmd("pass", passHelp, passCallback)
+    passCmd.AddStr("file f", "")
+    passCmd.AddFlag("readable r")
+    passCmd.AddFlag("print p")
 
     // Register the 'purge' command.
-    purgeParser := parser.AddCmd("purge", purgeHelp, purgeCallback)
-    purgeParser.AddStr("file f", "")
+    purgeCmd := parser.AddCmd("purge", purgeHelp, purgeCallback)
+    purgeCmd.AddStr("file f", "")
 
     // Register the 'tags' command.
-    tagsParser := parser.AddCmd("tags", tagsHelp, tagsCallback)
-    tagsParser.AddStr("file f", "")
+    tagsCmd := parser.AddCmd("tags", tagsHelp, tagsCallback)
+    tagsCmd.AddStr("file f", "")
 
     // Register the 'user' command.
-    userParser := parser.AddCmd("user", userHelp, userCallback)
-    userParser.AddStr("file f", "")
-    userParser.AddFlag("print p")
+    userCmd := parser.AddCmd("user", userHelp, userCallback)
+    userCmd.AddStr("file f", "")
+    userCmd.AddFlag("print p")
 
     // Parse the command line arguments. If no command is found, print the
     // help text and exit.

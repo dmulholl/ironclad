@@ -23,7 +23,8 @@ import (
 var cacheHelp = fmt.Sprintf(`
 Usage: %s cache [FLAGS]
 
-  Run the cached-password server. This command should not be run manually.
+  Run the cached-password server. This comand is run automatically when
+  required; it should not be run manually.
 
 Flags:
   --help    Print this command's help text and exit.

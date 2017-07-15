@@ -48,10 +48,10 @@ func Set(key, value string) error {
 
 // FileExists returns true if the configuration file exists.
 func FileExists() bool {
-    if _, err := os.Stat(ConfigFile); err == nil {
-        return true
+    if _, err := os.Stat(ConfigFile); os.IsNotExist(err) {
+        return false
     }
-    return false
+    return true
 }
 
 

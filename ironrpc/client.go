@@ -14,11 +14,9 @@ import (
 )
 
 
-// Timeout for client connections.
 var ClientTimeout = 100 * time.Millisecond
 
 
-// RPC client for connecting to the password server.
 type CacheClient struct {
     rpcc *rpc.Client
 }

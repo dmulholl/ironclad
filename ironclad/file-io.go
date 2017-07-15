@@ -44,7 +44,6 @@ func loadDB(args *clio.ArgParser) (filename, password string, db *irondb.DB) {
     // password may be invalid for the current file so if it fails prompt
     // the user to enter a new one.
     if password, found := getCachedPassword(filename); found {
-        println("password found")
         data, err := ironio.Load(filename, password)
         if err != nil {
             password = inputPass("Password: ")

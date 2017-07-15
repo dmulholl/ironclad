@@ -20,7 +20,6 @@ import (
 )
 
 
-// Help text for the 'cache' command.
 var cacheHelp = fmt.Sprintf(`
 Usage: %s cache [FLAGS]
 
@@ -31,7 +30,6 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
-// Callback for the 'cache' command.
 func cacheCallback(parser *clio.ArgParser) {
 
     // Set up a handler to intercept SIGINT interrupts. This fixes an annoying

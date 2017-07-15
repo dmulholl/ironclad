@@ -11,7 +11,6 @@ import (
 )
 
 
-// Help text for the 'export' command.
 var exportHelp = fmt.Sprintf(`
 Usage: %s export [FLAGS] [OPTIONS] [ARGUMENTS]
 
@@ -30,7 +29,6 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
-// Callback for the 'export' command.
 func exportCallback(parser *clio.ArgParser) {
 
     // Load the database.

@@ -17,7 +17,6 @@ import (
 )
 
 
-// Help text for the 'decrypt' command.
 var decryptHelp = fmt.Sprintf(`
 Usage: %s decrypt [FLAGS] [OPTIONS] [ARGUMENTS]
 
@@ -34,7 +33,6 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
-// Callback for the 'export' command.
 func decryptCallback(parser *clio.ArgParser) {
 
     if !parser.HasArgs() {

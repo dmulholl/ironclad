@@ -12,7 +12,6 @@ import (
 )
 
 
-// Help text for the 'tags' command.
 var tagsHelp = fmt.Sprintf(`
 Usage: %s tags [FLAGS] [OPTIONS]
 
@@ -26,7 +25,6 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
-// Callback for the 'tags' command.
 func tagsCallback(parser *clio.ArgParser) {
 
     // Load the database.

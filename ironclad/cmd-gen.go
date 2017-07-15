@@ -24,7 +24,6 @@ const (
 )
 
 
-// Help text for the 'gen' command.
 var genHelp = fmt.Sprintf(`
 Usage: %s gen [FLAGS] ARGUMENTS
 
@@ -60,7 +59,6 @@ Flags:
 `, filepath.Base(os.Args[0]), PoolSymbols, PoolSimilars)
 
 
-// Callback for the 'gen' command.
 func genCallback(parser *clio.ArgParser) {
 
     var length int

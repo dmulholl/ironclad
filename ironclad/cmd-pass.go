@@ -11,7 +11,6 @@ import (
 )
 
 
-// Help text for the 'pass' command.
 var passHelp = fmt.Sprintf(`
 Usage: %s pass [FLAGS] [OPTIONS] ARGUMENTS
 
@@ -33,7 +32,6 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
-// Callback for the 'pass' command.
 func passCallback(parser *clio.ArgParser) {
 
     // Make sure an argument has been specified.

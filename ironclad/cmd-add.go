@@ -17,8 +17,6 @@ import (
 )
 
 
-
-// Help text for the 'add' command.
 var addHelp = fmt.Sprintf(`
 Usage: %s add [FLAGS] [OPTIONS]
 
@@ -33,7 +31,6 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
-// Callback for the 'add' command.
 func addCallback(parser *clio.ArgParser) {
 
     // Load the database.

@@ -18,7 +18,6 @@ import (
 )
 
 
-// Help text for the 'config' command.
 var configHelp = fmt.Sprintf(`
 Usage: %s config [FLAGS] ARGUMENTS
 
@@ -42,7 +41,6 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
-// Callback for the 'config' command.
 func configCallback(parser *clio.ArgParser) {
     if !parser.HasArgs() {
         if !ironconfig.FileExists() {

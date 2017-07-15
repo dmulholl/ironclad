@@ -12,7 +12,6 @@ import (
 )
 
 
-// Help text for the 'edit' command.
 var editHelp = fmt.Sprintf(`
 Usage: %s edit [FLAGS] [OPTIONS] ARGUMENTS
 
@@ -41,7 +40,6 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
-// Callback for the 'edit' command.
 func editCallback(parser *clio.ArgParser) {
 
     // Make sure an argument has been specified.

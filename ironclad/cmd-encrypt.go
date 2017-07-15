@@ -17,7 +17,6 @@ import (
 )
 
 
-// Help text for the 'encrypt' command.
 var encryptHelp = fmt.Sprintf(`
 Usage: %s encrypt [FLAGS] [OPTIONS] [ARGUMENTS]
 
@@ -34,7 +33,6 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
-// Callback for the 'export' command.
 func encryptCallback(parser *clio.ArgParser) {
 
     if !parser.HasArgs() {

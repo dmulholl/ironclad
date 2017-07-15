@@ -13,7 +13,6 @@ import (
 )
 
 
-// Help text for the 'dump' command.
 var dumpHelp = fmt.Sprintf(`
 Usage: %s dump [FLAGS] [OPTIONS]
 
@@ -27,7 +26,6 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
-// Callback for the 'dump' command.
 func dumpCallback(parser *clio.ArgParser) {
 
     // Load the database.

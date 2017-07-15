@@ -11,7 +11,6 @@ import (
 )
 
 
-// Help text for the 'list' command.
 var listHelp = fmt.Sprintf(`
 Usage: %s list [FLAGS] [OPTIONS] [ARGUMENTS]
 
@@ -38,7 +37,6 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
-// Callback for the 'list' command.
 func listCallback(parser *clio.ArgParser) {
 
     // Load the database.

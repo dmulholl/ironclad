@@ -12,7 +12,6 @@ import (
 )
 
 
-// Help text for the 'delete' command.
 var deleteHelp = fmt.Sprintf(`
 Usage: %s delete [FLAGS] [OPTIONS] ARGUMENTS
 
@@ -29,7 +28,6 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
-// Callback for the 'delete' command.
 func deleteCallback(parser *clio.ArgParser) {
 
     // Check that at least one entry argument has been supplied.

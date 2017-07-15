@@ -12,7 +12,6 @@ import (
 )
 
 
-// Help text for the 'import' command.
 var importHelp = fmt.Sprintf(`
 Usage: %s import [FLAGS] [OPTIONS] ARGUMENTS
 
@@ -29,7 +28,6 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
-// Callback for the 'import' command.
 func importCallback(parser *clio.ArgParser) {
 
     // Make sure an argument has been specified.

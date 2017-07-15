@@ -11,7 +11,6 @@ import (
 )
 
 
-// Help text for the 'user' command.
 var userHelp = fmt.Sprintf(`
 Usage: %s user [FLAGS] [OPTIONS] ARGUMENTS
 
@@ -33,7 +32,6 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
-// Callback for the 'user' command.
 func userCallback(parser *clio.ArgParser) {
 
     // Make sure an argument has been specified.

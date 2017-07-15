@@ -16,7 +16,6 @@ import (
 )
 
 
-// Help text for the 'init' command.
 var initHelp = fmt.Sprintf(`
 Usage: %s init [FLAGS] ARGUMENTS
 
@@ -31,7 +30,6 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
-// Callback for the 'init' command.
 func initCallback(parser *clio.ArgParser) {
 
     // Check that a filename argument has been supplied.

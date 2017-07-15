@@ -11,7 +11,6 @@ import (
 )
 
 
-// Help text for the 'purge' command.
 var purgeHelp = fmt.Sprintf(`
 Usage: %s purge [FLAGS] [OPTIONS]
 
@@ -25,15 +24,8 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
-// Callback for the 'purge' command.
 func purgeCallback(parser *clio.ArgParser) {
-
-    // Load the database.
     filename, password, db := loadDB(parser)
-
-    // Purge the database.
     db.Purge()
-
-    // Save the updated database to disk.
     saveDB(filename, password, db)
 }

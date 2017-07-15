@@ -19,10 +19,10 @@ import (
 // Load a database from an encrypted file.
 func loadDB(args *clio.ArgParser) (filename, password string, db *irondb.DB) {
 
-    // Determine the file to use. First check for a file specified on
-    // the command line, next look for a cached filename from the
-    // application's last run, if that fails prompt the user to enter a
-    // filename.
+    // Determine the file to use.
+    // 1. Has a filename been specified on the command line?
+    // 2. Look for a cached filename.
+    // 3. Prompt the user to enter a filename.
     filename = args.GetStr("file")
     if filename == "" {
         var found bool
@@ -34,8 +34,6 @@ func loadDB(args *clio.ArgParser) (filename, password string, db *irondb.DB) {
     if err != nil {
         exit("loadDB:", err)
     }
-
-    // Make sure the file exists.
     if _, err := os.Stat(filename); os.IsNotExist(err) {
         exit("file does not exist:", filename)
     }

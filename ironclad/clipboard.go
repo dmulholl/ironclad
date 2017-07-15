@@ -20,15 +20,14 @@ import (
 // Write a string to the system clipboard. Automatically overwrite the
 // clipboard after a customizable delay.
 func writeToClipboard(value string) {
-
     if clipboard.Unsupported {
         exit("clipboard functionality is not supported on this system")
     }
 
-    // Default duration to wait before overwriting the clipboard.
+    // Default timeout.
     milliseconds := 15000
 
-    // Check if a custom duration has been set in the config file.
+    // Check for a custom timeout.
     strval, found, err := ironconfig.Get("clip-timeout")
     if err != nil {
         exit(err)

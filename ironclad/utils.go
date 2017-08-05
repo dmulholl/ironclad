@@ -50,6 +50,16 @@ func inputPass(prompt string) string {
 }
 
 
+// Read from stdin until EOF.
+func inputViaStdin() string {
+    input, err := ioutil.ReadAll(stdinReader)
+    if err != nil {
+        exit(err)
+    }
+    return string(input)
+}
+
+
 // Launch a text editor and capture its output.
 func inputViaEditor(file, template string) string {
 

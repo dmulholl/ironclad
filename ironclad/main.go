@@ -11,7 +11,7 @@ import (
 )
 
 
-const version = "0.19.1"
+const version = "0.20.0.dev"
 
 
 var helptext = fmt.Sprintf(`
@@ -54,6 +54,7 @@ func main() {
     // Register the 'add' command.
     addCmd := parser.AddCmd("add", addHelp, addCallback)
     addCmd.AddStr("file f", "")
+    addCmd.AddFlag("no-editor")
 
     // Register the 'cache' command.
     parser.AddCmd("cache", cacheHelp, cacheCallback)
@@ -83,6 +84,7 @@ func main() {
     editCmd.AddFlag("notes n")
     editCmd.AddFlag("tags s")
     editCmd.AddFlag("email e")
+    editCmd.AddFlag("no-editor")
 
     // Register the 'encrypt' command.
     encryptCmd := parser.AddCmd("encrypt", encryptHelp, encryptCallback)

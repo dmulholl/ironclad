@@ -31,6 +31,7 @@ Options:
 Flags:
   -e, --email               Edit the entry's email address.
       --help                Print this command's help text and exit.
+      --no-editor           Do not launch an external editor to edit notes.
   -n, --notes               Edit the entry's notes.
   -p, --password            Edit the entry's password.
       --tags                Edit the entry's tags.
@@ -124,7 +125,17 @@ func editCallback(parser *clio.ArgParser) {
     }
 
     if parser.GetFlag("notes") || (allFields && editField("notes")) {
-        entry.Notes = inputViaEditor("edit-note", entry.Notes)
+        if parser.GetFlag("no-editor") {
+            oldnotes := strings.Trim(entry.Notes, "\r\n")
+            if oldnotes != "" {
+                fmt.Println(oldnotes)
+                line("·")
+            }
+            entry.Notes = inputViaStdin()
+            line("·")
+        } else {
+            entry.Notes = inputViaEditor("edit-note", entry.Notes)
+        }
     }
 
     // Save the updated database to disk.

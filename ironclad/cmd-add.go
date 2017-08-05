@@ -28,6 +28,7 @@ Options:
 
 Flags:
       --help                Print this command's help text and exit.
+      --no-editor           Do not launch an external editor to add notes.
 `, filepath.Base(os.Args[0]))
 
 
@@ -62,11 +63,16 @@ func addCallback(parser *clio.ArgParser) {
         }
     }
 
-    // Do we need to launch a text editor to add notes?
+    // Add a note?
     line("─")
     answer := input("  Add a note to this entry? (y/n): ")
     if strings.ToLower(answer) == "y" {
-        entry.Notes = inputViaEditor("add-note", "")
+        if parser.GetFlag("no-editor") {
+            line("─")
+            entry.Notes = inputViaStdin()
+        } else {
+            entry.Notes = inputViaEditor("add-note", "")
+        }
     } else {
         entry.Notes = ""
     }

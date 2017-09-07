@@ -18,7 +18,7 @@ Usage: %s user [FLAGS] [OPTIONS] ARGUMENTS
   command will fall back on the email address if the username field is empty.
 
   The entry can be specified by its ID or by any unique set of case-insensitive
-  subtrings of its title.
+  substrings of its title.
 
 Arguments:
   <entry>                   Entry ID or title.

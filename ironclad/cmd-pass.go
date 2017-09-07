@@ -17,7 +17,7 @@ Usage: %s pass [FLAGS] [OPTIONS] ARGUMENTS
   Copy a stored password to the system clipboard or print it to stdout.
 
   The entry can be specified by its ID or by any unique set of case-insensitive
-  subtrings of its title.
+  substrings of its title.
 
 Arguments:
   <entry>                   Entry ID or title.

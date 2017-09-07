@@ -76,7 +76,7 @@ func (list EntryList) FilterByAny(queries ...string) EntryList {
 
 // FilterByAll filters an EntryList returning entries which match *all* of the
 // specified query strings, where each query string is a case-insensitive
-// subtring of the entry title. If a single query string is supplied it will
+// substring of the entry title. If a single query string is supplied it will
 // first be checked to see if it matches a valid entry ID.
 func (list EntryList) FilterByAll(queries ...string) EntryList {
     matches := make([]*Entry, 0)

@@ -17,13 +17,12 @@ Usage: %s edit [FLAGS] [OPTIONS] ARGUMENTS
 
   Edit an existing database entry.
 
-  You can specify the fields to edit using the flags listed below. If no
-  flags are specified you will be prompted to edit each field in turn.
-  Enter 'y' to edit a field or 'n' (or simply hit return) to leave the
-  field unchanged.
+  You can specify the fields to edit using the flags listed below. If no flags
+  are specified you will be prompted to edit each field in turn. Enter 'y' to
+  edit a field or 'n' (or simply hit return) to leave the field unchanged.
 
   The entry can be specified by its ID or by any unique set of case-insensitive
-  subtrings of its title.
+  substrings of its title.
 
 Arguments:
   <entry>                   Entry to edit by ID or title.
@@ -54,7 +53,7 @@ func editCallback(parser *clio.ArgParser) {
     // Load the database.
     filename, password, db := loadDB(parser)
 
-    // Search for an entry corresponding to the specified argument.
+    // Search for an entry corresponding to the supplied arguments.
     list := db.Active().FilterByAll(parser.GetArgs()...)
     if len(list) == 0 {
         exit("no matching entry")

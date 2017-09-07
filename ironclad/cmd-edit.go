@@ -22,6 +22,9 @@ Usage: %s edit [FLAGS] [OPTIONS] ARGUMENTS
   Enter 'y' to edit a field or 'n' (or simply hit return) to leave the
   field unchanged.
 
+  The entry can be specified by its ID or by any unique set of case-insensitive
+  subtrings of its title.
+
 Arguments:
   <entry>                   Entry to edit by ID or title.
 
@@ -43,7 +46,7 @@ Flags:
 
 func editCallback(parser *clio.ArgParser) {
 
-    // Make sure an argument has been specified.
+    // Make sure we have at least one argument.
     if !parser.HasArgs() {
         exit("missing entry argument")
     }
@@ -52,7 +55,7 @@ func editCallback(parser *clio.ArgParser) {
     filename, password, db := loadDB(parser)
 
     // Search for an entry corresponding to the specified argument.
-    list := db.Active().FilterProgressive(parser.GetArgs()[0])
+    list := db.Active().FilterByAll(parser.GetArgs()...)
     if len(list) == 0 {
         exit("no matching entry")
     } else if len(list) > 1 {

@@ -53,7 +53,7 @@ func listCallback(parser *clio.ArgParser) {
 
     // Do we have query strings to filter on?
     if parser.HasArgs() {
-        list = list.FilterByQuery(parser.GetArgs()...)
+        list = list.FilterByAny(parser.GetArgs()...)
         title = "Matching Entries"
     }
 

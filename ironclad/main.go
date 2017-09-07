@@ -11,7 +11,7 @@ import (
 )
 
 
-const version = "0.20.0"
+const version = "0.21.0.dev"
 
 
 var helptext = fmt.Sprintf(`
@@ -142,6 +142,6 @@ func main() {
     // help text and exit.
     parser.Parse()
     if !parser.HasCmd() {
-        parser.Help()
+        parser.ExitHelp()
     }
 }

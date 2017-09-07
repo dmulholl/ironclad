@@ -42,10 +42,10 @@ func (list EntryList) FilterByTag(tag string) EntryList {
 }
 
 
-// FilterByQuery filters an EntryList returning only those entries which match
-// the specified query strings. Each query string can be an entry ID or a
+// FilterByAny filters an EntryList returning entries which match *any* of the
+// specified query strings. Each query string can be an entry ID or a
 // case-insensitive substring of an entry title.
-func (list EntryList) FilterByQuery(queries ...string) EntryList {
+func (list EntryList) FilterByAny(queries ...string) EntryList {
     matches := make([]*Entry, 0)
     for _, query := range queries {
 
@@ -74,6 +74,51 @@ func (list EntryList) FilterByQuery(queries ...string) EntryList {
 }
 
 
+// FilterByAll filters an EntryList returning entries which match *all* of the
+// specified query strings, where each query string is a case-insensitive
+// subtring of the entry title. If a single query string is supplied it will
+// first be checked to see if it matches a valid entry ID.
+func (list EntryList) FilterByAll(queries ...string) EntryList {
+    matches := make([]*Entry, 0)
+
+    // If we have a single query string, check if it matches an entry ID.
+    if len(queries) == 1 {
+        if i, err := strconv.ParseInt(queries[0], 10, 32); err == nil {
+            id := int(i)
+            for _, entry := range list {
+                if id == entry.Id {
+                    matches = append(matches, entry)
+                    return matches
+                }
+            }
+        }
+    }
+
+    // Convert all query strings to lower case.
+    for i, _ := range queries {
+        queries[i] = strings.ToLower(queries[i])
+    }
+
+    // Check entry titles for a case-insensitive substring match on all
+    // query strings.
+    for _, entry := range list {
+        entrytitle := strings.ToLower(entry.Title)
+        match := true
+        for _, query := range queries {
+            if !strings.Contains(entrytitle, query) {
+                match = false
+                break
+            }
+        }
+        if match {
+            matches = append(matches, entry)
+        }
+    }
+
+    return matches
+}
+
+
 // FilterByIDString filters an EntryList returning only those entries which
 // match the specified query strings where each query string is an entry ID.
 func (list EntryList) FilterByIDString(queries ...string) EntryList {
@@ -89,60 +134,6 @@ func (list EntryList) FilterByIDString(queries ...string) EntryList {
             }
         }
     }
-    return matches
-}
-
-
-// FilterProgressive filters an EntryList using progressively less restrictive
-// criteria until it finds one or more matches or runs out of criteria. The
-// query string may be (in order) an entry ID or a case-insensitive exact,
-// prefix, or substring match for an entry title.
-func (list EntryList) FilterProgressive(query string) EntryList {
-    matches := make([]*Entry, 0)
-
-    // First, see if we can parse the query string as an integer ID.
-    // If we can, look for an entry with a matching ID.
-    if i, err := strconv.ParseInt(query, 10, 32); err == nil {
-        id := int(i)
-        for _, entry := range list {
-            if id == entry.Id {
-                matches = append(matches, entry)
-                break
-            }
-        }
-    }
-    if len(matches) > 0 {
-        return matches
-    }
-
-    // No ID match so check for an exact match on an entry title.
-    query = strings.ToLower(query)
-    for _, entry := range list {
-        if query == strings.ToLower(entry.Title) {
-            matches = append(matches, entry)
-        }
-    }
-    if len(matches) > 0 {
-        return matches
-    }
-
-    // No exact match so check for a prefix match on an entry title.
-    for _, entry := range list {
-        if strings.HasPrefix(strings.ToLower(entry.Title), query) {
-            matches = append(matches, entry)
-        }
-    }
-    if len(matches) > 0 {
-        return matches
-    }
-
-    // No prefix match so check for a substring match.
-    for _, entry := range list {
-        if strings.Contains(strings.ToLower(entry.Title), query) {
-            matches = append(matches, entry)
-        }
-    }
-
     return matches
 }
 

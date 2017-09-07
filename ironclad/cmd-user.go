@@ -17,8 +17,8 @@ Usage: %s user [FLAGS] [OPTIONS] ARGUMENTS
   Copy a stored username to the system clipboard or print it to stdout. This
   command will fall back on the email address if the username field is empty.
 
-  The entry can be specified by its ID or by any unique case-insensitive
-  subtring of its title.
+  The entry can be specified by its ID or by any unique set of case-insensitive
+  subtrings of its title.
 
 Arguments:
   <entry>                   Entry ID or title.
@@ -34,7 +34,7 @@ Flags:
 
 func userCallback(parser *clio.ArgParser) {
 
-    // Make sure an argument has been specified.
+    // Make sure we have at least one argument.
     if !parser.HasArgs() {
         exit("missing entry argument")
     }
@@ -42,8 +42,8 @@ func userCallback(parser *clio.ArgParser) {
     // Load the database.
     _, _, db := loadDB(parser)
 
-    // Search for an entry corresponding to the specified argument.
-    list := db.Active().FilterProgressive(parser.GetArg(0))
+    // Search for an entry corresponding to the supplied arguments.
+    list := db.Active().FilterByAll(parser.GetArgs()...)
     if len(list) == 0 {
         exit("no matching entry")
     } else if len(list) > 1 {

@@ -39,7 +39,7 @@ func exportCallback(parser *clio.ArgParser) {
 
     // Do we have query strings to filter on?
     if parser.HasArgs() {
-        list = list.FilterByQuery(parser.GetArgs()...)
+        list = list.FilterByAny(parser.GetArgs()...)
     }
 
     // Are we filtering by tag?

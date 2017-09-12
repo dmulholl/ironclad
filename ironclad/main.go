@@ -11,7 +11,7 @@ import (
 )
 
 
-const version = "0.21.1"
+const version = "0.21.2"
 
 
 var helptext = fmt.Sprintf(`
@@ -36,6 +36,7 @@ Commands:
   import            Import entries into a database.
   init              Initialize a new password database.
   list              List database entries.
+  new               Add a new entry to a database.
   pass              Copy a password to the clipboard.
   purge             Purge deleted entries from a database.
   tags              List database tags.
@@ -52,7 +53,7 @@ func main() {
     parser := clio.NewParser(helptext, version)
 
     // Register the 'add' command.
-    addCmd := parser.NewCmd("add", addHelp, addCallback)
+    addCmd := parser.NewCmd("add new", addHelp, addCallback)
     addCmd.NewStr("file f", "")
     addCmd.NewFlag("no-editor")
 

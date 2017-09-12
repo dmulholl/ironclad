@@ -51,7 +51,7 @@ func configCallback(parser *clio.ArgParser) {
             exit(err)
         }
         fmt.Println(strings.TrimSpace(string(content)))
-    } else if parser.LenArgs() == 1 {
+    } else if parser.NumArgs() == 1 {
         value, found, err := ironconfig.Get(parser.GetArg(0))
         if err != nil {
             exit(err)
@@ -60,7 +60,7 @@ func configCallback(parser *clio.ArgParser) {
             exit("key not found")
         }
         fmt.Println(value)
-    } else if parser.LenArgs() == 2 {
+    } else if parser.NumArgs() == 2 {
         err := ironconfig.Set(parser.GetArg(0), parser.GetArg(1))
         if err != nil {
             exit(err)

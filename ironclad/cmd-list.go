@@ -1,7 +1,7 @@
 package main
 
 
-import "github.com/dmulholland/clio/go/clio"
+import "github.com/dmulholland/args"
 
 
 import (
@@ -32,20 +32,15 @@ Options:
   -t, --tag <str>           Filter entries using the specified tag.
 
 Flags:
-      --help                Print this command's help text and exit.
+  -h, --help                Print this command's help text and exit.
   -v, --verbose             Use the verbose list format.
 `, filepath.Base(os.Args[0]))
 
 
-func listCallback(parser *clio.ArgParser) {
+func listCallback(parser *args.ArgParser) {
 
     // Load the database.
     _, _, db := loadDB(parser)
-
-    // Has the 'show' alias been used?
-    if parser.GetParent().GetCmdName() == "show" {
-        parser.SetFlag("verbose", true)
-    }
 
     // Default to displaying all active entries.
     list := db.Active()
@@ -58,13 +53,13 @@ func listCallback(parser *clio.ArgParser) {
     }
 
     // Are we filtering by tag?
-    if parser.GetStr("tag") != "" {
-        list = list.FilterByTag(parser.GetStr("tag"))
+    if parser.GetString("tag") != "" {
+        list = list.FilterByTag(parser.GetString("tag"))
         title = "Matching Entries"
     }
 
     // Print the list of entries.
-    if parser.GetFlag("verbose") {
+    if parser.GetFlag("verbose") || parser.GetParent().GetCmdName() == "show" {
         printVerbose(list, db.Size(), title)
     } else {
         printCompact(list, db.Size())

@@ -1,7 +1,7 @@
 package main
 
 
-import "github.com/dmulholland/clio/go/clio"
+import "github.com/dmulholland/args"
 
 
 import (
@@ -37,11 +37,11 @@ Arguments:
   [value]                   Value to set.
 
 Flags:
-  --help                    Print this command's help text and exit.
+  -h, --help                Print this command's help text and exit.
 `, filepath.Base(os.Args[0]))
 
 
-func configCallback(parser *clio.ArgParser) {
+func configCallback(parser *args.ArgParser) {
     if !parser.HasArgs() {
         if !ironconfig.FileExists() {
             exit("no config file exists")

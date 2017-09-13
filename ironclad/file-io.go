@@ -1,7 +1,7 @@
 package main
 
 
-import "github.com/dmulholland/clio/go/clio"
+import "github.com/dmulholland/args"
 
 
 import (
@@ -17,13 +17,13 @@ import (
 
 
 // Load a database from an encrypted file.
-func loadDB(args *clio.ArgParser) (filename, password string, db *irondb.DB) {
+func loadDB(args *args.ArgParser) (filename, password string, db *irondb.DB) {
 
     // Determine the file to use.
     // 1. Has a filename been specified on the command line?
     // 2. Look for a cached filename.
     // 3. Prompt the user to enter a filename.
-    filename = args.GetStr("file")
+    filename = args.GetString("file")
     if filename == "" {
         var found bool
         if filename, found = getCachedFilename(); !found {

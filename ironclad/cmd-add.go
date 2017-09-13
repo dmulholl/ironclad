@@ -1,7 +1,7 @@
 package main
 
 
-import "github.com/dmulholland/clio/go/clio"
+import "github.com/dmulholland/args"
 
 
 import (
@@ -27,12 +27,12 @@ Options:
   -f, --file <str>          Database file. Defaults to the most recent file.
 
 Flags:
-      --help                Print this command's help text and exit.
+  -h, --help                Print this command's help text and exit.
       --no-editor           Do not launch an external editor to add notes.
 `, filepath.Base(os.Args[0]))
 
 
-func addCallback(parser *clio.ArgParser) {
+func addCallback(parser *args.ArgParser) {
 
     // Load the database.
     filename, password, db := loadDB(parser)

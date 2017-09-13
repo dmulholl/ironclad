@@ -1,7 +1,7 @@
 package main
 
 
-import "github.com/dmulholland/clio/go/clio"
+import "github.com/dmulholland/args"
 
 
 import (
@@ -11,7 +11,7 @@ import (
 )
 
 
-const version = "0.21.2"
+const version = "0.22.0.dev"
 
 
 var helptext = fmt.Sprintf(`
@@ -20,8 +20,8 @@ Usage: %s [FLAGS] [COMMAND]
   Ironclad is a command line password manager.
 
 Flags:
-  --help            Print the application's help text and exit.
-  --version         Print the application's version number and exit.
+  -h, --help        Print the application's help text and exit.
+  -v, --version     Print the application's version number and exit.
 
 Commands:
   add               Add a new entry to a database.
@@ -50,11 +50,13 @@ Command Help:
 func main() {
 
     // Instantiate an argument parser.
-    parser := clio.NewParser(helptext, version)
+    parser := args.NewParser()
+    parser.Helptext = helptext
+    parser.Version = version
 
     // Register the 'add' command.
     addCmd := parser.NewCmd("add new", addHelp, addCallback)
-    addCmd.NewStr("file f", "")
+    addCmd.NewString("file f")
     addCmd.NewFlag("no-editor")
 
     // Register the 'cache' command.
@@ -65,19 +67,19 @@ func main() {
 
     // Register the 'decrypt' command.
     decryptCmd := parser.NewCmd("decrypt", decryptHelp, decryptCallback)
-    decryptCmd.NewStr("out o", "")
+    decryptCmd.NewString("out o")
 
     // Register the 'delete' command.
     deleteCmd := parser.NewCmd("delete", deleteHelp, deleteCallback)
-    deleteCmd.NewStr("file f", "")
+    deleteCmd.NewString("file f")
 
     // Register the 'dump' command.
     dumpCmd := parser.NewCmd("dump", dumpHelp, dumpCallback)
-    dumpCmd.NewStr("file f", "")
+    dumpCmd.NewString("file f")
 
     // Register the 'edit' command.
     editCmd := parser.NewCmd("edit", editHelp, editCallback)
-    editCmd.NewStr("file f", "")
+    editCmd.NewString("file f")
     editCmd.NewFlag("title t")
     editCmd.NewFlag("url l")
     editCmd.NewFlag("username u")
@@ -89,16 +91,16 @@ func main() {
 
     // Register the 'encrypt' command.
     encryptCmd := parser.NewCmd("encrypt", encryptHelp, encryptCallback)
-    encryptCmd.NewStr("out o", "")
+    encryptCmd.NewString("out o")
 
     // Register the 'export' command.
     exportCmd := parser.NewCmd("export", exportHelp, exportCallback)
-    exportCmd.NewStr("file f", "")
-    exportCmd.NewStr("tag t", "")
+    exportCmd.NewString("file f")
+    exportCmd.NewString("tag t")
 
     // Register the 'gen' command.
     genCmd := parser.NewCmd("gen", genHelp, genCallback)
-    genCmd.NewStr("file f", "")
+    genCmd.NewString("file f")
     genCmd.NewFlag("digits d")
     genCmd.NewFlag("exclude-similar x")
     genCmd.NewFlag("lowercase l")
@@ -109,34 +111,34 @@ func main() {
 
     // Register the 'import' command.
     importCmd := parser.NewCmd("import", importHelp, importCallback)
-    importCmd.NewStr("file f", "")
+    importCmd.NewString("file f")
 
     // Register the 'init' command.
     parser.NewCmd("init", initHelp, initCallback)
 
     // Register the 'list' command.
     listCmd := parser.NewCmd("list show", listHelp, listCallback)
-    listCmd.NewStr("file f", "")
-    listCmd.NewStr("tag t", "")
+    listCmd.NewString("file f")
+    listCmd.NewString("tag t")
     listCmd.NewFlag("verbose v")
 
     // Register the 'pass' command.
     passCmd := parser.NewCmd("pass", passHelp, passCallback)
-    passCmd.NewStr("file f", "")
+    passCmd.NewString("file f")
     passCmd.NewFlag("readable r")
     passCmd.NewFlag("print p")
 
     // Register the 'purge' command.
     purgeCmd := parser.NewCmd("purge", purgeHelp, purgeCallback)
-    purgeCmd.NewStr("file f", "")
+    purgeCmd.NewString("file f")
 
     // Register the 'tags' command.
     tagsCmd := parser.NewCmd("tags", tagsHelp, tagsCallback)
-    tagsCmd.NewStr("file f", "")
+    tagsCmd.NewString("file f")
 
     // Register the 'user' command.
     userCmd := parser.NewCmd("user", userHelp, userCallback)
-    userCmd.NewStr("file f", "")
+    userCmd.NewString("file f")
     userCmd.NewFlag("print p")
 
     // Parse the command line arguments. If no command is found, print the

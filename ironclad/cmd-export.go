@@ -1,7 +1,7 @@
 package main
 
 
-import "github.com/dmulholland/clio/go/clio"
+import "github.com/dmulholland/args"
 
 
 import (
@@ -25,11 +25,11 @@ Options:
   -t, --tag <str>           Filter entries using the specified tag.
 
 Flags:
-      --help                Print this command's help text and exit.
+  -h, --help                Print this command's help text and exit.
 `, filepath.Base(os.Args[0]))
 
 
-func exportCallback(parser *clio.ArgParser) {
+func exportCallback(parser *args.ArgParser) {
 
     // Load the database.
     _, _, db := loadDB(parser)
@@ -43,8 +43,8 @@ func exportCallback(parser *clio.ArgParser) {
     }
 
     // Are we filtering by tag?
-    if parser.GetStr("tag") != "" {
-        list = list.FilterByTag(parser.GetStr("tag"))
+    if parser.GetString("tag") != "" {
+        list = list.FilterByTag(parser.GetString("tag"))
     }
 
     // Create the JSON dump.

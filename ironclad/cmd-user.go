@@ -1,7 +1,7 @@
 package main
 
 
-import "github.com/dmulholland/clio/go/clio"
+import "github.com/dmulholland/args"
 
 
 import (
@@ -27,12 +27,12 @@ Options:
   -f, --file <str>          Database file. Defaults to the last used file.
 
 Flags:
-      --help                Print this command's help text and exit.
+  -h, --help                Print this command's help text and exit.
   -p, --print               Print the username to stdout.
 `, filepath.Base(os.Args[0]))
 
 
-func userCallback(parser *clio.ArgParser) {
+func userCallback(parser *args.ArgParser) {
 
     // Make sure we have at least one argument.
     if !parser.HasArgs() {

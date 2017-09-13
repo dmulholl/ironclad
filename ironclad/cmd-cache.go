@@ -1,7 +1,7 @@
 package main
 
 
-import "github.com/dmulholland/clio/go/clio"
+import "github.com/dmulholland/args"
 
 
 import (
@@ -27,11 +27,11 @@ Usage: %s cache [FLAGS]
   required; it should not be run manually.
 
 Flags:
-  --help    Print this command's help text and exit.
+  -h, --help    Print this command's help text and exit.
 `, filepath.Base(os.Args[0]))
 
 
-func cacheCallback(parser *clio.ArgParser) {
+func cacheCallback(parser *args.ArgParser) {
 
     // Set up a handler to intercept SIGINT interrupts. This fixes an annoying
     // bug where hitting Ctrl-C to short-circuit a clipboard countdown could

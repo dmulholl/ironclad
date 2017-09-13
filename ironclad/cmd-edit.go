@@ -1,7 +1,7 @@
 package main
 
 
-import "github.com/dmulholland/clio/go/clio"
+import "github.com/dmulholland/args"
 
 
 import (
@@ -32,7 +32,7 @@ Options:
 
 Flags:
   -e, --email               Edit the entry's email address.
-      --help                Print this command's help text and exit.
+  -h, --help                Print this command's help text and exit.
       --no-editor           Do not launch an external editor to edit notes.
   -n, --notes               Edit the entry's notes.
   -p, --password            Edit the entry's password.
@@ -43,7 +43,7 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
-func editCallback(parser *clio.ArgParser) {
+func editCallback(parser *args.ArgParser) {
 
     // Make sure we have at least one argument.
     if !parser.HasArgs() {

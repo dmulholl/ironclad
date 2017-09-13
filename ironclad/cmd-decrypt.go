@@ -1,7 +1,7 @@
 package main
 
 
-import "github.com/dmulholland/clio/go/clio"
+import "github.com/dmulholland/args"
 
 
 import (
@@ -29,11 +29,11 @@ Options:
   -o, --out                 Output filename. Defaults to adding '.decrypted'.
 
 Flags:
-      --help                Print this command's help text and exit.
+  -h, --help                Print this command's help text and exit.
 `, filepath.Base(os.Args[0]))
 
 
-func decryptCallback(parser *clio.ArgParser) {
+func decryptCallback(parser *args.ArgParser) {
 
     if !parser.HasArgs() {
         exit("missing filename")
@@ -41,7 +41,7 @@ func decryptCallback(parser *clio.ArgParser) {
 
     inputfile := parser.GetArg(0)
 
-    outputfile := parser.GetStr("out")
+    outputfile := parser.GetString("out")
     if outputfile == "" {
         outputfile = inputfile + ".decrypted"
     }

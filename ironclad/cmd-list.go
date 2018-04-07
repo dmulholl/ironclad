@@ -24,6 +24,8 @@ Usage: %s list [FLAGS] [OPTIONS] [ARGUMENTS]
 
     list --verbose
 
+  This will display the full details for each entry listed.
+
 Arguments:
   [entries]                 Entries to list by ID or title.
 

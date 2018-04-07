@@ -18,9 +18,10 @@ import (
 
 
 var decryptHelp = fmt.Sprintf(`
-Usage: %s decrypt [FLAGS] [OPTIONS] [ARGUMENTS]
+Usage: %s decrypt [FLAGS] [OPTIONS] ARGUMENT
 
-  Decrypt a file.
+  Decrypt a file encrypted using the 'encrypt' command. (This command can also
+  be used to directly decrypt a password database.)
 
 Arguments:
   <file>                    File to decrypt.

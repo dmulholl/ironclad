@@ -18,9 +18,17 @@ import (
 
 
 var encryptHelp = fmt.Sprintf(`
-Usage: %s encrypt [FLAGS] [OPTIONS] [ARGUMENTS]
+Usage: %s encrypt [FLAGS] [OPTIONS] ARGUMENT
 
   Encrypt a file using 256-bit AES encryption.
+
+  This command encrypts an arbitrary file using the same 256-bit AES
+  encryption that Ironclad uses for password databases. Note that the file
+  is read into memory, encrypted, and written out to disk in a single
+  operation, so the command is only suitable for encrypting files which fit
+  comfortably into your system's RAM.
+
+  Encrypted files can be decrypted using the 'decrypt' command.
 
 Arguments:
   <file>                    File to encrypt.

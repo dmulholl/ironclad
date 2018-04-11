@@ -34,6 +34,12 @@ Ironclad is a command line tool for creating and managing encrypted password dat
     Command Help:
       help <command>    Print the specified command's help text and exit.
 
-See the application's [homepage][] for details and download links.
+Ironclad is written in Go. If you have a Go compiler installed you can run:
+
+    $ go get github.com/dmulholland/ironclad/ironclad
+
+This will download, compile, and install the latest version of the application to your `$GOPATH/bin` directory.
+
+See the application's [homepage][] for details and download links for pre-compiled binaries.
 
 [homepage]: http://mulholland.xyz/dev/ironclad/

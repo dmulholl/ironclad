@@ -5,31 +5,33 @@ Ironclad is a command line tool for creating and managing encrypted password dat
 
     $ ironclad --help
 
-    Usage: ironclad [FLAGS] [COMMAND]
-
       Ironclad is a command line password manager.
 
     Flags:
-      --help            Print the application's help text and exit.
-      --version         Print the application's version number and exit.
+      -h, --help        Print the application's help text and exit.
+      -v, --version     Print the application's version number and exit.
 
-    Commands:
-      add               Add a new entry to a database.
+    Basic Commands:
+      add               Add a new entry to a password database.
+      delete            Delete one or more entries from a database.
+      edit              Edit an existing database entry.
+      gen               Generate a new random password.
+      init              Initialize a new password database.
+      list              List database entries.
+      new               Add a new entry to a database. (Alias for 'add'.)
+      pass              Copy a password to the clipboard.
+      show              List database entries showing full details.
+      user              Copy a username to the clipboard.
+
+    Additional Commands:
       config            Set or print a configuration option.
       decrypt           Decrypt a file.
-      delete            Delete entries from a database.
       dump              Dump a database's internal JSON data store.
-      edit              Edit an existing database entry.
       encrypt           Encrypt a file.
       export            Export entries from a database.
-      gen               Generate a random password.
-      init              Initialize a new password database.
       import            Import entries into a database.
-      list              List database entries.
-      pass              Copy a password to the clipboard.
       purge             Purge deleted entries from a database.
       tags              List database tags.
-      user              Copy a username to the clipboard.
 
     Command Help:
       help <command>    Print the specified command's help text and exit.

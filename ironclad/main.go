@@ -30,9 +30,9 @@ Basic Commands:
   gen               Generate a new random password.
   init              Initialize a new password database.
   list              List database entries.
-  new               Add a new entry to a database. (Alias for 'add'.)
+  new               Alias for 'add'.
   pass              Copy a password to the clipboard.
-  show              List database entries showing full details.
+  show              Alias for 'list --verbose'.
   user              Copy a username to the clipboard.
 
 Additional Commands:

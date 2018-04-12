@@ -23,6 +23,8 @@ Usage: %s add [FLAGS] [OPTIONS]
   Add a new entry to a database. You will be promped to supply values for
   the entry's fields - press return to leave an unwanted field blank.
 
+  This command has an alias, 'new', which works identically.
+
 Options:
   -f, --file <str>          Database file. Defaults to the most recent file.
 

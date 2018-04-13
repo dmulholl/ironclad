@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Getting Started</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="fonts.css">
+    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="pygments.css">
+    
+    
+  </head>
+
+  <body class="node-quickstart node">
+
+    <header class="masthead">
+      <h1><a href="index.html">Ironclad</a></h1>
+      
+        <p class="tagline">A command line password manager.</p>
+      
+      <nav class="menu">
+        <input id="menu-check" type="checkbox"/>
+        <label id="menu-label" for="menu-check" class="unselectable">
+          <span class="icon close-icon">✕</span>
+          <span class="icon open-icon">☰</span>
+          <span class="text">Menu</span>
+        </label>
+        <ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="quickstart.html">Quickstart</a></li>
+<li><a href="releases.html">Releases</a></li>
+<li><a href="changelog.html">Changelog</a></li>
+<li><a href="https://github.com/dmulholland/ironclad">Source</a></li>
+</ul>
+      </nav>
+    </header>
+
+    <article class="main">
+      <header class="title">
+        <h1>Getting Started</h1>
+        
+        <hr>
+      </header>
+      <p>
+Download the latest version of Ironclad from the <a href="releases.html">releases</a> page, unzip the package and place the binary somewhere on your system's <a href="https://alistapart.com/article/the-path-to-enlightenment">$PATH</a>.
+</p>
+<h3 id="initialize-a-new-database">
+Initialize a new database
+</h3>
+<p>
+Use the <code>init</code> command to initialize a new password database. This command takes a single argument specifying the location of the database file.
+</p>
+<pre>
+$ ironclad init topsecret/passwords.idb
+</pre>
+<p>
+Ironclad will create a new database file at the specified location.
+You can call the file anything you like &mdash; Ironclad doesn't require any particular file extension for databases. (In fact, database files have no special markers and are indistinguishable from random data.)
+</p>
+<p>
+You'll be prompted to enter a master password which will be used to encrypt the file. You'll be prompted to re-enter this password when you next run a command on the database; Ironclad will then default to caching the password in memory for 15 minutes from its last use.
+</p>
+<h3 id="add-entries">
+Add entries
+</h3>
+<p>
+Use the <code>add</code> command to add a new entry to your database.
+</p>
+<pre>
+$ ironclad add
+</pre>
+<p>
+You'll be prompted to supply values for the entry's fields &mdash; simply press return to leave any unwanted field empty.
+</p>
+<h3 id="list-entries">
+List entries
+</h3>
+<p>
+Use the <code>list</code> command to see a list of all the database's entries.
+</p>
+<pre>
+$ ironclad list
+</pre>
+<p>
+Use the <code>show</code> command to view the full details of each entry in the list.
+</p>
+<pre>
+$ ironclad show
+</pre>
+<p>
+(The <code>show</code> comand is an alias for <code>list --verbose</code>.)
+</p>
+<h3 id="copy-a-password-or-username">
+Copy a password or username
+</h3>
+<p>
+Use the <code>pass</code> command to copy a password to the clipboard. The clipboard is automatically overwritten after a default timeout of 10 seconds.
+</p>
+<pre>
+$ ironclad pass entry
+</pre>
+<p>
+You can specify the entry by its ID or by any unique case-insensitive substring of its title.
+</p>
+<p>
+The <code>user</code> command works identically for usernames.
+</p>
+<h3 id="command-line-help">
+Command line help
+</h3>
+<p>
+Use the <code>--help</code> flag to view Ironclad's command line help, including a list of all available commands.
+</p>
+<pre>
+$ ironclad --help
+</pre>
+<p>
+Use the <code>help</code> command to view detailed help for any individual command.
+</p>
+<pre>
+$ ironclad help &lt;command&gt;
+</pre>
+
+    </article>
+
+    
+
+  </body>
+</html>

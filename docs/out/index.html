@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Ironclad &mdash; a command line password manager</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="fonts.css">
+    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="pygments.css">
+    
+      <meta name="description" content="Ironclad is a command line utility for creating and managing encrypted password databases.">
+    
+    
+  </head>
+
+  <body class="node homepage">
+
+    <header class="masthead">
+      <h1><a href="index.html">Ironclad</a></h1>
+      
+        <p class="tagline">A command line password manager.</p>
+      
+      <nav class="menu">
+        <input id="menu-check" type="checkbox"/>
+        <label id="menu-label" for="menu-check" class="unselectable">
+          <span class="icon close-icon">✕</span>
+          <span class="icon open-icon">☰</span>
+          <span class="text">Menu</span>
+        </label>
+        <ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="quickstart.html">Quickstart</a></li>
+<li><a href="releases.html">Releases</a></li>
+<li><a href="changelog.html">Changelog</a></li>
+<li><a href="https://github.com/dmulholland/ironclad">Source</a></li>
+</ul>
+      </nav>
+    </header>
+
+    <article class="main">
+      <header class="title">
+        <h1>Home</h1>
+        
+        <hr>
+      </header>
+      <p>
+Ironclad is a command line utility for creating and managing encrypted password databases.
+</p>
+<h3 id="download">
+Download
+</h3>
+<ul>
+<li>
+<a href="https://github.com/dmulholland/ironclad/releases/download/1.0.0/linux.zip">Linux</a>
+</li>
+<li>
+<a href="https://github.com/dmulholland/ironclad/releases/download/1.0.0/mac.zip">Mac</a>
+</li>
+<li>
+<a href="https://github.com/dmulholland/ironclad/releases/download/1.0.0/windows.zip">Windows</a>
+</li>
+</ul>
+<p>
+See the <a href="releases.html">releases</a> page for file hashes.
+</p>
+<h3 id="usage">
+Usage
+</h3>
+<p>
+Run <code>ironclad --help</code> to view the application's command line help:
+</p>
+<pre>
+Usage: ironclad [FLAGS] [COMMAND]
+
+  Ironclad is a command line password manager.
+
+Flags:
+  -h, --help        Print the help text and exit.
+  -v, --version     Print the version number and exit.
+
+Basic Commands:
+  add               Add a new entry to a database.
+  delete            Delete entries from a database.
+  edit              Edit an existing database entry.
+  gen               Generate a new random password.
+  init              Initialize a new password database.
+  list              List database entries.
+  new               Alias for &#x27;add&#x27;.
+  pass              Copy a password to the clipboard.
+  show              Alias for &#x27;list --verbose&#x27;.
+  user              Copy a username to the clipboard.
+
+Additional Commands:
+  config            Set or print a configuration option.
+  decrypt           Decrypt a file.
+  dump              Dump a database&#x27;s JSON data store.
+  encrypt           Encrypt a file.
+  export            Export entries from a database.
+  import            Import entries into a database.
+  purge             Purge deleted entries from a database.
+  tags              List database tags.
+
+Command Help:
+  help &lt;command&gt;    Print a command&#x27;s help text.
+</pre>
+<p>
+Run <code>ironclad help &lt;command&gt;</code> to view the help text for a specific command.
+</p>
+<p>
+The <a href="quickstart.html">quickstart guide</a> is a short tutorial for first-time users.
+</p>
+<h3 id="source">
+Source
+</h3>
+<p>
+Ironclad is written in Go. If you have a Go compiler installed
+you can run:
+</p>
+<pre>
+$ go get github.com/dmulholland/ironclad/ironclad
+</pre>
+<p>
+This will download, compile, and install the latest version of the application
+to your <code>$GOPATH/bin</code> directory.
+</p>
+<p>
+You can find the source files on <a href="https://github.com/dmulholland/ironclad">Github</a>.
+</p>
+<h3 id="security">
+Security
+</h3>
+<p>
+Database files are encrypted using industry-standard cryptographic protocols.
+</p>
+<ul>
+<li>
+Data is encrypted using 256-bit AES in CBC mode.
+</li>
+<li>
+Padding is performed using the PKCS #7 padding scheme.
+</li>
+<li>
+Authentication is performed using the HMAC-SHA-256 protocol.
+</li>
+<li>
+Encryption keys are generated using 10,000 rounds of the PBKDF2 key derivation algorithm with an SHA-256 hash.
+</li>
+</ul>
+<p>
+Encrypted files have no special markers and are indistinguishable from random data.
+</p>
+<p>
+Note that the application itself is a cross-platform utility written in a high-level, garbage-collected language. It has <em>not</em> been hardened against system-local threats, e.g. malicious code running with user-level privileges on the user's system, or adversaries with physical access to the user's hardware.
+</p>
+<h3 id="password-caching">
+Password Caching
+</h3>
+<p>
+Ironclad caches the master password in memory for a default period of 15 minutes from its last use. You can set a custom timeout using the <code>config</code> command:
+</p>
+<pre>
+$ ironclad config timeout &lt;minutes&gt;
+</pre>
+<p>
+Setting the timeout to <code>0</code> will disable caching altogether.
+</p>
+<h3 id="file-encryption">
+File Encryption
+</h3>
+<p>
+Ironclad doubles as a simple file encryption utility using the <code>encrypt</code> and <code>decrypt</code> commands. Files are encrypted using the same 256-bit AES protocol as password databases. Original files are unaffected by either encryption or decryption.
+</p>
+<h3 id="rationale">
+Rationale
+</h3>
+<p>
+I built this cross-platform utility as a prototype implementation of Ironclad's core idea &mdash; an open-source password manager organised around a simple JSON data store.
+</p>
+<p>
+Complexity is the enemy of security, so Ironclad is as uncomplicated as possible. A password database is a simple JSON file which you can view using the <code>dump</code> command:
+</p>
+<pre>
+$ ironclad dump
+</pre>
+<p>
+This file is encrypted using 256-bit AES, an industry-standard protocol supported on all platforms and across all programming languages.
+</p>
+<p>
+The Ironclad application itself is a cross-platform prototype. However, alternative native clients should be straightforward to implement and can take better advantage of the built-in security features offered by specific operating systems.
+</p>
+<h3 id="alternative-implementations">
+Alternative Implementations
+</h3>
+<ul>
+<li>
+<p>
+Ryan Wynn's <a href="https://github.com/rwynn/llave">llave</a> provides desktop and mobile interfaces for Ironclad databases.
+</p>
+</li>
+</ul>
+<h3 id="license">
+License
+</h3>
+<p>
+Ironclad is released under an MIT license.
+</p>
+
+    </article>
+
+    
+
+  </body>
+</html>

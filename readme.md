@@ -36,6 +36,6 @@ Ironclad is a command line tool for creating and managing encrypted password dat
     Command Help:
       help <command>    Print the specified command's help text and exit.
 
-See the application's [homepage][] for details and download links for pre-compiled binaries.
+See the [documentation][] for details and download links for pre-compiled binaries.
 
-[homepage]: http://mulholland.xyz/dev/ironclad/
+[documentation]: http://mulholland.xyz/docs/ironclad/

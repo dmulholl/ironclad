@@ -5,6 +5,7 @@ import (
     "time"
     "os/exec"
     "os"
+    "path/filepath"
 )
 
 
@@ -16,7 +17,11 @@ import (
 
 // Cache the current filename for the application's next run.
 func setCachedFilename(filename string) {
-    err := ironconfig.Set("file", filename)
+    filename, err := filepath.Abs(filename)
+    if err != nil {
+        exit(err)
+    }
+    err = ironconfig.Set("file", filename)
     if err != nil {
         exit(err)
     }

@@ -43,6 +43,7 @@ Additional Commands:
   export            Export entries from a database.
   import            Import entries into a database.
   purge             Purge deleted entries from a database.
+  setpass           Change a database's master password.
   tags              List database tags.
 
 Command Help:
@@ -143,6 +144,10 @@ func main() {
     userCmd := parser.NewCmd("user", userHelp, userCallback)
     userCmd.NewString("file f")
     userCmd.NewFlag("print p")
+
+    // Register the 'setpass' command.
+    setpassCmd := parser.NewCmd("setpass", setpassHelp, setpassCallback)
+    setpassCmd.NewString("file f")
 
     // Parse the command line arguments. If no command is found, print the
     // help text and exit.

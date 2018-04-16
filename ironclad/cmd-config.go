@@ -19,7 +19,7 @@ import (
 
 
 var configHelp = fmt.Sprintf(`
-Usage: %s config [FLAGS] ARGUMENTS
+Usage: %s config [FLAGS] [ARGUMENTS]
 
   Set or display a configuration value.
 
@@ -33,7 +33,7 @@ Usage: %s config [FLAGS] ARGUMENTS
   timeout                   Password timeout in minutes.
 
 Arguments:
-  <key>                     Key to set or print.
+  [key]                     Key to set or print.
   [value]                   Value to set.
 
 Flags:

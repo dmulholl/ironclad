@@ -13,7 +13,7 @@ import (
 
 
 var importHelp = fmt.Sprintf(`
-Usage: %s import [FLAGS] [OPTIONS] ARGUMENTS
+Usage: %s import [FLAGS] [OPTIONS] [ARGUMENT]
 
   Import a list of entries in JSON format.
 
@@ -21,7 +21,7 @@ Usage: %s import [FLAGS] [OPTIONS] ARGUMENTS
   input is read from stdin.
 
 Arguments:
-  <file>                    File to import. Defaults to stdin.
+  [file]                    File to import. Defaults to stdin.
 
 Options:
   -f, --file <str>          Database file. Defaults to the last used file.

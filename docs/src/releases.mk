@@ -10,6 +10,17 @@ All pre-built binaries are 64-bit.
 
 
 
+### 1.1.0
+
+* [Linux](https://github.com/dmulholland/ironclad/releases/download/1.1.0/linux.zip)
+  &mdash; `42d1458571c46868b89baa2dd4a9a0ef7b72e132`
+* [Mac](https://github.com/dmulholland/ironclad/releases/download/1.1.0/mac.zip)
+  &mdash; `30b65226833efd461e4510a2a6b55fc4725e90f0`
+* [Windows](https://github.com/dmulholland/ironclad/releases/download/1.1.0/windows.zip)
+  &mdash; `6918d8534ada8664757faa05f42c586b54389ec2`
+
+
+
 ### 1.0.1
 
 * [Linux](https://github.com/dmulholland/ironclad/releases/download/1.0.1/linux.zip)

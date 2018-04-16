@@ -139,10 +139,10 @@ Ironclad is released under an MIT license.
 
 
 [linux]:
-  https://github.com/dmulholland/ironclad/releases/download/1.0.0/linux.zip
+  https://github.com/dmulholland/ironclad/releases/download/1.1.0/linux.zip
 
 [mac]:
-  https://github.com/dmulholland/ironclad/releases/download/1.0.0/mac.zip
+  https://github.com/dmulholland/ironclad/releases/download/1.1.0/mac.zip
 
 [windows]:
-  https://github.com/dmulholland/ironclad/releases/download/1.0.0/windows.zip
+  https://github.com/dmulholland/ironclad/releases/download/1.1.0/windows.zip

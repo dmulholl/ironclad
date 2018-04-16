@@ -31,6 +31,7 @@ Ironclad is a command line tool for creating and managing encrypted password dat
       export            Export entries from a database.
       import            Import entries into a database.
       purge             Purge deleted entries from a database.
+      setpass           Change a database's master password.
       tags              List database tags.
 
     Command Help:

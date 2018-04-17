@@ -2,11 +2,11 @@
 title: Home
 meta title: Ironclad &mdash; a command line password manager
 meta description: >
-    Ironclad is a command line utility for creating and managing encrypted
-    password databases.
+    Ironclad is a simple command line utility for creating and managing
+    encrypted password databases.
 ---
 
-Ironclad is a command line utility for creating and managing encrypted password databases.
+Ironclad is a simple command line utility for creating and managing encrypted password databases.
 
 
 

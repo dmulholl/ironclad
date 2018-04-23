@@ -56,7 +56,7 @@ func FileExists() bool {
 
 
 // Load a config file's TOML content.
-func load() (*toml.TomlTree, error) {
+func load() (*toml.Tree, error) {
     if FileExists() {
         tree, err := toml.LoadFile(ConfigFile)
         if err != nil {
@@ -64,16 +64,17 @@ func load() (*toml.TomlTree, error) {
         }
         return tree, nil
     } else {
-        return toml.TreeFromMap(make(map[string]interface{})), nil
+        tree, err := toml.TreeFromMap(make(map[string]interface{}))
+        return tree, err
     }
 }
 
 
 // Save a TOML tree to file.
-func save(tree *toml.TomlTree) error {
+func save(tree *toml.Tree) error {
     err := os.MkdirAll(filepath.Dir(ConfigFile), 0777)
     if err != nil {
         return err
     }
-    return ioutil.WriteFile(ConfigFile, []byte(tree.ToString()), 0600)
+    return ioutil.WriteFile(ConfigFile, []byte(tree.String()), 0600)
 }

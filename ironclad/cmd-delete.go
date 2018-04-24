@@ -15,7 +15,12 @@ import (
 var deleteHelp = fmt.Sprintf(`
 Usage: %s delete [FLAGS] [OPTIONS] ARGUMENTS
 
-  Delete entries from a database. Entries should be specified by ID.
+  Delete one or more entries from a database. Entries to delete should be
+  specified by ID.
+
+  Deleted entries are marked as inactive but their data remains in the
+  database. Inactive entries can be stripped from the database using the
+  'purge' command.
 
 Arguments:
   <entries>                 List of entry IDs.

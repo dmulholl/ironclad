@@ -11,7 +11,7 @@ import (
 )
 
 
-const version = "1.1.1-dev2"
+const version = "1.2.0"
 
 
 var helptext = fmt.Sprintf(`
@@ -33,6 +33,7 @@ Basic Commands:
   new               Alias for 'add'.
   pass              Copy a password to the clipboard.
   show              Alias for 'list --verbose'.
+  url               Copy a url to the clipboard.
   user              Copy a username to the clipboard.
 
 Additional Commands:
@@ -148,6 +149,11 @@ func main() {
     // Register the 'setpass' command.
     setpassCmd := parser.NewCmd("setpass", setpassHelp, setpassCallback)
     setpassCmd.NewString("file f")
+
+    // Register the 'url' command.
+    urlCmd := parser.NewCmd("url", urlHelp, urlCallback)
+    urlCmd.NewString("file f")
+    urlCmd.NewFlag("print p")
 
     // Parse the command line arguments. If no command is found, print the
     // help text and exit.

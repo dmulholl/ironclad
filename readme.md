@@ -21,6 +21,7 @@ Ironclad is a simple command line utility for creating and managing encrypted pa
       new               Add a new entry to a database. (Alias for 'add'.)
       pass              Copy a password to the clipboard.
       show              List database entries showing full details.
+      url               Copy a url to the clipboard.
       user              Copy a username to the clipboard.
 
     Additional Commands:

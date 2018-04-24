@@ -42,6 +42,7 @@ Run `ironclad --help` to view the application's command line help:
       new               Alias for 'add'.
       pass              Copy a password to the clipboard.
       show              Alias for 'list --verbose'.
+      url               Copy a url to the clipboard.
       user              Copy a username to the clipboard.
 
     Additional Commands:
@@ -139,10 +140,10 @@ Ironclad is released under an MIT license.
 
 
 [linux]:
-  https://github.com/dmulholland/ironclad/releases/download/1.1.0/linux.zip
+  https://github.com/dmulholland/ironclad/releases/download/1.2.0/linux.zip
 
 [mac]:
-  https://github.com/dmulholland/ironclad/releases/download/1.1.0/mac.zip
+  https://github.com/dmulholland/ironclad/releases/download/1.2.0/mac.zip
 
 [windows]:
-  https://github.com/dmulholland/ironclad/releases/download/1.1.0/windows.zip
+  https://github.com/dmulholland/ironclad/releases/download/1.2.0/windows.zip

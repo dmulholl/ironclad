@@ -52,7 +52,7 @@ Run `ironclad --help` to view the application's command line help:
       encrypt           Encrypt a file.
       export            Export entries from a database.
       import            Import entries into a database.
-      purge             Purge deleted entries from a database.
+      purge             Purge inactive entries from a database.
       setpass           Change a database's master password.
       tags              List database tags.
 

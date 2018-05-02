@@ -7,6 +7,7 @@ import "github.com/dmulholland/args"
 import (
     "fmt"
     "os"
+    "strings"
     "path/filepath"
 )
 
@@ -26,6 +27,21 @@ Flags:
 
 func purgeCallback(parser *args.ArgParser) {
     filename, password, db := loadDB(parser)
-    db.Purge()
+
+    list := db.Inactive()
+    if len(list) == 0 {
+        exit("no inactive entries to purge")
+    }
+
+    printCompact(list, len(list))
+    answer := input("  Purge the entries listed above? (y/n): ")
+    if strings.ToLower(answer) == "y" {
+        db.PurgeInactive()
+        line("─")
+    } else {
+        fmt.Println("  Purge aborted.")
+        line("─")
+    }
+
     saveDB(filename, password, db)
 }

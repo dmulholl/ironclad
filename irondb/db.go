@@ -72,8 +72,18 @@ func (db *DB) Add(entry *Entry) {
 }
 
 
-// Delete sets an entry's active status to false.
-func (db *DB) Delete(id int) {
+// SetActive sets an entry's active status to true.
+func (db *DB) SetActive(id int) {
+    for _, entry := range db.Entries {
+        if entry.Id == id {
+            entry.Active = true
+        }
+    }
+}
+
+
+// SetInactive sets an entry's active status to false.
+func (db *DB) SetInactive(id int) {
     for _, entry := range db.Entries {
         if entry.Id == id {
             entry.Active = false
@@ -82,8 +92,8 @@ func (db *DB) Delete(id int) {
 }
 
 
-// Purge clears deleted entries from the database.
-func (db *DB) Purge() {
+// Purge clears inactive entries from the database.
+func (db *DB) PurgeInactive() {
     entries := db.Entries
     db.Entries = make([]*Entry, 0)
     for _, entry := range entries {

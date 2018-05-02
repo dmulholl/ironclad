@@ -39,7 +39,7 @@ Options:
   -t, --tag <str>           Filter entries using the specified tag.
 
 Flags:
-  -d, --deleted             List deleted entries.
+  -d, --deleted             List deleted (i.e. inactive) entries.
   -h, --help                Print this command's help text and exit.
   -v, --verbose             Use the verbose list format.
 `, filepath.Base(os.Args[0]))

@@ -12,17 +12,11 @@ import (
 )
 
 
-var deleteHelp = fmt.Sprintf(`
-Usage: %s delete [FLAGS] [OPTIONS] ARGUMENTS
+var undeleteHelp = fmt.Sprintf(`
+Usage: %s undelete [FLAGS] [OPTIONS] ARGUMENTS
 
-  Delete one or more entries from a database. Entries to delete should be
-  specified by ID.
-
-  Deleted entries are marked as inactive and do not appear in normal listings
-  but their data remains in the database. Inactive entries can be stripped
-  from the database using the 'purge' command.
-
-  You can view inactive entries using the 'list --deleted' command.
+  Restore one or more deleted (i.e. inactive) entries. Entries to restore
+  should be specified by ID.
 
 Arguments:
   <entries>                 List of entry IDs.
@@ -35,33 +29,33 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
-func deleteCallback(parser *args.ArgParser) {
+func undeleteCallback(parser *args.ArgParser) {
 
     // Check that at least one entry argument has been supplied.
     if !parser.HasArgs() {
-        exit("you must specify at least one entry to delete")
+        exit("you must specify at least one entry to restore")
     }
 
     // Load the database.
     filename, password, db := loadDB(parser)
 
-    // Grab the entries to delete.
-    list := db.Active().FilterByIDString(parser.GetArgs()...)
+    // Grab the entries to restore.
+    list := db.Inactive().FilterByIDString(parser.GetArgs()...)
     if len(list) == 0 {
         exit("no matching entries")
     }
 
     // Print a listing and request confirmation.
-    printCompact(list, db.Size())
-    answer := input("  Delete the entries listed above? (y/n): ")
+    printCompact(list, len(db.Inactive()))
+    answer := input("  Restore the entries listed above? (y/n): ")
     if strings.ToLower(answer) == "y" {
         for _, entry := range list {
-            db.SetInactive(entry.Id)
+            db.SetActive(entry.Id)
         }
-        fmt.Println("  Entries deleted.")
+        fmt.Println("  Entries restored.")
         line("─")
     } else {
-        fmt.Println("  Deletion aborted.")
+        fmt.Println("  Restore aborted.")
         line("─")
     }
 

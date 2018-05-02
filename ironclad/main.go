@@ -43,9 +43,10 @@ Additional Commands:
   encrypt           Encrypt a file.
   export            Export entries from a database.
   import            Import entries into a database.
-  purge             Purge inactive entries from a database.
+  purge             Purge inactive (i.e. deleted) entries from a database.
   setpass           Change a database's master password.
   tags              List database tags.
+  undelete          Restore one or more previously deleted entries.
 
 Command Help:
   help <command>    Print the specified command's help text and exit.
@@ -155,6 +156,11 @@ func main() {
     urlCmd := parser.NewCmd("url", urlHelp, urlCallback)
     urlCmd.NewString("file f")
     urlCmd.NewFlag("print p")
+
+    // Register the 'undelete' command.
+    undeleteCmd := parser.NewCmd("undelete", undeleteHelp, undeleteCallback)
+    undeleteCmd.NewString("file f")
+
 
     // Parse the command line arguments. If no command is found, print the
     // help text and exit.

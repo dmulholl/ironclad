@@ -112,6 +112,11 @@ func (db *DB) Active() EntryList {
 }
 
 
+// Inactive returns a list containing all the database's inactive entries.
+func (db *DB) Inactive() EntryList {
+    return db.All().FilterInactive()
+}
+
 // TagMap returns a map of tags to entry-lists.
 func (db *DB) TagMap() map[string]EntryList {
     tags := make(map[string]EntryList)

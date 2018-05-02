@@ -11,6 +11,11 @@ import (
 )
 
 
+import (
+    "github.com/dmulholland/ironclad/irondb"
+)
+
+
 var listHelp = fmt.Sprintf(`
 Usage: %s list [FLAGS] [OPTIONS] [ARGUMENTS]
 
@@ -34,6 +39,7 @@ Options:
   -t, --tag <str>           Filter entries using the specified tag.
 
 Flags:
+  -d, --deleted             List deleted entries.
   -h, --help                Print this command's help text and exit.
   -v, --verbose             Use the verbose list format.
 `, filepath.Base(os.Args[0]))
@@ -45,8 +51,18 @@ func listCallback(parser *args.ArgParser) {
     _, _, db := loadDB(parser)
 
     // Default to displaying all active entries.
-    list := db.Active()
-    title := "All Entries"
+    var list irondb.EntryList
+    var title string
+    var count int
+    if parser.GetFlag("deleted") {
+        list = db.Inactive()
+        title = "Deleted Entries"
+        count = len(list)
+    } else {
+        list = db.Active()
+        title = "All Entries"
+        count = len(list)
+    }
 
     // Do we have query strings to filter on?
     if parser.HasArgs() {
@@ -62,8 +78,8 @@ func listCallback(parser *args.ArgParser) {
 
     // Print the list of entries.
     if parser.GetFlag("verbose") || parser.GetParent().GetCmdName() == "show" {
-        printVerbose(list, db.Size(), title)
+        printVerbose(list, count, title)
     } else {
-        printCompact(list, db.Size())
+        printCompact(list, count)
     }
 }

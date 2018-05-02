@@ -11,7 +11,7 @@ import (
 )
 
 
-const version = "1.2.2"
+const version = "1.3.0-dev"
 
 
 var helptext = fmt.Sprintf(`
@@ -126,6 +126,7 @@ func main() {
     listCmd.NewString("file f")
     listCmd.NewString("tag t")
     listCmd.NewFlag("verbose v")
+    listCmd.NewFlag("deleted d")
 
     // Register the 'pass' command.
     passCmd := parser.NewCmd("pass", passHelp, passCallback)

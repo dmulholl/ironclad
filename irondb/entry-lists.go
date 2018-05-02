@@ -26,6 +26,19 @@ func (list EntryList) FilterActive() EntryList {
 }
 
 
+// FilterInactive filters an EntryList returning only those entries which are
+// inactive.
+func (list EntryList) FilterInactive() EntryList {
+    inactive := make([]*Entry, 0)
+    for _, entry := range list {
+        if !entry.Active {
+            inactive = append(inactive, entry)
+        }
+    }
+    return inactive
+}
+
+
 // FilterByTag filters an EntryList returning only those entries which match
 // the specified tag. Matches are case-insensitive.
 func (list EntryList) FilterByTag(tag string) EntryList {

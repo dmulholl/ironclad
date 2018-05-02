@@ -12,8 +12,8 @@ import (
 )
 
 
-var undeleteHelp = fmt.Sprintf(`
-Usage: %s undelete [FLAGS] [OPTIONS] ARGUMENTS
+var restoreHelp = fmt.Sprintf(`
+Usage: %s restore [FLAGS] [OPTIONS] ARGUMENTS
 
   Restore one or more deleted (i.e. inactive) entries. Entries to restore
   should be specified by ID.
@@ -29,7 +29,7 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
-func undeleteCallback(parser *args.ArgParser) {
+func restoreCallback(parser *args.ArgParser) {
 
     // Check that at least one entry argument has been supplied.
     if !parser.HasArgs() {

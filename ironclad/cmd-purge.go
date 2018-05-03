@@ -37,6 +37,7 @@ func purgeCallback(parser *args.ArgParser) {
     answer := input("  Purge the entries listed above? (y/n): ")
     if strings.ToLower(answer) == "y" {
         db.PurgeInactive()
+        fmt.Println("  Entries purged.")
         line("─")
     } else {
         fmt.Println("  Purge aborted.")

@@ -43,6 +43,20 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
+func registerEdit(parser *args.ArgParser) {
+    cmd := parser.NewCmd("edit", editHelp, editCallback)
+    cmd.NewString("file f")
+    cmd.NewFlag("title t")
+    cmd.NewFlag("url l")
+    cmd.NewFlag("username u")
+    cmd.NewFlag("password p")
+    cmd.NewFlag("notes n")
+    cmd.NewFlag("tags s")
+    cmd.NewFlag("email e")
+    cmd.NewFlag("no-editor")
+}
+
+
 func editCallback(parser *args.ArgParser) {
 
     // Make sure we have at least one argument.

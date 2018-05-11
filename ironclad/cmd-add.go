@@ -34,6 +34,13 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
+func registerAdd(parser *args.ArgParser) {
+    cmd := parser.NewCmd("add new", addHelp, addCallback)
+    cmd.NewString("file f")
+    cmd.NewFlag("no-editor")
+}
+
+
 func addCallback(parser *args.ArgParser) {
 
     // Load the database.

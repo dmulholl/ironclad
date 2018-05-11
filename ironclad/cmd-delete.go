@@ -35,6 +35,12 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
+func registerDelete(parser *args.ArgParser) {
+    cmd := parser.NewCmd("delete", deleteHelp, deleteCallback)
+    cmd.NewString("file f")
+}
+
+
 func deleteCallback(parser *args.ArgParser) {
 
     // Check that at least one entry argument has been supplied.

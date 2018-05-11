@@ -24,6 +24,12 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
+func registerSetpass(parser *args.ArgParser) {
+    cmd := parser.NewCmd("setpass", setpassHelp, setpassCallback)
+    cmd.NewString("file f")
+}
+
+
 func setpassCallback(parser *args.ArgParser) {
     filename, _, db := loadDB(parser)
 

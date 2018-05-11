@@ -32,6 +32,13 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
+func registerExport(parser *args.ArgParser) {
+    cmd := parser.NewCmd("export", exportHelp, exportCallback)
+    cmd.NewString("file f")
+    cmd.NewString("tag t")
+}
+
+
 func exportCallback(parser *args.ArgParser) {
 
     // Load the database.

@@ -31,6 +31,13 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
+func registerUrl(parser *args.ArgParser) {
+    cmd := parser.NewCmd("url", urlHelp, urlCallback)
+    cmd.NewString("file f")
+    cmd.NewFlag("print p")
+}
+
+
 func urlCallback(parser *args.ArgParser) {
 
     // Make sure we have at least one argument.

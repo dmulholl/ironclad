@@ -32,6 +32,14 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
+func registerPass(parser *args.ArgParser) {
+    cmd := parser.NewCmd("pass", passHelp, passCallback)
+    cmd.NewString("file f")
+    cmd.NewFlag("readable r")
+    cmd.NewFlag("print p")
+}
+
+
 func passCallback(parser *args.ArgParser) {
 
     // Make sure we have at least one argument.

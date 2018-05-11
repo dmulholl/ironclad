@@ -41,6 +41,11 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
+func registerConfig(parser *args.ArgParser) {
+    parser.NewCmd("config", configHelp, configCallback)
+}
+
+
 func configCallback(parser *args.ArgParser) {
     if !parser.HasArgs() {
         if !ironconfig.FileExists() {

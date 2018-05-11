@@ -25,6 +25,12 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
+func registerPurge(parser *args.ArgParser) {
+    cmd := parser.NewCmd("purge", purgeHelp, purgeCallback)
+    cmd.NewString("file f")
+}
+
+
 func purgeCallback(parser *args.ArgParser) {
     filename, password, db := loadDB(parser)
 

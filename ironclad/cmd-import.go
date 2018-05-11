@@ -31,6 +31,12 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
+func registerImport(parser *args.ArgParser) {
+    cmd := parser.NewCmd("import", importHelp, importCallback)
+    cmd.NewString("file f")
+}
+
+
 func importCallback(parser *args.ArgParser) {
 
     // Read the JSON input.

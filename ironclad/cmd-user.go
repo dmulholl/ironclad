@@ -32,6 +32,13 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
+func registerUser(parser *args.ArgParser) {
+    cmd := parser.NewCmd("user", userHelp, userCallback)
+    cmd.NewString("file f")
+    cmd.NewFlag("print p")
+}
+
+
 func userCallback(parser *args.ArgParser) {
 
     // Make sure we have at least one argument.

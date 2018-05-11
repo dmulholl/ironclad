@@ -11,7 +11,7 @@ import (
 )
 
 
-const version = "1.3.0"
+const version = "1.3.1"
 
 
 var helptext = fmt.Sprintf(`
@@ -60,110 +60,29 @@ func main() {
     parser.Helptext = helptext
     parser.Version = version
 
-    // Register the 'add' command.
-    addCmd := parser.NewCmd("add new", addHelp, addCallback)
-    addCmd.NewString("file f")
-    addCmd.NewFlag("no-editor")
+    // Register commands.
+    registerAdd(parser)
+    registerCache(parser)
+    registerConfig(parser)
+    registerDecrypt(parser)
+    registerDelete(parser)
+    registerDump(parser)
+    registerEdit(parser)
+    registerEncrypt(parser)
+    registerExport(parser)
+    registerGen(parser)
+    registerImport(parser)
+    registerInit(parser)
+    registerList(parser)
+    registerPass(parser)
+    registerPurge(parser)
+    registerRestore(parser)
+    registerSetpass(parser)
+    registerTags(parser)
+    registerUrl(parser)
+    registerUser(parser)
 
-    // Register the 'cache' command.
-    parser.NewCmd("cache", cacheHelp, cacheCallback)
-
-    // Register the 'config' command.
-    parser.NewCmd("config", configHelp, configCallback)
-
-    // Register the 'decrypt' command.
-    decryptCmd := parser.NewCmd("decrypt", decryptHelp, decryptCallback)
-    decryptCmd.NewString("out o")
-
-    // Register the 'delete' command.
-    deleteCmd := parser.NewCmd("delete", deleteHelp, deleteCallback)
-    deleteCmd.NewString("file f")
-
-    // Register the 'dump' command.
-    dumpCmd := parser.NewCmd("dump", dumpHelp, dumpCallback)
-    dumpCmd.NewString("file f")
-
-    // Register the 'edit' command.
-    editCmd := parser.NewCmd("edit", editHelp, editCallback)
-    editCmd.NewString("file f")
-    editCmd.NewFlag("title t")
-    editCmd.NewFlag("url l")
-    editCmd.NewFlag("username u")
-    editCmd.NewFlag("password p")
-    editCmd.NewFlag("notes n")
-    editCmd.NewFlag("tags s")
-    editCmd.NewFlag("email e")
-    editCmd.NewFlag("no-editor")
-
-    // Register the 'encrypt' command.
-    encryptCmd := parser.NewCmd("encrypt", encryptHelp, encryptCallback)
-    encryptCmd.NewString("out o")
-
-    // Register the 'export' command.
-    exportCmd := parser.NewCmd("export", exportHelp, exportCallback)
-    exportCmd.NewString("file f")
-    exportCmd.NewString("tag t")
-
-    // Register the 'gen' command.
-    genCmd := parser.NewCmd("gen", genHelp, genCallback)
-    genCmd.NewString("file f")
-    genCmd.NewFlag("digits d")
-    genCmd.NewFlag("exclude-similar x")
-    genCmd.NewFlag("lowercase l")
-    genCmd.NewFlag("symbols s")
-    genCmd.NewFlag("uppercase u")
-    genCmd.NewFlag("readable r")
-    genCmd.NewFlag("print p")
-
-    // Register the 'import' command.
-    importCmd := parser.NewCmd("import", importHelp, importCallback)
-    importCmd.NewString("file f")
-
-    // Register the 'init' command.
-    parser.NewCmd("init", initHelp, initCallback)
-
-    // Register the 'list' command.
-    listCmd := parser.NewCmd("list show", listHelp, listCallback)
-    listCmd.NewString("file f")
-    listCmd.NewString("tag t")
-    listCmd.NewFlag("verbose v")
-    listCmd.NewFlag("deleted d")
-
-    // Register the 'pass' command.
-    passCmd := parser.NewCmd("pass", passHelp, passCallback)
-    passCmd.NewString("file f")
-    passCmd.NewFlag("readable r")
-    passCmd.NewFlag("print p")
-
-    // Register the 'purge' command.
-    purgeCmd := parser.NewCmd("purge", purgeHelp, purgeCallback)
-    purgeCmd.NewString("file f")
-
-    // Register the 'tags' command.
-    tagsCmd := parser.NewCmd("tags", tagsHelp, tagsCallback)
-    tagsCmd.NewString("file f")
-
-    // Register the 'user' command.
-    userCmd := parser.NewCmd("user", userHelp, userCallback)
-    userCmd.NewString("file f")
-    userCmd.NewFlag("print p")
-
-    // Register the 'setpass' command.
-    setpassCmd := parser.NewCmd("setpass", setpassHelp, setpassCallback)
-    setpassCmd.NewString("file f")
-
-    // Register the 'url' command.
-    urlCmd := parser.NewCmd("url", urlHelp, urlCallback)
-    urlCmd.NewString("file f")
-    urlCmd.NewFlag("print p")
-
-    // Register the 'undelete' command.
-    restoreCmd := parser.NewCmd("restore", restoreHelp, restoreCallback)
-    restoreCmd.NewString("file f")
-
-
-    // Parse the command line arguments. If no command is found, print the
-    // help text and exit.
+    // Parse the command line arguments.
     parser.Parse()
     if !parser.HasCmd() {
         parser.ExitHelp()

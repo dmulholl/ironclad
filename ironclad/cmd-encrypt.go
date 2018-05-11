@@ -41,6 +41,12 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
+func registerEncrypt(parser *args.ArgParser) {
+    cmd := parser.NewCmd("encrypt", encryptHelp, encryptCallback)
+    cmd.NewString("out o")
+}
+
+
 func encryptCallback(parser *args.ArgParser) {
 
     if !parser.HasArgs() {

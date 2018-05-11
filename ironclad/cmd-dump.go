@@ -26,6 +26,12 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
+func registerDump(parser *args.ArgParser) {
+    cmd := parser.NewCmd("dump", dumpHelp, dumpCallback)
+    cmd.NewString("file f")
+}
+
+
 func dumpCallback(parser *args.ArgParser) {
 
     // Load the database.

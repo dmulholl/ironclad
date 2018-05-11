@@ -31,6 +31,11 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
+func registerCache(parser *args.ArgParser) {
+    parser.NewCmd("cache", cacheHelp, cacheCallback)
+}
+
+
 func cacheCallback(parser *args.ArgParser) {
 
     // Set up a handler to intercept SIGINT interrupts. This fixes an annoying

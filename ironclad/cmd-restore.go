@@ -29,6 +29,12 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
+func registerRestore(parser *args.ArgParser) {
+    cmd := parser.NewCmd("restore", restoreHelp, restoreCallback)
+    cmd.NewString("file f")
+}
+
+
 func restoreCallback(parser *args.ArgParser) {
 
     // Check that at least one entry argument has been supplied.

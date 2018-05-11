@@ -45,6 +45,15 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
+func registerList(parser *args.ArgParser) {
+    cmd := parser.NewCmd("list show", listHelp, listCallback)
+    cmd.NewString("file f")
+    cmd.NewString("tag t")
+    cmd.NewFlag("verbose v")
+    cmd.NewFlag("deleted d")
+}
+
+
 func listCallback(parser *args.ArgParser) {
 
     // Load the database.

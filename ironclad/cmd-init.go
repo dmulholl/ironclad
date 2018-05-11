@@ -30,6 +30,11 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
+func registerInit(parser *args.ArgParser) {
+    parser.NewCmd("init", initHelp, initCallback)
+}
+
+
 func initCallback(parser *args.ArgParser) {
 
     // Check that a filename argument has been supplied.

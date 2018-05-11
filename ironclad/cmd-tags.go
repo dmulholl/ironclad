@@ -25,6 +25,12 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
+func registerTags(parser *args.ArgParser) {
+    cmd := parser.NewCmd("tags", tagsHelp, tagsCallback)
+    cmd.NewString("file f")
+}
+
+
 func tagsCallback(parser *args.ArgParser) {
 
     // Load the database.

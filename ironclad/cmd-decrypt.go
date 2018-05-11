@@ -34,6 +34,12 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
+func registerDecrypt(parser *args.ArgParser) {
+    cmd := parser.NewCmd("decrypt", decryptHelp, decryptCallback)
+    cmd.NewString("out o")
+}
+
+
 func decryptCallback(parser *args.ArgParser) {
 
     if !parser.HasArgs() {

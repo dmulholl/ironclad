@@ -1,7 +1,7 @@
 package main
 
 
-import "github.com/dmulholland/args"
+import "github.com/dmulholland/janus-go/janus"
 
 
 import (
@@ -35,13 +35,13 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
-func registerDelete(parser *args.ArgParser) {
+func registerDelete(parser *janus.ArgParser) {
     cmd := parser.NewCmd("delete", deleteHelp, deleteCallback)
     cmd.NewString("file f")
 }
 
 
-func deleteCallback(parser *args.ArgParser) {
+func deleteCallback(parser *janus.ArgParser) {
 
     // Check that at least one entry argument has been supplied.
     if !parser.HasArgs() {

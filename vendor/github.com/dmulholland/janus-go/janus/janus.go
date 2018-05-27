@@ -1,8 +1,8 @@
 /*
-    Package args is a minimalist argument-parsing library designed for
+    Package janus is an argument-parsing library designed for
     building elegant command-line interfaces.
 */
-package args
+package janus
 
 
 import (
@@ -16,7 +16,7 @@ import (
 
 
 // Package version.
-const Version = "1.0.0"
+const Version = "2.0.0"
 
 
 // Print a message to stderr and exit with a non-zero error code.

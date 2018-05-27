@@ -1,7 +1,7 @@
 package main
 
 
-import "github.com/dmulholland/args"
+import "github.com/dmulholland/janus-go/janus"
 
 
 import (
@@ -11,7 +11,7 @@ import (
 )
 
 
-const version = "1.3.1"
+const version = "1.3.2"
 
 
 var helptext = fmt.Sprintf(`
@@ -56,7 +56,7 @@ Command Help:
 func main() {
 
     // Instantiate an argument parser.
-    parser := args.NewParser()
+    parser := janus.NewParser()
     parser.Helptext = helptext
     parser.Version = version
 

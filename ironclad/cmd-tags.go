@@ -1,7 +1,7 @@
 package main
 
 
-import "github.com/dmulholland/args"
+import "github.com/dmulholland/janus-go/janus"
 
 
 import (
@@ -25,13 +25,13 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
-func registerTags(parser *args.ArgParser) {
+func registerTags(parser *janus.ArgParser) {
     cmd := parser.NewCmd("tags", tagsHelp, tagsCallback)
     cmd.NewString("file f")
 }
 
 
-func tagsCallback(parser *args.ArgParser) {
+func tagsCallback(parser *janus.ArgParser) {
 
     // Load the database.
     _, _, db := loadDB(parser)

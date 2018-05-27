@@ -1,7 +1,7 @@
 package main
 
 
-import "github.com/dmulholland/args"
+import "github.com/dmulholland/janus-go/janus"
 
 
 import (
@@ -34,13 +34,13 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
-func registerDecrypt(parser *args.ArgParser) {
+func registerDecrypt(parser *janus.ArgParser) {
     cmd := parser.NewCmd("decrypt", decryptHelp, decryptCallback)
     cmd.NewString("out o")
 }
 
 
-func decryptCallback(parser *args.ArgParser) {
+func decryptCallback(parser *janus.ArgParser) {
 
     if !parser.HasArgs() {
         exit("missing filename")

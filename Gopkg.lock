@@ -8,10 +8,10 @@
   revision = "5e2c7bddca04488284428a201e4a15615f7a5074"
 
 [[projects]]
-  name = "github.com/dmulholland/args"
-  packages = ["."]
-  revision = "70e9887e0c3f288ddac30e72651e0b20b734d314"
-  version = "1.0.0"
+  name = "github.com/dmulholland/janus-go"
+  packages = ["janus"]
+  revision = "562c2c5cf3f99dab73783e384f7acabd0ac5192c"
+  version = "2.0.0"
 
 [[projects]]
   branch = "master"
@@ -44,7 +44,7 @@
     "pbkdf2",
     "ssh/terminal"
   ]
-  revision = "2b6c08872f4b66da917bb4ce98df4f0307330f78"
+  revision = "ab813273cd59e1333f7ae7bff5d027d4aadf528c"
 
 [[projects]]
   branch = "master"
@@ -53,11 +53,11 @@
     "unix",
     "windows"
   ]
-  revision = "79b0c6888797020a994db17c8510466c72fe75d9"
+  revision = "c11f84a56e43e20a78cee75a7c034031ecf57d1f"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "86239e0acc4e661b7c6dc39f984ce920c833eebdf77c4a0db430c4571147f4e3"
+  inputs-digest = "6b6eef02450d0f0ed282eda518a1d03d9982127a7d7e7ce75d15c714d22da8be"
   solver-name = "gps-cdcl"
   solver-version = 1

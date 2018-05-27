@@ -1,7 +1,7 @@
 package main
 
 
-import "github.com/dmulholland/args"
+import "github.com/dmulholland/janus-go/janus"
 
 
 import (
@@ -24,13 +24,13 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
-func registerSetpass(parser *args.ArgParser) {
+func registerSetpass(parser *janus.ArgParser) {
     cmd := parser.NewCmd("setpass", setpassHelp, setpassCallback)
     cmd.NewString("file f")
 }
 
 
-func setpassCallback(parser *args.ArgParser) {
+func setpassCallback(parser *janus.ArgParser) {
     filename, _, db := loadDB(parser)
 
     line("─")

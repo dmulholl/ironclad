@@ -1,7 +1,7 @@
 package main
 
 
-import "github.com/dmulholland/args"
+import "github.com/dmulholland/janus-go/janus"
 
 
 import (
@@ -25,13 +25,13 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
-func registerPurge(parser *args.ArgParser) {
+func registerPurge(parser *janus.ArgParser) {
     cmd := parser.NewCmd("purge", purgeHelp, purgeCallback)
     cmd.NewString("file f")
 }
 
 
-func purgeCallback(parser *args.ArgParser) {
+func purgeCallback(parser *janus.ArgParser) {
     filename, password, db := loadDB(parser)
 
     list := db.Inactive()

@@ -1,7 +1,7 @@
 package main
 
 
-import "github.com/dmulholland/args"
+import "github.com/dmulholland/janus-go/janus"
 
 
 import (
@@ -29,13 +29,13 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
-func registerRestore(parser *args.ArgParser) {
+func registerRestore(parser *janus.ArgParser) {
     cmd := parser.NewCmd("restore", restoreHelp, restoreCallback)
     cmd.NewString("file f")
 }
 
 
-func restoreCallback(parser *args.ArgParser) {
+func restoreCallback(parser *janus.ArgParser) {
 
     // Check that at least one entry argument has been supplied.
     if !parser.HasArgs() {

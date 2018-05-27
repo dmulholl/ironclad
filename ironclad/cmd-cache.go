@@ -1,7 +1,7 @@
 package main
 
 
-import "github.com/dmulholland/args"
+import "github.com/dmulholland/janus-go/janus"
 
 
 import (
@@ -31,12 +31,12 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
-func registerCache(parser *args.ArgParser) {
+func registerCache(parser *janus.ArgParser) {
     parser.NewCmd("cache", cacheHelp, cacheCallback)
 }
 
 
-func cacheCallback(parser *args.ArgParser) {
+func cacheCallback(parser *janus.ArgParser) {
 
     // Set up a handler to intercept SIGINT interrupts. This fixes an annoying
     // bug where hitting Ctrl-C to short-circuit a clipboard countdown could

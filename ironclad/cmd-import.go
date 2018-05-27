@@ -1,7 +1,7 @@
 package main
 
 
-import "github.com/dmulholland/args"
+import "github.com/dmulholland/janus-go/janus"
 
 
 import (
@@ -31,13 +31,13 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
-func registerImport(parser *args.ArgParser) {
+func registerImport(parser *janus.ArgParser) {
     cmd := parser.NewCmd("import", importHelp, importCallback)
     cmd.NewString("file f")
 }
 
 
-func importCallback(parser *args.ArgParser) {
+func importCallback(parser *janus.ArgParser) {
 
     // Read the JSON input.
     var input []byte

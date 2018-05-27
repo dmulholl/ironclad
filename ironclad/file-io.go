@@ -1,7 +1,7 @@
 package main
 
 
-import "github.com/dmulholland/args"
+import "github.com/dmulholland/janus-go/janus"
 
 
 import (
@@ -17,7 +17,7 @@ import (
 
 
 // Load a database from an encrypted file.
-func loadDB(args *args.ArgParser) (filename, password string, db *irondb.DB) {
+func loadDB(args *janus.ArgParser) (filename, password string, db *irondb.DB) {
 
     // Determine the file to use.
     // 1. Has a filename been specified on the command line?

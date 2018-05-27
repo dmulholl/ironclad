@@ -1,7 +1,7 @@
 package main
 
 
-import "github.com/dmulholland/args"
+import "github.com/dmulholland/janus-go/janus"
 
 
 import (
@@ -31,14 +31,14 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
-func registerUrl(parser *args.ArgParser) {
+func registerUrl(parser *janus.ArgParser) {
     cmd := parser.NewCmd("url", urlHelp, urlCallback)
     cmd.NewString("file f")
     cmd.NewFlag("print p")
 }
 
 
-func urlCallback(parser *args.ArgParser) {
+func urlCallback(parser *janus.ArgParser) {
 
     // Make sure we have at least one argument.
     if !parser.HasArgs() {

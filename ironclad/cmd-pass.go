@@ -1,7 +1,7 @@
 package main
 
 
-import "github.com/dmulholland/args"
+import "github.com/dmulholland/janus-go/janus"
 
 
 import (
@@ -32,7 +32,7 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
-func registerPass(parser *args.ArgParser) {
+func registerPass(parser *janus.ArgParser) {
     cmd := parser.NewCmd("pass", passHelp, passCallback)
     cmd.NewString("file f")
     cmd.NewFlag("readable r")
@@ -40,7 +40,7 @@ func registerPass(parser *args.ArgParser) {
 }
 
 
-func passCallback(parser *args.ArgParser) {
+func passCallback(parser *janus.ArgParser) {
 
     // Make sure we have at least one argument.
     if !parser.HasArgs() {

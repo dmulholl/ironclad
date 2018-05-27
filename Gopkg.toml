@@ -3,8 +3,8 @@
   name = "github.com/atotto/clipboard"
 
 [[constraint]]
-  name = "github.com/dmulholland/args"
-  version = "1.0.0"
+  name = "github.com/dmulholland/janus-go"
+  version = "2.0.0"
 
 [[constraint]]
   branch = "master"

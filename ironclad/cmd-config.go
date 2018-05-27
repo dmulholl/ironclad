@@ -1,7 +1,7 @@
 package main
 
 
-import "github.com/dmulholland/args"
+import "github.com/dmulholland/janus-go/janus"
 
 
 import (
@@ -41,12 +41,12 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
-func registerConfig(parser *args.ArgParser) {
+func registerConfig(parser *janus.ArgParser) {
     parser.NewCmd("config", configHelp, configCallback)
 }
 
 
-func configCallback(parser *args.ArgParser) {
+func configCallback(parser *janus.ArgParser) {
     if !parser.HasArgs() {
         if !ironconfig.FileExists() {
             exit("no config file exists")

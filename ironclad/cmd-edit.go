@@ -1,7 +1,7 @@
 package main
 
 
-import "github.com/dmulholland/args"
+import "github.com/dmulholland/janus-go/janus"
 
 
 import (
@@ -43,7 +43,7 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
-func registerEdit(parser *args.ArgParser) {
+func registerEdit(parser *janus.ArgParser) {
     cmd := parser.NewCmd("edit", editHelp, editCallback)
     cmd.NewString("file f")
     cmd.NewFlag("title t")
@@ -57,7 +57,7 @@ func registerEdit(parser *args.ArgParser) {
 }
 
 
-func editCallback(parser *args.ArgParser) {
+func editCallback(parser *janus.ArgParser) {
 
     // Make sure we have at least one argument.
     if !parser.HasArgs() {

@@ -1,7 +1,7 @@
 package main
 
 
-import "github.com/dmulholland/args"
+import "github.com/dmulholland/janus-go/janus"
 
 
 import (
@@ -30,12 +30,12 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
-func registerInit(parser *args.ArgParser) {
+func registerInit(parser *janus.ArgParser) {
     parser.NewCmd("init", initHelp, initCallback)
 }
 
 
-func initCallback(parser *args.ArgParser) {
+func initCallback(parser *janus.ArgParser) {
 
     // Check that a filename argument has been supplied.
     if !parser.HasArgs() {

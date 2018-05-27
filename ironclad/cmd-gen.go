@@ -1,7 +1,7 @@
 package main
 
 
-import "github.com/dmulholland/args"
+import "github.com/dmulholland/janus-go/janus"
 
 
 import (
@@ -59,7 +59,7 @@ Flags:
 `, filepath.Base(os.Args[0]), PoolSymbols, PoolSimilars)
 
 
-func registerGen(parser *args.ArgParser) {
+func registerGen(parser *janus.ArgParser) {
     cmd := parser.NewCmd("gen", genHelp, genCallback)
     cmd.NewString("file f")
     cmd.NewFlag("digits d")
@@ -72,7 +72,7 @@ func registerGen(parser *args.ArgParser) {
 }
 
 
-func genCallback(parser *args.ArgParser) {
+func genCallback(parser *janus.ArgParser) {
 
     var length int
     var pool string

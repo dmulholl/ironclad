@@ -1,7 +1,7 @@
 package main
 
 
-import "github.com/dmulholland/args"
+import "github.com/dmulholland/janus-go/janus"
 
 
 import (
@@ -34,14 +34,14 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
-func registerAdd(parser *args.ArgParser) {
+func registerAdd(parser *janus.ArgParser) {
     cmd := parser.NewCmd("add new", addHelp, addCallback)
     cmd.NewString("file f")
     cmd.NewFlag("no-editor")
 }
 
 
-func addCallback(parser *args.ArgParser) {
+func addCallback(parser *janus.ArgParser) {
 
     // Load the database.
     filename, password, db := loadDB(parser)

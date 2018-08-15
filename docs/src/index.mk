@@ -9,14 +9,8 @@ meta description: >
 Ironclad is a simple command line utility for creating and managing encrypted password databases.
 
 
-
-### Download
-
-* [Linux][]
-* [Mac][]
-* [Windows][]
-
-See the [releases](@root/releases//) page for file hashes.
+* [Download Binary](@root/releases//)
+* [Source Code](https://github.com/dmulholland/ironclad)
 
 
 
@@ -81,7 +75,6 @@ You can find the source files on [Github][].
 
 
 
-
 ### Security
 
 Database files are encrypted using industry-standard cryptographic protocols.
@@ -136,14 +129,3 @@ The Ironclad application itself is a cross-platform prototype. However, alternat
 ### License
 
 Ironclad is released under an MIT license.
-
-
-
-[linux]:
-  https://github.com/dmulholland/ironclad/releases/download/1.3.0/ironclad-linux-1.3.0.zip
-
-[mac]:
-  https://github.com/dmulholland/ironclad/releases/download/1.3.0/ironclad-mac-1.3.0.zip
-
-[windows]:
-  https://github.com/dmulholland/ironclad/releases/download/1.3.0/ironclad-win-1.3.0.zip

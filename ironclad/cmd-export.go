@@ -32,7 +32,7 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
-func registerExport(parser *janus.ArgParser) {
+func registerExportCmd(parser *janus.ArgParser) {
     cmd := parser.NewCmd("export", exportHelp, exportCallback)
     cmd.NewString("file f")
     cmd.NewString("tag t")

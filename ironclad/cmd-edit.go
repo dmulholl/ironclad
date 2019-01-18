@@ -43,7 +43,7 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
-func registerEdit(parser *janus.ArgParser) {
+func registerEditCmd(parser *janus.ArgParser) {
     cmd := parser.NewCmd("edit", editHelp, editCallback)
     cmd.NewString("file f")
     cmd.NewFlag("title t")

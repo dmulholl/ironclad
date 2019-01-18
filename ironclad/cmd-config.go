@@ -41,7 +41,7 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
-func registerConfig(parser *janus.ArgParser) {
+func registerConfigCmd(parser *janus.ArgParser) {
     parser.NewCmd("config", configHelp, configCallback)
 }
 

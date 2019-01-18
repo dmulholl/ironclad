@@ -31,7 +31,7 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
-func registerUrl(parser *janus.ArgParser) {
+func registerUrlCmd(parser *janus.ArgParser) {
     cmd := parser.NewCmd("url", urlHelp, urlCallback)
     cmd.NewString("file f")
     cmd.NewFlag("print p")

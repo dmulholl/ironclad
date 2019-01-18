@@ -35,7 +35,7 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
-func registerDelete(parser *janus.ArgParser) {
+func registerDeleteCmd(parser *janus.ArgParser) {
     cmd := parser.NewCmd("delete", deleteHelp, deleteCallback)
     cmd.NewString("file f")
 }

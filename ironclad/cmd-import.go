@@ -31,7 +31,7 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
-func registerImport(parser *janus.ArgParser) {
+func registerImportCmd(parser *janus.ArgParser) {
     cmd := parser.NewCmd("import", importHelp, importCallback)
     cmd.NewString("file f")
 }

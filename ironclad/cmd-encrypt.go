@@ -41,7 +41,7 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
-func registerEncrypt(parser *janus.ArgParser) {
+func registerEncryptCmd(parser *janus.ArgParser) {
     cmd := parser.NewCmd("encrypt", encryptHelp, encryptCallback)
     cmd.NewString("out o")
 }

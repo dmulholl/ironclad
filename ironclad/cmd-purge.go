@@ -25,7 +25,7 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
-func registerPurge(parser *janus.ArgParser) {
+func registerPurgeCmd(parser *janus.ArgParser) {
     cmd := parser.NewCmd("purge", purgeHelp, purgeCallback)
     cmd.NewString("file f")
 }

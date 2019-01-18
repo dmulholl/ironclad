@@ -34,7 +34,7 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
-func registerDecrypt(parser *janus.ArgParser) {
+func registerDecryptCmd(parser *janus.ArgParser) {
     cmd := parser.NewCmd("decrypt", decryptHelp, decryptCallback)
     cmd.NewString("out o")
 }

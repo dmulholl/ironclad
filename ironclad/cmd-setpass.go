@@ -24,7 +24,7 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
-func registerSetpass(parser *janus.ArgParser) {
+func registerSetpassCmd(parser *janus.ArgParser) {
     cmd := parser.NewCmd("setpass", setpassHelp, setpassCallback)
     cmd.NewString("file f")
 }

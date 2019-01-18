@@ -45,7 +45,7 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
-func registerList(parser *janus.ArgParser) {
+func registerListCmd(parser *janus.ArgParser) {
     cmd := parser.NewCmd("list show", listHelp, listCallback)
     cmd.NewString("file f")
     cmd.NewString("tag t")

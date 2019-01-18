@@ -30,7 +30,7 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
-func registerInit(parser *janus.ArgParser) {
+func registerInitCmd(parser *janus.ArgParser) {
     parser.NewCmd("init", initHelp, initCallback)
 }
 

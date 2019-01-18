@@ -26,7 +26,7 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
-func registerDump(parser *janus.ArgParser) {
+func registerDumpCmd(parser *janus.ArgParser) {
     cmd := parser.NewCmd("dump", dumpHelp, dumpCallback)
     cmd.NewString("file f")
 }

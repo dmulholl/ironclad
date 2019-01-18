@@ -29,7 +29,7 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
-func registerRestore(parser *janus.ArgParser) {
+func registerRestoreCmd(parser *janus.ArgParser) {
     cmd := parser.NewCmd("restore", restoreHelp, restoreCallback)
     cmd.NewString("file f")
 }

@@ -34,7 +34,7 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
-func registerAdd(parser *janus.ArgParser) {
+func registerAddCmd(parser *janus.ArgParser) {
     cmd := parser.NewCmd("add new", addHelp, addCallback)
     cmd.NewString("file f")
     cmd.NewFlag("no-editor")

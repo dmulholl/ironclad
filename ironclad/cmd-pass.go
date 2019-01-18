@@ -32,7 +32,7 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
-func registerPass(parser *janus.ArgParser) {
+func registerPassCmd(parser *janus.ArgParser) {
     cmd := parser.NewCmd("pass", passHelp, passCallback)
     cmd.NewString("file f")
     cmd.NewFlag("readable r")

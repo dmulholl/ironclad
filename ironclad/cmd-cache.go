@@ -31,7 +31,7 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
-func registerCache(parser *janus.ArgParser) {
+func registerCacheCmd(parser *janus.ArgParser) {
     parser.NewCmd("cache", cacheHelp, cacheCallback)
 }
 

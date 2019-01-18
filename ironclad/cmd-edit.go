@@ -86,43 +86,43 @@ func editCallback(parser *janus.ArgParser) {
     }
 
     // Header.
-    line("─")
+    printLine("─")
     fmt.Println("  Editing Entry: " + entry.Title)
-    line("─")
+    printLine("─")
 
     if parser.GetFlag("title") || (allFields && editField("title")) {
         fmt.Println("  TITLE")
         fmt.Println("  Old value: " + entry.Title)
         entry.Title = input("  New value: ")
-        line("·")
+        printLine("·")
     }
 
     if parser.GetFlag("url") || (allFields && editField("url")) {
         fmt.Println("  URL")
         fmt.Println("  Old value: " + entry.Url)
         entry.Url = input("  New value: ")
-        line("·")
+        printLine("·")
     }
 
     if parser.GetFlag("username") || (allFields && editField("username")) {
         fmt.Println("  USERNAME")
         fmt.Println("  Old value: " + entry.Username)
         entry.Username = input("  New value: ")
-        line("·")
+        printLine("·")
     }
 
     if parser.GetFlag("password") || (allFields && editField("password")) {
         fmt.Println("  PASSWORD")
         fmt.Println("  Old value: " + entry.GetPassword())
         entry.SetPassword(input("  New value: "))
-        line("·")
+        printLine("·")
     }
 
     if parser.GetFlag("email") || (allFields && editField("email")) {
         fmt.Println("  EMAIL")
         fmt.Println("  Old value: " + entry.Email)
         entry.Email = input("  New value: ")
-        line("·")
+        printLine("·")
     }
 
     if parser.GetFlag("tags") || (allFields && editField("tags")) {
@@ -137,7 +137,7 @@ func editCallback(parser *janus.ArgParser) {
                 entry.Tags = append(entry.Tags, tag)
             }
         }
-        line("·")
+        printLine("·")
     }
 
     if parser.GetFlag("notes") || (allFields && editField("notes")) {
@@ -145,10 +145,10 @@ func editCallback(parser *janus.ArgParser) {
             oldnotes := strings.Trim(entry.Notes, "\r\n")
             if oldnotes != "" {
                 fmt.Println(oldnotes)
-                line("·")
+                printLine("·")
             }
             entry.Notes = inputViaStdin()
-            line("·")
+            printLine("·")
         } else {
             entry.Notes = inputViaEditor("edit-note", entry.Notes)
         }
@@ -159,13 +159,13 @@ func editCallback(parser *janus.ArgParser) {
 
     // Footer.
     fmt.Println("  Entry updated.")
-    line("─")
+    printLine("─")
 }
 
 
 // Ask the user whether they want to edit the specified field.
 func editField(field string) bool {
     answer := input("  Edit " + field + "? (y/n) ")
-    line("·")
+    printLine("·")
     return strings.ToLower(answer) == "y"
 }

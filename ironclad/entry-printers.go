@@ -21,16 +21,16 @@ func printCompact(list irondb.EntryList, dbsize int) {
 
     // Bail if we have no entries to display.
     if len(list) == 0 {
-        line("─")
+        printLine("─")
         fmt.Println("  No Entries")
-        line("─")
+        printLine("─")
         return
     }
 
     // Header.
-    line("─")
+    printLine("─")
     fmt.Println("  ID  ·  TITLE")
-    line("─")
+    printLine("─")
 
     // Print the entry listing.
     for _, entry := range list {
@@ -38,9 +38,9 @@ func printCompact(list irondb.EntryList, dbsize int) {
     }
 
     // Footer.
-    line("─")
+    printLine("─")
     fmt.Printf("  %d/%d Entries\n", len(list), dbsize)
-    line("─")
+    printLine("─")
 }
 
 
@@ -49,16 +49,16 @@ func printVerbose(list irondb.EntryList, dbsize int, title string) {
 
     // Bail if we have no entries to display.
     if len(list) == 0 {
-        line("─")
+        printLine("─")
         fmt.Println("  No Entries")
-        line("─")
+        printLine("─")
         return
     }
 
     // Header.
-    line("─")
+    printLine("─")
     fmt.Println("  " + title)
-    line("─")
+    printLine("─")
 
     // Print the entry listing.
     for _, entry := range list {
@@ -86,16 +86,16 @@ func printVerbose(list irondb.EntryList, dbsize int, title string) {
         }
 
         if entry.Notes != "" {
-            indentedLine("·")
+            printIndentedLine("·")
             wrapped := wordwrap.WrapString(entry.Notes, 76)
             indented := text.Indent(wrapped, "  ")
             fmt.Println(strings.Trim(indented, "\r\n"))
         }
 
-        line("─")
+        printLine("─")
     }
 
     // Footer.
     fmt.Printf("  %d/%d Entries\n", len(list), dbsize)
-    line("─")
+    printLine("─")
 }

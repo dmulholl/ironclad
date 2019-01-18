@@ -65,10 +65,10 @@ func deleteCallback(parser *janus.ArgParser) {
             db.SetInactive(entry.Id)
         }
         fmt.Println("  Entries deleted.")
-        line("─")
+        printLine("─")
     } else {
         fmt.Println("  Deletion aborted.")
-        line("─")
+        printLine("─")
     }
 
     // Save the updated database to disk.

@@ -161,16 +161,21 @@ func printIndentedLineOfChar(char string) {
 }
 
 
-// Print grey text.
-func printGrey(text string) {
-    fmt.Print("\u001B[90m")
-    fmt.Print(text)
-    fmt.Print("\u001B[0m")
+// Shortcut print function.
+func print(format string, args ...interface{}) {
+    fmt.Printf(format, args...)
 }
 
 
-// Print grey text with format string.
-func printfGrey(format string, args ...interface{}) {
+// Shortcut println function.
+func println(format string, args ...interface{}) {
+    fmt.Printf(format, args...)
+    fmt.Println()
+}
+
+
+// Print in grey.
+func printGrey(format string, args ...interface{}) {
     fmt.Print("\u001B[90m")
     fmt.Printf(format, args...)
     fmt.Print("\u001B[0m")

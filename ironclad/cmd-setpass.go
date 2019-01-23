@@ -33,10 +33,10 @@ func registerSetpassCmd(parser *janus.ArgParser) {
 func setpassCallback(parser *janus.ArgParser) {
     filename, _, db := loadDB(parser)
 
-    printLine("─")
+    printLineOfChar("─")
     password := inputPass("Enter new password:   ")
     confirm  := inputPass("Confirm new password: ")
-    printLine("─")
+    printLineOfChar("─")
 
     if password == confirm {
         saveDB(filename, password, db)

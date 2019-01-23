@@ -139,7 +139,7 @@ func terminalWidth() int {
 
 
 // Print a line of characters.
-func printLine(char string) {
+func printLineOfChar(char string) {
     fmt.Print("\u001B[90m")
     length := terminalWidth()
     for i := 0; i < length; i++ {
@@ -150,7 +150,7 @@ func printLine(char string) {
 
 
 // Print an indented line of characters.
-func printIndentedLine(char string) {
+func printIndentedLineOfChar(char string) {
     fmt.Print("\u001B[90m")
     length := terminalWidth() - 4
     fmt.Print("  ")
@@ -165,6 +165,14 @@ func printIndentedLine(char string) {
 func printGrey(text string) {
     fmt.Print("\u001B[90m")
     fmt.Print(text)
+    fmt.Print("\u001B[0m")
+}
+
+
+// Print grey text with format string.
+func printfGrey(format string, args ...interface{}) {
+    fmt.Print("\u001B[90m")
+    fmt.Printf(format, args)
     fmt.Print("\u001B[0m")
 }
 

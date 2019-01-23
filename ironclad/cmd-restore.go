@@ -59,10 +59,10 @@ func restoreCallback(parser *janus.ArgParser) {
             db.SetActive(entry.Id)
         }
         fmt.Println("  Entries restored.")
-        printLine("─")
+        printLineOfChar("─")
     } else {
         fmt.Println("  Restore aborted.")
-        printLine("─")
+        printLineOfChar("─")
     }
 
     // Save the updated database to disk.

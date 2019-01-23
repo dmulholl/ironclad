@@ -48,16 +48,16 @@ func tagsCallback(parser *janus.ArgParser) {
 
     // Print the tag list.
     if len(tags) > 0 {
-        printLine("─")
+        printLineOfChar("─")
         fmt.Println("  Tags")
-        printLine("─")
+        printLineOfChar("─")
         for _, tag := range tags {
             fmt.Printf("  %s [%d]\n", tag, len(tagmap[tag]))
         }
-        printLine("─")
+        printLineOfChar("─")
     } else {
-        printLine("─")
+        printLineOfChar("─")
         fmt.Println("  No Tags")
-        printLine("─")
+        printLineOfChar("─")
     }
 }

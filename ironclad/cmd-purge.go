@@ -44,10 +44,10 @@ func purgeCallback(parser *janus.ArgParser) {
     if strings.ToLower(answer) == "y" {
         db.PurgeInactive()
         fmt.Println("  Entries purged.")
-        printLine("─")
+        printLineOfChar("─")
     } else {
         fmt.Println("  Purge aborted.")
-        printLine("─")
+        printLineOfChar("─")
     }
 
     saveDB(filename, password, db)

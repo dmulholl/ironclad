@@ -50,9 +50,9 @@ func addCallback(parser *janus.ArgParser) {
     entry := irondb.NewEntry()
 
     // Print header.
-    printLine("─")
+    printLineOfChar("─")
     fmt.Println("  Add Entry")
-    printLine("─")
+    printLineOfChar("─")
 
     // Fetch user input.
     entry.Title     = input("  Title:      ")
@@ -62,7 +62,7 @@ func addCallback(parser *janus.ArgParser) {
     entry.SetPassword(input("  Password:   "))
 
     // Split tags on commas.
-    printLine("─")
+    printLineOfChar("─")
     tagstring := input(
         "  Enter a comma-separated list of tags for this entry:\n> ")
     for _, tag := range strings.Split(tagstring, ",") {
@@ -73,11 +73,11 @@ func addCallback(parser *janus.ArgParser) {
     }
 
     // Add a note?
-    printLine("─")
+    printLineOfChar("─")
     answer := input("  Add a note to this entry? (y/n): ")
     if strings.ToLower(answer) == "y" {
         if parser.GetFlag("no-editor") {
-            printLine("─")
+            printLineOfChar("─")
             entry.Notes = inputViaStdin()
         } else {
             entry.Notes = inputViaEditor("add-note", "")
@@ -93,5 +93,5 @@ func addCallback(parser *janus.ArgParser) {
     saveDB(filename, password, db)
 
     // Footer.
-    printLine("─")
+    printLineOfChar("─")
 }

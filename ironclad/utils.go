@@ -172,7 +172,7 @@ func printGrey(text string) {
 // Print grey text with format string.
 func printfGrey(format string, args ...interface{}) {
     fmt.Print("\u001B[90m")
-    fmt.Printf(format, args)
+    fmt.Printf(format, args...)
     fmt.Print("\u001B[0m")
 }
 

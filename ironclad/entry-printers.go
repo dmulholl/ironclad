@@ -29,7 +29,7 @@ func printCompact(list irondb.EntryList, dbsize int) {
 
     // Header.
     printLineOfChar("─")
-    fmt.Println("  ID  ·  TITLE")
+    printGrey("  ID  ·  TITLE\n")
     printLineOfChar("─")
 
     // Print the entry listing.
@@ -39,7 +39,7 @@ func printCompact(list irondb.EntryList, dbsize int) {
 
     // Footer.
     printLineOfChar("─")
-    fmt.Printf("  %d/%d Entries\n", len(list), dbsize)
+    printfGrey("  %d/%d Entries\n", len(list), dbsize)
     printLineOfChar("─")
 }
 

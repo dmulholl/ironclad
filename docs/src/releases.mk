@@ -12,11 +12,11 @@ All pre-built binaries are 64-bit.
 ### 1.4.0
 
 * [Linux](https://github.com/dmulholland/ironclad/releases/download/1.4.0/ironclad-linux-1.4.0.zip)
-  &mdash; `4b3ebb6d4edf6b579c5274ed53c87f203fba2fed`
+  &mdash; `7557ea7b4c6d331096faa24c8cc224b62808521f`
 * [Mac](https://github.com/dmulholland/ironclad/releases/download/1.4.0/ironclad-mac-1.4.0.zip)
-  &mdash; `64f4ef3967a9c5f2ca6ace43093400e47dda6765`
+  &mdash; `059fcb7e8f916de22c744da03e857f1d86412ba8`
 * [Windows](https://github.com/dmulholland/ironclad/releases/download/1.4.0/ironclad-win-1.4.0.zip)
-  &mdash; `0da6d589205c4f5a586aff2bd0271776c01c5fd5`
+  &mdash; `195460cc5086c344bfba6af660ce4ace8c93a3ff`
 
 
 

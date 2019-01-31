@@ -12,12 +12,25 @@ import (
     "os"
     "io/ioutil"
     "path/filepath"
+    "runtime"
 )
 
 
 // Location of the configuration file.
-var ConfigDir = filepath.Join(os.Getenv("HOME"), ".config", "ironclad")
-var ConfigFile = filepath.Join(ConfigDir, "goconfig.toml")
+var ConfigDir string
+var ConfigFile string
+
+
+// Initialize the path to the config file depending on the OS.
+func init() {
+    if runtime.GOOS == "windows" {
+        ConfigDir = filepath.Join(os.Getenv("LOCALAPPDATA"), "Ironclad")
+        ConfigFile = filepath.Join(ConfigDir, "goconfig.toml")
+    } else {
+        ConfigDir = filepath.Join(os.Getenv("HOME"), ".config", "ironclad")
+        ConfigFile = filepath.Join(ConfigDir, "goconfig.toml")
+    }
+}
 
 
 // Get reads a value from the configuration file.

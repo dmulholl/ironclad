@@ -22,7 +22,7 @@ var ConfigFile = filepath.Join(ConfigDir, "goconfig.toml")
 
 // Get reads a value from the configuration file.
 func Get(key string) (value string, found bool, err error) {
-    config, err := load()
+    config, err := loadToml()
     if err != nil {
         return "", false, err
     }
@@ -37,12 +37,12 @@ func Get(key string) (value string, found bool, err error) {
 
 // Set writes a value to the configuration file.
 func Set(key, value string) error {
-    config, err := load()
+    config, err := loadToml()
     if err != nil {
         return err
     }
     config.Set(key, value)
-    return save(config)
+    return saveToml(config)
 }
 
 
@@ -56,7 +56,7 @@ func FileExists() bool {
 
 
 // Load a config file's TOML content.
-func load() (*toml.Tree, error) {
+func loadToml() (*toml.Tree, error) {
     if FileExists() {
         tree, err := toml.LoadFile(ConfigFile)
         if err != nil {
@@ -71,7 +71,7 @@ func load() (*toml.Tree, error) {
 
 
 // Save a TOML tree to file.
-func save(tree *toml.Tree) error {
+func saveToml(tree *toml.Tree) error {
     err := os.MkdirAll(filepath.Dir(ConfigFile), 0777)
     if err != nil {
         return err

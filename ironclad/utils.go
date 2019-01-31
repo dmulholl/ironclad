@@ -126,13 +126,12 @@ func exit(objects ...interface{}) {
 }
 
 
-// Returns the width of the terminal window.
+// Returns the width of the terminal window. Defaults to 80 if the width
+// cannot be determined.
 func terminalWidth() int {
-    if terminal.IsTerminal(int(os.Stdout.Fd())) {
-        width, _, err := terminal.GetSize(int(os.Stdout.Fd()))
-        if err == nil {
-            return width
-        }
+    width, _, err := terminal.GetSize(int(os.Stdout.Fd()))
+    if err == nil {
+        return width
     }
     return 80
 }

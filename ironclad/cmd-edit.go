@@ -91,44 +91,38 @@ func editCallback(parser *janus.ArgParser) {
     printLineOfChar("─")
 
     if parser.GetFlag("title") || (allFields && editField("title")) {
-        fmt.Println("  TITLE")
-        fmt.Println("  Old value: " + entry.Title)
-        entry.Title = input("  New value: ")
+        fmt.Println("  Old title: " + entry.Title)
+        entry.Title = input("  New title: ")
         printLineOfChar("·")
     }
 
     if parser.GetFlag("url") || (allFields && editField("url")) {
-        fmt.Println("  URL")
-        fmt.Println("  Old value: " + entry.Url)
-        entry.Url = input("  New value: ")
+        fmt.Println("  Old URL: " + entry.Url)
+        entry.Url = input("  New URL: ")
         printLineOfChar("·")
     }
 
     if parser.GetFlag("username") || (allFields && editField("username")) {
-        fmt.Println("  USERNAME")
-        fmt.Println("  Old value: " + entry.Username)
-        entry.Username = input("  New value: ")
+        fmt.Println("  Old username: " + entry.Username)
+        entry.Username = input("  New username: ")
         printLineOfChar("·")
     }
 
     if parser.GetFlag("password") || (allFields && editField("password")) {
-        fmt.Println("  PASSWORD")
-        fmt.Println("  Old value: " + entry.GetPassword())
-        entry.SetPassword(input("  New value: "))
+        fmt.Println("  Old password: " + entry.GetPassword())
+        entry.SetPassword(input("  New password: "))
         printLineOfChar("·")
     }
 
     if parser.GetFlag("email") || (allFields && editField("email")) {
-        fmt.Println("  EMAIL")
-        fmt.Println("  Old value: " + entry.Email)
-        entry.Email = input("  New value: ")
+        fmt.Println("  Old email: " + entry.Email)
+        entry.Email = input("  New email: ")
         printLineOfChar("·")
     }
 
     if parser.GetFlag("tags") || (allFields && editField("tags")) {
-        fmt.Println("  TAGS")
-        fmt.Println("  Old value: " + strings.Join(entry.Tags, ", "))
-        tagstring := input("  New value: ")
+        fmt.Println("  Old tags: " + strings.Join(entry.Tags, ", "))
+        tagstring := input("  New tags: ")
         tagslice := strings.Split(tagstring, ",")
         entry.Tags = make([]string, 0)
         for _, tag := range tagslice {

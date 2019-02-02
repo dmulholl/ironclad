@@ -181,6 +181,14 @@ func printGrey(format string, args ...interface{}) {
 }
 
 
+// Print line in grey.
+func printlnGrey(format string, args ...interface{}) {
+    fmt.Print("\u001B[90m")
+    fmt.Printf(format, args...)
+    fmt.Print("\u001B[0m\n")
+}
+
+
 // Returns the set of strings that are in slice1 but not in slice2.
 func diff(slice1, slice2 []string) []string {
     diff := make([]string, 0)

@@ -83,7 +83,7 @@ Database files are encrypted using industry-standard cryptographic protocols.
 
 * Data is encrypted using 256-bit AES in CBC mode.
 * Padding is performed using the PKCS #7 padding scheme.
-* Authentication is performed using the HMAC-SHA-256 protocol.
+* Authentication is performed using HMAC-SHA-256.
 * Encryption keys are generated using 10,000 rounds of the PBKDF2 key derivation algorithm with an SHA-256 hash.
 
 Encrypted files have no special markers and are indistinguishable from random data.

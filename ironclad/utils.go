@@ -181,11 +181,25 @@ func printGrey(format string, args ...interface{}) {
 }
 
 
-// Print line in grey.
+// Print in grey with a newline.
 func printlnGrey(format string, args ...interface{}) {
     fmt.Print("\u001B[90m")
     fmt.Printf(format, args...)
     fmt.Print("\u001B[0m\n")
+}
+
+
+// Print a heading.
+func printHeading(text, meta string) {
+    printLineOfChar("─")
+    print("  ");
+    print(text);
+    numSpaces := terminalWidth() - len(text) - len(meta) - 4;
+    for i := 0; i < numSpaces; i += 1 {
+        print(" ")
+    }
+    printlnGrey(meta)
+    printLineOfChar("─")
 }
 
 

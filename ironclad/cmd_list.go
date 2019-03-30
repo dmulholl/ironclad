@@ -57,7 +57,8 @@ func registerListCmd(parser *janus.ArgParser) {
 func listCallback(parser *janus.ArgParser) {
 
     // Load the database.
-    _, _, db := loadDB(parser)
+    filePath, _, db := loadDB(parser)
+    fileName := filepath.Base(filePath)
 
     // Default to displaying all active entries.
     var list irondb.EntryList
@@ -87,8 +88,8 @@ func listCallback(parser *janus.ArgParser) {
 
     // Print the list of entries.
     if parser.GetFlag("verbose") || parser.GetParent().GetCmdName() == "show" {
-        printVerbose(list, count, title)
+        printVerbose(list, count, title, fileName)
     } else {
-        printCompact(list, count)
+        printCompact(list, count, fileName)
     }
 }

@@ -65,7 +65,8 @@ func editCallback(parser *janus.ArgParser) {
     }
 
     // Load the database.
-    filename, password, db := loadDB(parser)
+    filePath, password, db := loadDB(parser)
+    fileName := filepath.Base(filePath)
 
     // Search for an entry corresponding to the supplied arguments.
     list := db.Active().FilterByAll(parser.GetArgs()...)
@@ -86,9 +87,7 @@ func editCallback(parser *janus.ArgParser) {
     }
 
     // Header.
-    printLineOfChar("─")
-    fmt.Println("  Editing Entry: " + entry.Title)
-    printLineOfChar("─")
+    printHeading("Editing Entry: " + entry.Title, fileName)
 
     if parser.GetFlag("title") || (allFields && editField("title")) {
         fmt.Println("  Old title: " + entry.Title)
@@ -149,7 +148,7 @@ func editCallback(parser *janus.ArgParser) {
     }
 
     // Save the updated database to disk.
-    saveDB(filename, password, db)
+    saveDB(filePath, password, db)
 
     // Footer.
     fmt.Println("  Entry updated.")

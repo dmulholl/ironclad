@@ -43,7 +43,8 @@ func restoreCallback(parser *janus.ArgParser) {
     }
 
     // Load the database.
-    filename, password, db := loadDB(parser)
+    filePath, password, db := loadDB(parser)
+    fileName := filepath.Base(filePath)
 
     // Grab the entries to restore.
     list := db.Inactive().FilterByIDString(parser.GetArgs()...)
@@ -52,7 +53,7 @@ func restoreCallback(parser *janus.ArgParser) {
     }
 
     // Print a listing and request confirmation.
-    printCompact(list, len(db.Inactive()))
+    printCompact(list, len(db.Inactive()), fileName)
     answer := input("  Restore the entries listed above? (y/n): ")
     if strings.ToLower(answer) == "y" {
         for _, entry := range list {
@@ -66,5 +67,5 @@ func restoreCallback(parser *janus.ArgParser) {
     }
 
     // Save the updated database to disk.
-    saveDB(filename, password, db)
+    saveDB(filePath, password, db)
 }

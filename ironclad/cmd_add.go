@@ -44,15 +44,14 @@ func registerAddCmd(parser *janus.ArgParser) {
 func addCallback(parser *janus.ArgParser) {
 
     // Load the database.
-    filename, password, db := loadDB(parser)
+    filePath, password, db := loadDB(parser)
+    fileName := filepath.Base(filePath)
 
     // Create a new Entry object to add to the database.
     entry := irondb.NewEntry()
 
     // Print header.
-    printLineOfChar("─")
-    fmt.Println("  Add Entry")
-    printLineOfChar("─")
+    printHeading("Add Entry", fileName)
 
     // Fetch user input.
     entry.Title     = input("  Title:      ")
@@ -101,7 +100,7 @@ func addCallback(parser *janus.ArgParser) {
     db.Add(entry)
 
     // Save the updated database to disk.
-    saveDB(filename, password, db)
+    saveDB(filePath, password, db)
 
     // Footer.
     printLineOfChar("─")

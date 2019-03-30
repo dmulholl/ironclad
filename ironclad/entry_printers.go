@@ -16,13 +16,11 @@ import (
 
 
 // Print a list of entries in compact format.
-func printCompact(list irondb.EntryList, dbsize int) {
+func printCompact(list irondb.EntryList, dbsize int, filename string) {
 
     // Bail if we have no entries to display.
     if len(list) == 0 {
-        printLineOfChar("─")
-        println("  No Entries")
-        printLineOfChar("─")
+        printHeading("No Entries", filename)
         return
     }
 
@@ -30,7 +28,12 @@ func printCompact(list irondb.EntryList, dbsize int) {
     printLineOfChar("─")
     print("  ID")
     printGrey("  ·  ")
-    print("TITLE\n")
+    print("TITLE")
+    numSpaces := terminalWidth() - len(filename) - 16;
+    for i := 0; i < numSpaces; i += 1 {
+        print(" ")
+    }
+    printlnGrey(filename)
     printLineOfChar("─")
 
     // Print the entry listing.
@@ -48,20 +51,16 @@ func printCompact(list irondb.EntryList, dbsize int) {
 
 
 // Print a list of entries in verbose format.
-func printVerbose(list irondb.EntryList, dbsize int, title string) {
+func printVerbose(list irondb.EntryList, dbsize int, title, filename string) {
 
     // Bail if we have no entries to display.
     if len(list) == 0 {
-        printLineOfChar("─")
-        println("  No Entries")
-        printLineOfChar("─")
+        printHeading("No Entries", filename)
         return
     }
 
     // Header.
-    printLineOfChar("─")
-    println("  " + title)
-    printLineOfChar("─")
+    printHeading(title, filename)
 
     // Print the entry listing.
     for _, entry := range list {

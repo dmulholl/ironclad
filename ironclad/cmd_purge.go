@@ -32,14 +32,15 @@ func registerPurgeCmd(parser *janus.ArgParser) {
 
 
 func purgeCallback(parser *janus.ArgParser) {
-    filename, password, db := loadDB(parser)
+    filePath, password, db := loadDB(parser)
+    fileName := filepath.Base(filePath)
 
     list := db.Inactive()
     if len(list) == 0 {
         exit("no inactive entries to purge")
     }
 
-    printCompact(list, len(list))
+    printCompact(list, len(list), fileName)
     answer := input("  Purge the entries listed above? (y/n): ")
     if strings.ToLower(answer) == "y" {
         db.PurgeInactive()
@@ -50,5 +51,5 @@ func purgeCallback(parser *janus.ArgParser) {
         printLineOfChar("─")
     }
 
-    saveDB(filename, password, db)
+    saveDB(filePath, password, db)
 }

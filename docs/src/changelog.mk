@@ -5,6 +5,8 @@ title: Changelog
 
 ### 1.5.0.dev
 
+* Show filename in output headers.
+
 * The `add` command can now automatically generate a password for a new entry.
 
 * Rename the `setpass` command to `masterpass`.

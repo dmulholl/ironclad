@@ -3,6 +3,16 @@ title: Changelog
 ---
 
 
+### 1.5.0.dev
+
+* The `add` command can now automatically generate a password for a new entry.
+
+* Rename the `setpass` command to `masterpass`.
+
+* The default character pool for generating passwords now includes symbols.
+
+
+
 ### 1.4.2
 
 * The config directory is now correctly stored in the user's `%appdata%` directory on Windows.

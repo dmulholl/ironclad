@@ -11,8 +11,8 @@ import (
 )
 
 
-var setpassHelp = fmt.Sprintf(`
-Usage: %s setpass [FLAGS] [OPTIONS]
+var masterpassHelp = fmt.Sprintf(`
+Usage: %s masterpass [FLAGS] [OPTIONS]
 
   Change a database's master password.
 
@@ -24,13 +24,14 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
-func registerSetpassCmd(parser *janus.ArgParser) {
-    cmd := parser.NewCmd("setpass", setpassHelp, setpassCallback)
+func registerMasterpassCmd(parser *janus.ArgParser) {
+    cmd := parser.NewCmd(
+        "masterpass setpass", masterpassHelp, masterpassCallback)
     cmd.NewString("file f")
 }
 
 
-func setpassCallback(parser *janus.ArgParser) {
+func masterpassCallback(parser *janus.ArgParser) {
     filename, _, db := loadDB(parser)
 
     printLineOfChar("─")

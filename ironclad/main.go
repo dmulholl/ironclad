@@ -45,7 +45,7 @@ Additional Commands:
   import            Import entries into a database.
   purge             Purge inactive (i.e. deleted) entries from a database.
   restore           Restore one or more previously deleted entries.
-  setpass           Change a database's master password.
+  masterpass        Change a database's master password.
   tags              List database tags.
 
 Command Help:
@@ -77,7 +77,7 @@ func main() {
     registerPassCmd(parser)
     registerPurgeCmd(parser)
     registerRestoreCmd(parser)
-    registerSetpassCmd(parser)
+    registerMasterpassCmd(parser)
     registerTagsCmd(parser)
     registerUrlCmd(parser)
     registerUserCmd(parser)

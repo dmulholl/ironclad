@@ -73,38 +73,55 @@ func registerGenCmd(parser *janus.ArgParser) {
 
 
 func genCallback(parser *janus.ArgParser) {
-
     var length int
-    var pool string
-
-    // Has a password length been specified?
     if parser.HasArgs() {
         length = parser.GetArgsAsInts()[0]
     } else {
         length = DefaultLength
     }
 
-    // Assemble the character pool.
-    if parser.GetFlag("digits") {
-        pool += PoolDigits
-    }
-    if parser.GetFlag("lowercase") {
-        pool += PoolLower
-    }
-    if parser.GetFlag("symbols") {
-        pool += PoolSymbols
-    }
-    if parser.GetFlag("uppercase") {
-        pool += PoolUpper
+    password := genPassword(
+        length,
+        parser.GetFlag("uppercase"),
+        parser.GetFlag("lowercase"),
+        parser.GetFlag("symbols"),
+        parser.GetFlag("digits"),
+        parser.GetFlag("exclude-similar"))
+
+    if parser.GetFlag("readable") {
+        password = addSpaces(password)
     }
 
-    // Set the default pool if no options were specified.
+    if parser.GetFlag("print") {
+        fmt.Print(password)
+        if stdoutIsTerminal() {
+            fmt.Println()
+        }
+        return
+    }
+
+    writeToClipboard(password)
+}
+
+
+// Generate a new password.
+func genPassword(
+    length int, upper, lower, symbols, digits, xSimilar bool) string {
+
+    // Assemble the character pool.
+    var pool string
+    if digits  { pool += PoolDigits }
+    if lower   { pool += PoolLower }
+    if symbols { pool += PoolSymbols }
+    if upper   { pool += PoolUpper }
+
+    // Use the default pool if no options were specified.
     if pool == "" {
         pool = PoolDigits + PoolLower + PoolUpper + PoolSymbols
     }
 
     // Are we excluding similar characters from the pool?
-    if parser.GetFlag("exclude-similar") {
+    if xSimilar {
         newpool := make([]rune, 0)
         for _, r := range pool {
             if !strings.ContainsRune(PoolSimilars, r) {
@@ -119,25 +136,8 @@ func genCallback(parser *janus.ArgParser) {
     for i := range passBytes {
         passBytes[i] = pool[randInt(len(pool))]
     }
-    password := string(passBytes)
 
-
-    // Add spaces if required.
-    if parser.GetFlag("readable") {
-        password = addSpaces(password)
-    }
-
-    // Print the password to stdout.
-    if parser.GetFlag("print") {
-        fmt.Print(password)
-        if stdoutIsTerminal() {
-            fmt.Println()
-        }
-        return
-    }
-
-    // Copy the password to the clipboard.
-    writeToClipboard(password)
+    return string(passBytes)
 }
 
 

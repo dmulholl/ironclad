@@ -59,12 +59,23 @@ func addCallback(parser *janus.ArgParser) {
     entry.Url       = input("  URL:        ")
     entry.Username  = input("  Username:   ")
     entry.Email     = input("  Email:      ")
-    entry.SetPassword(input("  Password:   "))
+
+    // Get or autogenerate a password.
+    printLineOfChar("─")
+    prompt := "  Enter a password or press return to automatically generate one"
+    prompt += ":\n\u001B[90m>\u001B[0m "
+    entrypass := input(prompt)
+    entrypass = strings.TrimSpace(entrypass)
+    if entrypass == "" {
+        entrypass = genPassword(DefaultLength, true, true, true, true, false)
+    }
+    entry.SetPassword(entrypass)
 
     // Split tags on commas.
     printLineOfChar("─")
-    tagstring := input(
-        "  Enter a comma-separated list of tags for this entry:\n> ")
+    prompt = "  Enter a comma-separated list of tags for this entry"
+    prompt += ":\n\u001B[90m>\u001B[0m "
+    tagstring := input(prompt)
     for _, tag := range strings.Split(tagstring, ",") {
         tag = strings.TrimSpace(tag)
         if tag != "" {

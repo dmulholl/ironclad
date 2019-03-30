@@ -49,7 +49,7 @@ Run `ironclad --help` to view the application's command line help:
       export            Export entries from a database.
       import            Import entries into a database.
       purge             Purge inactive entries from a database.
-      setpass           Change a database's master password.
+      masterpass        Change a database's master password.
       tags              List database tags.
 
     Command Help:
@@ -116,7 +116,7 @@ Complexity is the enemy of security, so Ironclad is as uncomplicated as possible
 
     $ ironclad dump
 
-This file is encrypted using 256-bit AES, an industry-standard protocol supported on all platforms and across all programming languages.
+This file is encrypted using 256-bit AES, a widely supported, industry-standard protocol.
 
 The Ironclad application itself is a cross-platform prototype. However, alternative native clients should be straightforward to implement and can take better advantage of the built-in security features offered by specific operating systems.
 

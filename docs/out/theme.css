@@ -50,9 +50,9 @@ body {
     line-height: 1.75;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1, h2 {
     padding: 0;
-    margin: 60px 0 30px;
+    margin: 80px 0 30px;
     line-height: 1.25;
     text-align: center;
 }
@@ -68,16 +68,18 @@ h2 {
 }
 
 h3, h4, h5, h6 {
+    padding: 0;
+    margin: 60px 0 30px;
+    line-height: 1.25;
+    text-align: left;
     font-size: 19px;
     font-weight: bold;
-    text-align: left;
 }
 
 p {
     margin: 25px 0;
     padding: 0;
 }
-
 
 blockquote {
     margin: 40px 0px;
@@ -446,15 +448,17 @@ th, td {
     body {
         width: auto;
         max-width: 600px;
+        padding-top: 60px;
     }
 
     .masthead {
         width: auto;
         float: none;
-        padding: 20px 20px 60px 20px;
+        padding: 60px 20px 60px 20px;
         text-align: center;
         margin-left: 40px;
         margin-right: 40px;
+        border-top: 3px solid black;
         border-bottom: 3px solid black;
     }
 
@@ -592,6 +596,7 @@ th, td {
 
     body {
         font-size: 16px;
+        padding-top: 40px;
     }
 
     h1 {
@@ -608,10 +613,6 @@ th, td {
 
     pre, code {
         font-size: 12px;
-    }
-
-    .masthead {
-        padding-top: 0;
     }
 
     .small {

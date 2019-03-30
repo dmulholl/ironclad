@@ -31,7 +31,7 @@ Usage: %s gen [FLAGS] ARGUMENTS
   the system clipboard. The password can alternatively be printed to stdout.
 
   The default password length is 24 characters. The default character pool
-  consists of uppercase letters, lowercase letters, and digits.
+  consists of uppercase letters, lowercase letters, symbols, and digits.
 
   The full list of possible symbols is:
 
@@ -100,7 +100,7 @@ func genCallback(parser *janus.ArgParser) {
 
     // Set the default pool if no options were specified.
     if pool == "" {
-        pool = PoolDigits + PoolLower + PoolUpper
+        pool = PoolDigits + PoolLower + PoolUpper + PoolSymbols
     }
 
     // Are we excluding similar characters from the pool?

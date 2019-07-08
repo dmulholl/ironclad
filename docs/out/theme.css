@@ -207,7 +207,7 @@ hr {
     height: 1px;
     border: 0;
     border-top: 1px solid;
-    margin: 50px auto;
+    margin: 60px auto;
     padding: 0;
     max-width: 300px;
 }
@@ -267,6 +267,11 @@ body {
     text-align: right;
 }
 
+.masthead .version {
+    font-style: italic;
+    text-align: right;
+}
+
 .masthead .menu {
     margin-right: 20px;
     direction: rtl;
@@ -305,9 +310,13 @@ body {
     margin-bottom: 40px;
 }
 
-.main .subtitle {
+.main .title .subtitle {
     font-style: italic;
     text-align: center;
+}
+
+.main .title hr {
+    margin: 50px auto 60px;
 }
 
 /**
@@ -481,6 +490,10 @@ th, td {
 
     .homepage .masthead .tagline {
         display: block;
+    }
+
+    .masthead .version {
+        text-align: center;
     }
 
     .masthead .menu {

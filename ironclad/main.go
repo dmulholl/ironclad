@@ -1,7 +1,7 @@
 package main
 
 
-import "github.com/dmulholland/janus-go/janus"
+import "github.com/dmulholl/janus-go/janus"
 
 
 import (
@@ -11,7 +11,7 @@ import (
 )
 
 
-const version = "1.5.0.dev"
+const version = "1.5.0"
 
 
 var helptext = fmt.Sprintf(`

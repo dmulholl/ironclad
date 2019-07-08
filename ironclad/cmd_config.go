@@ -1,7 +1,7 @@
 package main
 
 
-import "github.com/dmulholland/janus-go/janus"
+import "github.com/dmulholl/janus-go/janus"
 
 
 import (
@@ -14,7 +14,7 @@ import (
 
 
 import (
-    "github.com/dmulholland/ironclad/ironconfig"
+    "github.com/dmulholl/ironclad/ironconfig"
 )
 
 

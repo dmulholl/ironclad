@@ -14,8 +14,8 @@ import (
 
 
 import (
-    "github.com/dmulholland/ironclad/ironcrypt"
-    "github.com/dmulholland/ironclad/ironcrypt/aes"
+    "github.com/dmulholl/ironclad/ironcrypt"
+    "github.com/dmulholl/ironclad/ironcrypt/aes"
 )
 
 

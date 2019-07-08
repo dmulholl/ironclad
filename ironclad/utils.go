@@ -17,7 +17,7 @@ import (
 
 
 import (
-    "github.com/dmulholland/ironclad/ironconfig"
+    "github.com/dmulholl/ironclad/ironconfig"
 )
 
 

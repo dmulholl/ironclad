@@ -13,8 +13,8 @@ import (
 
 
 import (
-    "github.com/dmulholland/ironclad/ironconfig"
-    "github.com/dmulholland/ironclad/ironcrypt"
+    "github.com/dmulholl/ironclad/ironconfig"
+    "github.com/dmulholl/ironclad/ironcrypt"
 )
 
 

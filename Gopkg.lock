@@ -8,7 +8,7 @@
   revision = "5e2c7bddca04488284428a201e4a15615f7a5074"
 
 [[projects]]
-  name = "github.com/dmulholland/janus-go"
+  name = "github.com/dmulholl/janus-go"
   packages = ["janus"]
   revision = "562c2c5cf3f99dab73783e384f7acabd0ac5192c"
   version = "2.0.0"

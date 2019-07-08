@@ -1,7 +1,7 @@
 package main
 
 
-import "github.com/dmulholland/janus-go/janus"
+import "github.com/dmulholl/janus-go/janus"
 
 
 import (
@@ -12,7 +12,7 @@ import (
 
 
 import (
-    "github.com/dmulholland/ironclad/irondb"
+    "github.com/dmulholl/ironclad/irondb"
 )
 
 

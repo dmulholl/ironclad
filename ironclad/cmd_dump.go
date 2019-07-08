@@ -1,7 +1,7 @@
 package main
 
 
-import "github.com/dmulholland/janus-go/janus"
+import "github.com/dmulholl/janus-go/janus"
 
 
 import (

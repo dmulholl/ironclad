@@ -9,4 +9,4 @@ Ironclad is a simple command line utility for creating and managing encrypted pa
 
 See the [documentation] for details.
 
-[documentation]: https://darrenmulholland.com/docs/ironclad/
+[documentation]: http://www.dmulholl.com/docs/ironclad/

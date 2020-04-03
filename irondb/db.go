@@ -8,13 +8,18 @@ import (
 
 // DB represents an in-memory database of password records.
 type DB struct {
+    Version int         `json:"version"`
+    CachePass string    `json:"cachepass"`
     Entries []*Entry    `json:"entries"`
 }
 
 
 // New initializes a new database instance.
-func New() (db *DB) {
-    return &DB{Entries: make([]*Entry, 0)}
+func New(cachepass string) (db *DB) {
+    return &DB{
+        Version: 2,
+        CachePass: cachepass,
+        Entries: make([]*Entry, 0)}
 }
 
 

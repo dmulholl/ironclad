@@ -2,7 +2,6 @@ package ironrpc
 
 
 import (
-    "encoding/base64"
     "net"
     "net/rpc"
     "time"
@@ -15,26 +14,39 @@ import (
 import (
     "github.com/dmulholl/ironclad/ironconfig"
     "github.com/dmulholl/ironclad/ironcrypt"
+    "github.com/dmulholl/ironclad/ironcrypt/aes"
 )
 
 
 var CacheTimeout = 15 * time.Minute
 
 
-type GetData struct {
+type IsCachedData struct {
     Filename string
-    Nonce string
 }
 
 
-type SetData struct {
+type GetPassData struct {
     Filename string
-    Password string
+    CachePass string
+}
+
+
+type SetPassData struct {
+    Filename string
+    MasterPass string
+    CachePass string
+}
+
+
+type CacheEntry struct {
+    salt []byte
+    data []byte
 }
 
 
 type CacheServer struct {
-    cache map[string]string
+    cache map[string]CacheEntry
     mutex *sync.Mutex
     lastaccess time.Time
 }
@@ -43,58 +55,78 @@ type CacheServer struct {
 // NewServer returns an initialized RPC password server.
 func NewServer() *CacheServer {
     return &CacheServer{
-        cache: make(map[string]string),
+        cache: make(map[string]CacheEntry),
         mutex: &sync.Mutex{},
         lastaccess: time.Now(),
     }
 }
 
 
-// GetPass method exposed by the RPC server.
-func (server *CacheServer) GetPass(data GetData, password *string) error {
+// Contains method exposed by the RPC server.
+func (server *CacheServer) IsCached(data IsCachedData, result *bool) error {
     server.mutex.Lock()
     defer server.mutex.Unlock()
 
-    nonce, found, err := ironconfig.Get("nonce")
-    if err != nil {
-        return errors.New("GetPass: cannot read config file")
-    }
-    if !found {
-        return errors.New("GetPass: nonce not found in file")
-    }
-    if nonce != data.Nonce {
-        time.Sleep(time.Second)
-        return errors.New("GetPass: invalid nonce")
+    if _, found := server.cache[data.Filename]; found {
+        *result = true
+        return nil
     }
 
-    cachedpass, found := server.cache[data.Filename]
-    if found {
-        *password = cachedpass
-        server.lastaccess = time.Now()
-        return nil
-    } else {
+    *result = false
+    return nil
+}
+
+
+// GetPass method exposed by the RPC server.
+func (server *CacheServer) GetPass(data GetPassData, password *string) error {
+    server.mutex.Lock()
+    defer server.mutex.Unlock()
+
+    // Do we have a cache entry for the specified database file?
+    entry, found := server.cache[data.Filename]
+    if !found {
         return errors.New("GetPass: filename not in cache")
     }
+
+    // Use the cache password and salt to regenerate the encryption key.
+    key := ironcrypt.Key(data.CachePass, entry.salt, 10000, aes.KeySize)
+
+    // Attempt to decrypt the entry. Delete the entry from the cache on failure.
+    plaintext, err := aes.Decrypt(entry.data, key)
+    if err != nil {
+        delete(server.cache, data.Filename)
+        return errors.New("GetPass: decryption failure")
+    }
+
+    *password = string(plaintext)
+    server.lastaccess = time.Now()
+    return nil
 }
 
 
 // SetPass method exposed by the RPC server.
-func (server *CacheServer) SetPass(data SetData, notused *bool) error {
+func (server *CacheServer) SetPass(data SetPassData, notused *bool) error {
     server.mutex.Lock()
     defer server.mutex.Unlock()
 
-    bytes, err := ironcrypt.RandBytes(32)
+    // Generate a random salt.
+    salt, err := ironcrypt.RandBytes(32)
     if err != nil {
-        return errors.New("SetPass: cannot generate random bytes")
+        return errors.New("SetPass: cannot generate random salt")
     }
 
-    nonce := base64.StdEncoding.EncodeToString(bytes)
-    err = ironconfig.Set("nonce", nonce)
+    // Generate an encryption key from the cache password.
+    key := ironcrypt.Key(data.CachePass, salt, 10000, aes.KeySize)
+
+    // Encrypt the database password using the cache password.
+    ciphertext, err := aes.Encrypt([]byte(data.MasterPass), key)
     if err != nil {
-        return errors.New("SetPass: cannot set nonce")
+        return errors.New("Set Pass: cannot encrypt master password")
     }
 
-    server.cache[data.Filename] = data.Password
+    server.cache[data.Filename] = CacheEntry {
+        salt: salt,
+        data: ciphertext}
     return nil
 }
 

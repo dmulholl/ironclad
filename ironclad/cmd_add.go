@@ -20,7 +20,7 @@ import (
 var addHelp = fmt.Sprintf(`
 Usage: %s add [FLAGS] [OPTIONS]
 
-  Add a new entry to a database. You will be promped to supply values for
+  Add a new entry to a database. You will be prompted to supply values for
   the entry's fields - press return to leave an unwanted field blank.
 
   This command has an alias, 'new', which works identically.
@@ -42,18 +42,13 @@ func registerAddCmd(parser *janus.ArgParser) {
 
 
 func addCallback(parser *janus.ArgParser) {
-
-    // Load the database.
-    filePath, password, db := loadDB(parser)
-    fileName := filepath.Base(filePath)
+    filename, masterpass, db := loadDB(parser)
 
     // Create a new Entry object to add to the database.
     entry := irondb.NewEntry()
 
-    // Print header.
-    printHeading("Add Entry", fileName)
-
     // Fetch user input.
+    printHeading("Add Entry", filepath.Base(filename))
     entry.Title     = input("  Title:      ")
     entry.Url       = input("  URL:        ")
     entry.Username  = input("  Username:   ")
@@ -62,7 +57,7 @@ func addCallback(parser *janus.ArgParser) {
     // Get or autogenerate a password.
     printLineOfChar("─")
     prompt := "  Enter a password or press return to automatically generate one"
-    prompt += ":\n\u001B[90m>\u001B[0m "
+    prompt += ":\n\u001B[90m  >>\u001B[0m  "
     entrypass := input(prompt)
     entrypass = strings.TrimSpace(entrypass)
     if entrypass == "" {
@@ -73,7 +68,7 @@ func addCallback(parser *janus.ArgParser) {
     // Split tags on commas.
     printLineOfChar("─")
     prompt = "  Enter a comma-separated list of tags for this entry"
-    prompt += ":\n\u001B[90m>\u001B[0m "
+    prompt += ":\n\u001B[90m  >>\u001B[0m  "
     tagstring := input(prompt)
     for _, tag := range strings.Split(tagstring, ",") {
         tag = strings.TrimSpace(tag)
@@ -95,13 +90,8 @@ func addCallback(parser *janus.ArgParser) {
     } else {
         entry.Notes = ""
     }
-
-    // Add the new entry to the database.
-    db.Add(entry)
-
-    // Save the updated database to disk.
-    saveDB(filePath, password, db)
-
-    // Footer.
     printLineOfChar("─")
+
+    db.Add(entry)
+    saveDB(filename, masterpass, db)
 }

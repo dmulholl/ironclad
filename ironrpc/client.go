@@ -42,19 +42,31 @@ func NewClient() (*CacheClient, error) {
 
 
 // GetPass attempts to fetch a cached password from the server.
-func (client *CacheClient) GetPass(filename, nonce string) (string, error) {
-    var password string
-    data := GetData{ Filename: filename, Nonce: nonce }
-    err := client.rpcc.Call("CacheServer.GetPass", data, &password)
-    return password, err
+func (client *CacheClient) GetPass(filename, cachepass string) (string, error) {
+    var masterpass string
+    data := GetPassData { Filename: filename, CachePass: cachepass }
+    err := client.rpcc.Call("CacheServer.GetPass", data, &masterpass)
+    return masterpass, err
 }
 
 
 // SetPass attempts to cache a password to the server.
-func (client *CacheClient) SetPass(filename, password string) error {
+func (client *CacheClient) SetPass(filename, masterpass, cachepass string) error {
     var notused bool
-    data := SetData{ Filename: filename, Password: password }
+    data := SetPassData { Filename: filename, MasterPass: masterpass, CachePass: cachepass }
     return client.rpcc.Call("CacheServer.SetPass", data, &notused)
+}
+
+
+// IsCached checks if the server has a cache entry for the specified database file.
+func (client *CacheClient) IsCached(filename string) bool {
+    var found bool
+    data := IsCachedData { Filename: filename }
+    err := client.rpcc.Call("CacheServer.IsCached", data, &found)
+    if err != nil {
+        return false
+    }
+    return found
 }
 
 

@@ -2,11 +2,24 @@
 title: Releases
 ---
 
-All binaries are hosted on [Github][]. Each download link is accompanied by an SHA-1 hash of the corresponding binary.
+All binaries are hosted on [Github][]. Each download link is accompanied by a hash of the corresponding binary. V2 links use SHA-256, V1 links use SHA-1.
 
 All pre-built binaries are 64-bit.
 
 [github]: https://github.com/dmulholl/ironclad/releases
+
+
+### 2.0.0
+
+* [Linux](https://github.com/dmulholl/ironclad/releases/download/2.0.0/ironclad-linux-2.0.0.zip)
+* [Mac](https://github.com/dmulholl/ironclad/releases/download/2.0.0/ironclad-mac-2.0.0.zip)
+* [Windows](https://github.com/dmulholl/ironclad/releases/download/2.0.0/ironclad-win-2.0.0.zip)
+
+::: code
+    Linux:   7357e8ae7f90571791cb975785f55cdf7c2b48ecb583eb06449ea9210680a8cc
+    Mac:     598a50f2523572ddfa35e3af9909aedf05d6402ac306eb6317bfb6688977819c
+    Windows: 2f51f33aeb014df77bba52df1d4e25a1a2b8fc04babf3dc73734ce309c474cf3
+
 
 
 ### 1.5.0

@@ -5,7 +5,7 @@
     <title>Getting Started</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="fonts.css">
-    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="graphite.css">
     <link rel="stylesheet" href="pygments.css">
     
     
@@ -19,7 +19,7 @@
         <p class="tagline">A command line password manager.</p>
       
       
-        <p class="version">Version 1.5.0</p>
+        <p class="version">Version 2.0.0</p>
       
       <nav class="menu">
         <input id="menu-check" type="checkbox"/>
@@ -33,6 +33,7 @@
 <li><a href="quickstart.html">Quickstart</a></li>
 <li><a href="releases.html">Releases</a></li>
 <li><a href="changelog.html">Changelog</a></li>
+<li><a href="upgrade.html">Upgrading</a></li>
 <li><a href="https://github.com/dmulholl/ironclad">Source</a></li>
 </ul>
       </nav>
@@ -54,14 +55,17 @@ Initialize a new database
 Use the <code>init</code> command to initialize a new password database. This command takes a single argument specifying the location of the database file.
 </p>
 <pre>
-$ ironclad init topsecret/passwords.idb
+$ ironclad init top/secret/passwords.idb
 </pre>
 <p>
 Ironclad will create a new database file at the specified location.
 You can call the file anything you like &mdash; Ironclad doesn't require any particular file extension for databases. (In fact, database files have no special markers and are indistinguishable from random data.)
 </p>
 <p>
-You'll be prompted to enter a master password which will be used to encrypt the file. You'll be prompted to re-enter this password when you next run a command on the database; Ironclad will then default to caching the password in memory for 15 minutes from its last use.
+You'll be prompted to enter two passwords: a <b>master password</b> which will be used to encrypt your database file, and a <b>cache password</b> which will be used to encrypt your master password while it's temporarily cached in memory between application runs. (Ironclad defaults to caching your master password for 15 minutes but you can customize this using the <code>config</code> command.)
+</p>
+<p>
+Think of it like this: your master password protects your database file from the world so it needs to be long and complex. Your cache password protects your master password from people who have access to your computer while it's cached in memory; this is a much smaller attack surface so it can be considerably shorter and easier to type.
 </p>
 <h3 id="add-entries">
 Add entries
@@ -97,13 +101,13 @@ $ ironclad show
 Copy a password or username
 </h3>
 <p>
-Use the <code>pass</code> command to copy a password to the clipboard. The clipboard is automatically overwritten after a default timeout of 10 seconds.
+Use the <code>pass</code> command to copy a password to the clipboard. The clipboard is automatically overwritten after a default timeout of 15 seconds. (You can customize this timeout using the <code>config</code> command.)
 </p>
 <pre>
-$ ironclad pass entry
+$ ironclad pass &lt;entry&gt;
 </pre>
 <p>
-You can specify the entry by its ID or by any unique case-insensitive substring of its title.
+You can specify the entry by its ID or by any unique set of case-insensitive substrings of its title.
 </p>
 <p>
 The <code>user</code> command works identically for usernames.

@@ -47,11 +47,7 @@ func deleteCallback(parser *janus.ArgParser) {
     if !parser.HasArgs() {
         exit("you must specify at least one entry to delete")
     }
-
-    // Load the database.
-    filePath, password, db := loadDB(parser)
-    fileName := filepath.Base(filePath)
-
+    filename, masterpass, db := loadDB(parser)
 
     // Grab the entries to delete.
     list := db.Active().FilterByIDString(parser.GetArgs()...)
@@ -60,19 +56,16 @@ func deleteCallback(parser *janus.ArgParser) {
     }
 
     // Print a listing and request confirmation.
-    printCompact(list, db.Size(), fileName)
+    printCompact(list, db.Size(), filepath.Base(filename))
     answer := input("  Delete the entries listed above? (y/n): ")
     if strings.ToLower(answer) == "y" {
         for _, entry := range list {
             db.SetInactive(entry.Id)
         }
+        saveDB(filename, masterpass, db)
         fmt.Println("  Entries deleted.")
-        printLineOfChar("─")
     } else {
         fmt.Println("  Deletion aborted.")
-        printLineOfChar("─")
     }
-
-    // Save the updated database to disk.
-    saveDB(filePath, password, db)
+    printLineOfChar("─")
 }

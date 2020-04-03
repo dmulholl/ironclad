@@ -55,7 +55,7 @@ func cacheCallback(parser *janus.ArgParser) {
     }()
 
     // Check if a cache timeout has been set in the config file.
-    timeout, found, err := ironconfig.Get("timeout")
+    timeout, found, err := ironconfig.Get("cache-timeout")
     if err != nil {
         exit("cacheCallback:", err)
     }

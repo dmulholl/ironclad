@@ -3,6 +3,16 @@ title: Changelog
 ---
 
 
+### 2.0.0
+
+* New database format. You can find [instructions here](@root/upgrade//) for migrating a V1 database to V2.
+
+* New cache password to protect the master password while it's temporarily cached in memory.
+
+* Lots of minor tweaks and quality-of-life improvements across the application.
+
+
+
 ### 1.5.0
 
 * Show filename in output headers.

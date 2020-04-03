@@ -36,23 +36,24 @@ func registerInitCmd(parser *janus.ArgParser) {
 
 
 func initCallback(parser *janus.ArgParser) {
-
-    // Check that a filename argument has been supplied.
     if !parser.HasArgs() {
         exit("you must supply a filename for the database")
     }
     filename := parser.GetArgs()[0]
 
-    // Prompt for a master password for the new database.
-    password := inputPass("Master Password: ")
+    masterpass1 := inputPass("Enter the master password for the new database: ")
+    masterpass2 := inputPass("Please confirm the master password:             ")
+    if masterpass1 != masterpass2 {
+        exit("the passwords do not match")
+    }
 
-    // Initialize a new database.
-    db := irondb.New()
+    cachepass1 := inputPass("Enter the cache password for the new database:   ")
+    cachepass2 := inputPass("Please confirm the cache password:               ")
+    if cachepass1 != cachepass2 {
+        exit("the passwords do not match")
+    }
 
-    // Cache the filename. We don't cache the password when creating a
-    // new database file in case the user has accidentally mistyped it.
+    db := irondb.New(cachepass1)
     setCachedFilename(filename)
-
-    // Save the new database to disk.
-    saveDB(filename, password, db)
+    saveDB(filename, masterpass1, db)
 }

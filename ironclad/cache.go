@@ -39,7 +39,7 @@ func getCachedFilename() (filename string, found bool) {
 
 
 // Cache the database password for the application's next run.
-func setCachedPassword(filename, password string) {
+func setCachedPassword(filename, masterpass, cachepass string) {
 
     // If the cache timeout has been set to 0, do nothing.
     timeout, found, _ := ironconfig.Get("timeout")
@@ -64,35 +64,32 @@ func setCachedPassword(filename, password string) {
     }
     defer client.Close()
 
-    // Cache the token and password pair.
-    client.SetPass(filename, password)
+    client.SetPass(filename, masterpass, cachepass)
 }
 
 
-// Fetch the cached password (if it exists) from the application's last run.
-func getCachedPassword(filename string) (password string, found bool) {
+// Fetch the cached master password (if it exists) from the application's last run.
+func getCachedPassword(filename string) (masterpass string, success bool) {
 
-    // Fetch the authentication nonce.
-    nonce, found, err := ironconfig.Get("nonce")
-    if err != nil {
-        exit(err)
-    }
-    if !found {
-        return "", false
-    }
-
-    // Attempt to make a connection to the password server.
+    // Attempt to make a connection to the cache server.
     client, err := ironrpc.NewClient()
     if err != nil {
         return "", false
     }
     defer client.Close()
 
-    // Retrieve the password from the server.
-    password, err = client.GetPass(filename, nonce)
-    if err != nil {
+    // Check if the server has a cache entry for the database file.
+    if !client.IsCached(filename) {
         return "", false
     }
 
-    return password, true
+    // Retrieve the master password from the server.
+    cachepass := inputPass("Cache Password: ")
+    masterpass, err = client.GetPass(filename, cachepass)
+    if err != nil {
+        println("Error: invalid cache password.")
+        return "", false
+    }
+
+    return masterpass, true
 }

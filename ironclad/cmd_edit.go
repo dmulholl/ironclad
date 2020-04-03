@@ -58,22 +58,19 @@ func registerEditCmd(parser *janus.ArgParser) {
 
 
 func editCallback(parser *janus.ArgParser) {
-
-    // Make sure we have at least one argument.
     if !parser.HasArgs() {
         exit("missing entry argument")
     }
-
-    // Load the database.
-    filePath, password, db := loadDB(parser)
-    fileName := filepath.Base(filePath)
+    filename, masterpass, db := loadDB(parser)
 
     // Search for an entry corresponding to the supplied arguments.
     list := db.Active().FilterByAll(parser.GetArgs()...)
     if len(list) == 0 {
         exit("no matching entry")
     } else if len(list) > 1 {
-        exit("query matches multiple entries")
+        println("Error: the query string matches multiple entries.")
+        printCompact(list, len(db.Active()), filepath.Base(filename))
+        os.Exit(1)
     }
     entry := list[0]
 
@@ -86,8 +83,7 @@ func editCallback(parser *janus.ArgParser) {
         allFields = true
     }
 
-    // Header.
-    printHeading("Editing Entry: " + entry.Title, fileName)
+    printHeading("Editing Entry: " + entry.Title, filepath.Base(filename))
 
     if parser.GetFlag("title") || (allFields && editField("title")) {
         fmt.Println("  Old title: " + entry.Title)
@@ -147,10 +143,7 @@ func editCallback(parser *janus.ArgParser) {
         }
     }
 
-    // Save the updated database to disk.
-    saveDB(filePath, password, db)
-
-    // Footer.
+    saveDB(filename, masterpass, db)
     fmt.Println("  Entry updated.")
     printLineOfChar("─")
 }

@@ -15,13 +15,10 @@ import (
 var importHelp = fmt.Sprintf(`
 Usage: %s import [FLAGS] [OPTIONS] [ARGUMENT]
 
-  Import a list of entries in JSON format.
-
-  You can specify the name of a file to import. If no filename is specified,
-  input is read from stdin.
+  Import a list of entries.
 
 Arguments:
-  [file]                    File to import. Defaults to stdin.
+  <file>                    File to import.
 
 Options:
   -f, --file <str>          Database file. Defaults to the last used file.
@@ -38,8 +35,6 @@ func registerImportCmd(parser *janus.ArgParser) {
 
 
 func importCallback(parser *janus.ArgParser) {
-
-    // Read the JSON input.
     var input []byte
     var err error
     if parser.HasArgs() {
@@ -48,18 +43,13 @@ func importCallback(parser *janus.ArgParser) {
             exit(err)
         }
     } else {
-        input = []byte(inputViaStdin())
+        exit("you must specify a file to import")
     }
 
-    // Load the database.
-    filename, password, db := loadDB(parser)
-
-    // Import the entries into the database.
+    filename, masterpass, db := loadDB(parser)
     err = db.Import(input)
     if err != nil {
         exit(err)
     }
-
-    // Save the updated database to disk.
-    saveDB(filename, password, db)
+    saveDB(filename, masterpass, db)
 }

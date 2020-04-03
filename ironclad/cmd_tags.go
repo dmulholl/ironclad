@@ -32,8 +32,6 @@ func registerTagsCmd(parser *janus.ArgParser) {
 
 
 func tagsCallback(parser *janus.ArgParser) {
-
-    // Load the database.
     _, _, db := loadDB(parser)
 
     // Assemble a map of tags.

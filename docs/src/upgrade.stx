@@ -1,0 +1,20 @@
+---
+title: Upgrade Instructions
+subtitle: How to migrate a V1 database to V2.
+---
+
+Ironclad 2.0 introduced a new database format. Your old database files won't work with new versions of Ironclad but you can upgrade them easily using the instructions below.
+
+First, export the entries from your old database using any 1.x version of Ironclad (you can find all previous releases of Ironclad on the [releases](@root/releases//) page):
+
+    $ ironclad export > passwords.json
+
+Next, create a new database using the latest 2.x version of Ironclad.
+
+    $ ironclad init new-database.idb
+
+Finally, import the entries into the new database:
+
+    $ ironclad import passwords.json
+
+Be sure to securely delete the `passwords.json` file when you're done as it contains your exported passwords in plaintext.

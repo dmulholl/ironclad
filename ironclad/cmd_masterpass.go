@@ -35,12 +35,13 @@ func masterpassCallback(parser *janus.ArgParser) {
     filename, _, db := loadDB(parser)
 
     printLineOfChar("─")
-    password := inputPass("Enter new password:   ")
-    confirm  := inputPass("Confirm new password: ")
+    newMasterPass        := inputPass("Enter new master password:   ")
+    confirmNewMasterPass := inputPass("Confirm new master password: ")
     printLineOfChar("─")
 
-    if password == confirm {
-        saveDB(filename, password, db)
+    if newMasterPass == confirmNewMasterPass {
+        saveDB(filename, newMasterPass, db)
+        setCachedPassword(filename, newMasterPass, db.CachePass)
     } else {
         exit("passwords do not match")
     }

@@ -121,7 +121,7 @@ func exit(objects ...interface{}) {
     for _, obj := range objects {
         fmt.Fprintf(os.Stderr, " %v", obj)
     }
-    fmt.Fprint(os.Stderr, "\n")
+    fmt.Fprint(os.Stderr, ".\n")
     os.Exit(1)
 }
 
@@ -248,4 +248,10 @@ func charstr(length int, char rune) string {
         runes[i] = char
     }
     return string(runes)
+}
+
+
+// Tokenize splits a string on whitespace.
+func tokenize(input string) []string {
+    return strings.Split(input, " ")
 }

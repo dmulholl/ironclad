@@ -5,7 +5,7 @@
     <title>Ironclad &mdash; a command line password manager</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="fonts.css">
-    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="graphite.css">
     <link rel="stylesheet" href="pygments.css">
     
       <meta name="description" content="Ironclad is a simple command line utility for creating and managing encrypted password databases.">
@@ -21,7 +21,7 @@
         <p class="tagline">A command line password manager.</p>
       
       
-        <p class="version">Version 1.5.0</p>
+        <p class="version">Version 2.0.0</p>
       
       <nav class="menu">
         <input id="menu-check" type="checkbox"/>
@@ -35,6 +35,7 @@
 <li><a href="quickstart.html">Quickstart</a></li>
 <li><a href="releases.html">Releases</a></li>
 <li><a href="changelog.html">Changelog</a></li>
+<li><a href="upgrade.html">Upgrading</a></li>
 <li><a href="https://github.com/dmulholl/ironclad">Source</a></li>
 </ul>
       </nav>
@@ -47,7 +48,7 @@
         <hr>
       </header>
       <p>
-Ironclad is a simple command line utility for creating and managing encrypted password databases.
+Ironclad is a command line utility for creating and managing encrypted password databases.
 </p>
 <img alt="" src="screenshot.png">
 <ul>
@@ -70,8 +71,8 @@ Usage: ironclad [FLAGS] [COMMAND]
   Ironclad is a command line password manager.
 
 Flags:
-  -h, --help        Print the help text and exit.
-  -v, --version     Print the version number and exit.
+  -h, --help        Print the application&#x27;s help text.
+  -v, --version     Print the application&#x27;s version number.
 
 Basic Commands:
   add               Add a new entry to a database.
@@ -87,6 +88,7 @@ Basic Commands:
   user              Copy a username to the clipboard.
 
 Additional Commands:
+  cachepass         Change a database&#x27;s cache password.
   config            Set or print a configuration option.
   decrypt           Decrypt a file.
   dump              Dump a database&#x27;s JSON data store.
@@ -127,7 +129,7 @@ You can find the source files on <a href="https://github.com/dmulholl/ironclad">
 Security
 </h3>
 <p>
-Database files are encrypted using industry-standard cryptographic protocols.
+Database files are encrypted using industry-standard cryptography.
 </p>
 <ul>
 <li>
@@ -147,31 +149,19 @@ Encryption keys are generated using 10,000 rounds of the PBKDF2 key derivation a
 Encrypted files have no special markers and are indistinguishable from random data.
 </p>
 <p>
-Note that the application itself is a cross-platform utility written in a high-level, garbage-collected language. It has <em>not</em> been hardened against system-local threats, e.g. malicious code running with user-level privileges on the user's system, or adversaries with physical access to the user's hardware.
-</p>
-<h3 id="password-caching">
-Password Caching
-</h3>
-<p>
-Ironclad caches the master password in memory for a default period of 15 minutes from its last use. You can set a custom timeout using the <code>config</code> command:
-</p>
-<pre>
-$ ironclad config timeout &lt;minutes&gt;
-</pre>
-<p>
-Setting the timeout to <code>0</code> will disable caching altogether.
+Note that the application itself is a cross-platform utility written in a high-level, garbage-collected language. It has <i>not</i> been hardened against system-local threats, e.g. malicious code running with user-level privileges on the user's system, or adversaries with physical access to the user's hardware.
 </p>
 <h3 id="file-encryption">
 File Encryption
 </h3>
 <p>
-Ironclad doubles as a simple file encryption utility using the <code>encrypt</code> and <code>decrypt</code> commands. Files are encrypted using the same 256-bit AES protocol as password databases. Original files are unaffected by either encryption or decryption.
+The application doubles as a simple file encryption utility using the <code>encrypt</code> and <code>decrypt</code> commands. Files are encrypted using the same 256-bit AES protocol as password databases. Original files are unaffected by either encryption or decryption.
 </p>
 <h3 id="rationale">
 Rationale
 </h3>
 <p>
-I built this cross-platform utility as a prototype implementation of Ironclad's core idea &mdash; an open-source password manager organised around a simple JSON data store.
+I built this cross-platform utility as a prototype implementation of Ironclad's core idea &mdash; an open-source password manager organized around a simple JSON data store.
 </p>
 <p>
 Complexity is the enemy of security, so Ironclad is as uncomplicated as possible. A password database is a simple JSON file which you can view using the <code>dump</code> command:
@@ -185,14 +175,6 @@ This file is encrypted using 256-bit AES, a widely supported, industry-standard 
 <p>
 The Ironclad application itself is a cross-platform prototype. However, alternative native clients should be straightforward to implement and can take better advantage of the built-in security features offered by specific operating systems.
 </p>
-<h3 id="alternative-implementations">
-Alternative Implementations
-</h3>
-<ul>
-<li>
-Ryan Wynn's <a href="https://github.com/rwynn/llave">llave</a> provides desktop and mobile interfaces for Ironclad databases.
-</li>
-</ul>
 <h3 id="license">
 License
 </h3>

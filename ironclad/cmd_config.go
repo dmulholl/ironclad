@@ -29,8 +29,8 @@ Usage: %s config [FLAGS] [ARGUMENTS]
 
   The following options are supported:
 
-  clip-timeout              Clipboard timeout in seconds.
-  timeout                   Password timeout in minutes.
+  cache-timeout             Cache timeout in minutes.
+  clipboard-timeout         Clipboard timeout in seconds.
 
 Arguments:
   [key]                     Key to set or print.

@@ -41,20 +41,17 @@ func registerDecryptCmd(parser *janus.ArgParser) {
 
 
 func decryptCallback(parser *janus.ArgParser) {
-
     if !parser.HasArgs() {
         exit("missing filename")
     }
 
     inputfile := parser.GetArg(0)
-
     outputfile := parser.GetString("out")
     if outputfile == "" {
         outputfile = inputfile + ".decrypted"
     }
 
     password := inputPass("Password: ")
-
     content, err := ironio.Load(inputfile, password)
     if err != nil {
         exit(err)

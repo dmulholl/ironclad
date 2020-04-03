@@ -48,20 +48,17 @@ func registerEncryptCmd(parser *janus.ArgParser) {
 
 
 func encryptCallback(parser *janus.ArgParser) {
-
     if !parser.HasArgs() {
         exit("missing filename")
     }
 
     inputfile := parser.GetArg(0)
-
     outputfile := parser.GetString("out")
     if outputfile == "" {
         outputfile = inputfile + ".encrypted"
     }
 
     password := inputPass("Password: ")
-
     content, err := ioutil.ReadFile(inputfile)
     if err != nil {
         exit(err)

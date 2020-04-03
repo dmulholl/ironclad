@@ -36,15 +36,10 @@ func registerRestoreCmd(parser *janus.ArgParser) {
 
 
 func restoreCallback(parser *janus.ArgParser) {
-
-    // Check that at least one entry argument has been supplied.
     if !parser.HasArgs() {
         exit("you must specify at least one entry to restore")
     }
-
-    // Load the database.
-    filePath, password, db := loadDB(parser)
-    fileName := filepath.Base(filePath)
+    filename, masterpass, db := loadDB(parser)
 
     // Grab the entries to restore.
     list := db.Inactive().FilterByIDString(parser.GetArgs()...)
@@ -53,19 +48,16 @@ func restoreCallback(parser *janus.ArgParser) {
     }
 
     // Print a listing and request confirmation.
-    printCompact(list, len(db.Inactive()), fileName)
+    printCompact(list, len(db.Inactive()), filepath.Base(filename))
     answer := input("  Restore the entries listed above? (y/n): ")
     if strings.ToLower(answer) == "y" {
         for _, entry := range list {
             db.SetActive(entry.Id)
         }
+        saveDB(filename, masterpass, db)
         fmt.Println("  Entries restored.")
-        printLineOfChar("─")
     } else {
         fmt.Println("  Restore aborted.")
-        printLineOfChar("─")
     }
-
-    // Save the updated database to disk.
-    saveDB(filePath, password, db)
+    printLineOfChar("─")
 }

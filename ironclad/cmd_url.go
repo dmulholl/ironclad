@@ -39,21 +39,19 @@ func registerUrlCmd(parser *janus.ArgParser) {
 
 
 func urlCallback(parser *janus.ArgParser) {
-
-    // Make sure we have at least one argument.
     if !parser.HasArgs() {
         exit("missing entry argument")
     }
-
-    // Load the database.
-    _, _, db := loadDB(parser)
+    filename, _, db := loadDB(parser)
 
     // Search for an entry corresponding to the supplied arguments.
     list := db.Active().FilterByAll(parser.GetArgs()...)
     if len(list) == 0 {
         exit("no matching entry")
     } else if len(list) > 1 {
-        exit("query matches multiple entries")
+        println("Error: the query string matches multiple entries.")
+        printCompact(list, len(db.Active()), filepath.Base(filename))
+        os.Exit(1)
     }
     entry := list[0]
 

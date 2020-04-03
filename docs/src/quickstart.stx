@@ -13,12 +13,14 @@ Download the latest version of Ironclad from the [releases][] page, unzip the pa
 
 Use the `init` command to initialize a new password database. This command takes a single argument specifying the location of the database file.
 
-    $ ironclad init topsecret/passwords.idb
+    $ ironclad init top/secret/passwords.idb
 
 Ironclad will create a new database file at the specified location.
 You can call the file anything you like --- Ironclad doesn't require any particular file extension for databases. (In fact, database files have no special markers and are indistinguishable from random data.)
 
-You'll be prompted to enter a master password which will be used to encrypt the file. You'll be prompted to re-enter this password when you next run a command on the database; Ironclad will then default to caching the password in memory for 15 minutes from its last use.
+You'll be prompted to enter two passwords: a **master password** which will be used to encrypt your database file, and a **cache password** which will be used to encrypt your master password while it's temporarily cached in memory between application runs. (Ironclad defaults to caching your master password for 15 minutes but you can customize this using the `config` command.)
+
+Think of it like this: your master password protects your database file from the world so it needs to be long and complex. Your cache password protects your master password from people who have access to your computer while it's cached in memory; this is a much smaller attack surface so it can be considerably shorter and easier to type.
 
 
 
@@ -48,11 +50,11 @@ Use the `show` command to view the full details of each entry in the list.
 
 ### Copy a password or username
 
-Use the `pass` command to copy a password to the clipboard. The clipboard is automatically overwritten after a default timeout of 10 seconds.
+Use the `pass` command to copy a password to the clipboard. The clipboard is automatically overwritten after a default timeout of 15 seconds. (You can customize this timeout using the `config` command.)
 
-    $ ironclad pass entry
+    $ ironclad pass <entry>
 
-You can specify the entry by its ID or by any unique case-insensitive substring of its title.
+You can specify the entry by its ID or by any unique set of case-insensitive substrings of its title.
 
 The `user` command works identically for usernames.
 

@@ -11,7 +11,7 @@ import (
 )
 
 
-const version = "1.5.0"
+const version = "2.0.0.dev"
 
 
 var helptext = fmt.Sprintf(`
@@ -20,8 +20,8 @@ Usage: %s [FLAGS] [COMMAND]
   Ironclad is a command line password manager.
 
 Flags:
-  -h, --help        Print the application's help text and exit.
-  -v, --version     Print the application's version number and exit.
+  -h, --help        Print the application's help text.
+  -v, --version     Print the application's version number.
 
 Basic Commands:
   add               Add a new entry to a password database.
@@ -37,6 +37,7 @@ Basic Commands:
   user              Copy a username to the clipboard.
 
 Additional Commands:
+  cachepass         Change a database's cache password.
   config            Set or print a configuration option.
   decrypt           Decrypt a file.
   dump              Dump a database's internal JSON data store.
@@ -78,9 +79,11 @@ func main() {
     registerPurgeCmd(parser)
     registerRestoreCmd(parser)
     registerMasterpassCmd(parser)
+    registerCachepassCmd(parser)
     registerTagsCmd(parser)
     registerUrlCmd(parser)
     registerUserCmd(parser)
+    registerShellCmd(parser)
 
     // Parse the command line arguments.
     parser.Parse()

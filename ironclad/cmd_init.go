@@ -47,8 +47,8 @@ func initCallback(parser *janus.ArgParser) {
         exit("the passwords do not match")
     }
 
-    cachepass1 := inputPass("Enter the cache password for the new database:   ")
-    cachepass2 := inputPass("Please confirm the cache password:               ")
+    cachepass1 := inputPass("Enter the cache password for the new database:  ")
+    cachepass2 := inputPass("Please confirm the cache password:              ")
     if cachepass1 != cachepass2 {
         exit("the passwords do not match")
     }

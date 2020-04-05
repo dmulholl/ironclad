@@ -42,12 +42,12 @@ func (db *DB) ToJSON() (data []byte, err error) {
 
 
 // Import adds entries from a previously-exported byte-slice of JSON.
-func (db *DB) Import(data []byte) error {
+func (db *DB) Import(data []byte) (int, error) {
 
     exports := make([]*ExportEntry, 0)
     err := json.Unmarshal(data, &exports)
     if err != nil {
-        return err
+        return 0, err
     }
 
     for _, export := range exports {
@@ -62,7 +62,7 @@ func (db *DB) Import(data []byte) error {
         db.Add(entry)
     }
 
-    return nil
+    return len(exports), nil
 }
 
 

@@ -24,7 +24,7 @@ const SaltLength = 32
 
 
 // Number of iterations used by the key derivation function.
-const PBKDFIterations = 10000
+const PBKDFIterations = 100000
 
 
 // Load reads data from an encrypted file.

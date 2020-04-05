@@ -9,13 +9,14 @@ import (
     "os"
     "path/filepath"
     "io/ioutil"
+    "strings"
 )
 
 
 var importHelp = fmt.Sprintf(`
 Usage: %s import [FLAGS] [OPTIONS] [ARGUMENT]
 
-  Import a list of entries.
+  Import a previously-exported list of entries in JSON format.
 
 Arguments:
   <file>                    File to import.
@@ -46,10 +47,16 @@ func importCallback(parser *janus.ArgParser) {
         exit("you must specify a file to import")
     }
 
+    // V1 exports could sometimes get polluted with leading asterisks
+    // from the password input.
+    trimmed := strings.Trim(string(input), "*")
+    input = []byte(trimmed)
+
     filename, masterpass, db := loadDB(parser)
-    err = db.Import(input)
+    count, err := db.Import(input)
     if err != nil {
         exit(err)
     }
     saveDB(filename, masterpass, db)
+    fmt.Printf("%d entries imported.\n", count)
 }

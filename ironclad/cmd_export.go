@@ -8,6 +8,7 @@ import (
     "fmt"
     "os"
     "path/filepath"
+    "io/ioutil"
 )
 
 
@@ -18,13 +19,12 @@ Usage: %s export [FLAGS] [OPTIONS] [ARGUMENTS]
   by title. (Titles are checked for a case-insensitive substring match.) If no
   entries are specified, all entries will be exported.
 
-  Output is written to stdout.
-
 Arguments:
   [entries]                 List of entries to export by ID or title.
 
 Options:
   -f, --file <str>          Database file. Defaults to the last used file.
+  -o, --out <str>           Output filename. Defaults to 'passwords.json'.
   -t, --tag <str>           Filter entries using the specified tag.
 
 Flags:
@@ -36,6 +36,7 @@ func registerExportCmd(parser *janus.ArgParser) {
     cmd := parser.NewCmd("export", exportHelp, exportCallback)
     cmd.NewString("file f")
     cmd.NewString("tag t")
+    cmd.NewString("out o")
 }
 
 
@@ -55,14 +56,17 @@ func exportCallback(parser *janus.ArgParser) {
     // Are we filtering by tag?
     if parser.GetString("tag") != "" {
         list = list.FilterByTag(parser.GetString("tag"))
-    }
+    }    
 
     // Create the JSON dump.
-    dump, err := list.Export()
+    jsonstr, err := list.Export()
     if err != nil {
         exit(err)
     }
 
-    // Print the JSON to stdout.
-    fmt.Println(dump)
+    // Write to file.
+    err = ioutil.WriteFile(parser.GetString("out"), []byte(jsonstr), 0644)
+    if err != nil {
+        exit(err)
+    }
 }

@@ -8,7 +8,12 @@ import (
     "fmt"
     "os"
     "path/filepath"
+    "time"
     // "strings"
+)
+
+import (
+    "github.com/dmulholl/ironclad/ironcrypt"
 )
 
 
@@ -34,16 +39,35 @@ func registerShellCmd(parser *janus.ArgParser) {
 func shellCallback(parser *janus.ArgParser) {
     // filename, masterpass, db := loadDB(parser)
 
-    for {
-        cmdstr := input(">>> ")
-        tokens := tokenize(cmdstr)
-        if len(tokens) == 0 {
-            continue
-        }
-        if tokens[0] == "exit" || tokens[0] == "quit" {
-            break
-        }
-    }
+    // for {
+    //     cmdstr := input(">>> ")
+    //     tokens := tokenize(cmdstr)
+    //     if len(tokens) == 0 {
+    //         continue
+    //     }
+    //     if tokens[0] == "exit" || tokens[0] == "quit" {
+    //         break
+    //     }
+    // }
 
     //saveDB(filename, masterpass, db)
+
+
+    // Generate a random salt.
+    salt, err := ironcrypt.RandBytes(32)
+    if err != nil {
+        return
+    }
+
+    start := time.Now()
+
+    // Use the password and salt to generate a file encryption key.
+    ironcrypt.Key("this is a password", salt, 100000, 32)
+
+    elapsed := time.Since(start)
+
+    fmt.Println(elapsed)
+
+
+
 }

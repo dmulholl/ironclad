@@ -3,6 +3,14 @@ title: Changelog
 ---
 
 
+### 2.1.0.dev
+
+* Fix default filename bug in the `export` command.
+
+* Add confirmation step to the `export` command.
+
+
+
 ### 2.0.0
 
 * New database format. You can find [instructions here](@root/upgrade//) for migrating a V1 database to V2.

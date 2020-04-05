@@ -107,7 +107,7 @@ Complexity is the enemy of security, so Ironclad is as uncomplicated as possible
 
     $ ironclad dump
 
-This file is encrypted using 256-bit AES, a widely supported, industry-standard protocol.
+This file is encrypted using 256-bit AES in CBC mode, chosen as the most widely-supported secure encryption algorithm available, with implementations in every popular programming language.
 
 The Ironclad application itself is a cross-platform prototype. However, alternative native clients should be straightforward to implement and can take better advantage of the built-in security features offered by specific operating systems.
 

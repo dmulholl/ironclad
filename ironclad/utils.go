@@ -249,9 +249,3 @@ func charstr(length int, char rune) string {
     }
     return string(runes)
 }
-
-
-// Tokenize splits a string on whitespace.
-func tokenize(input string) []string {
-    return strings.Split(input, " ")
-}

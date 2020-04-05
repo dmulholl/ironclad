@@ -83,7 +83,6 @@ func main() {
     registerTagsCmd(parser)
     registerUrlCmd(parser)
     registerUserCmd(parser)
-    registerShellCmd(parser)
 
     // Parse the command line arguments.
     parser.Parse()

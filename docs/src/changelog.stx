@@ -9,7 +9,7 @@ title: Changelog
 
 * New cache password to protect the master password while it's temporarily cached in memory.
 
-* Encryption keys now generated using 100,000 rounds of PBKDF2 instead of 10,000 rounds.
+* Encryption keys are now generated using 100,000 rounds of PBKDF2 instead of 10,000 rounds.
 
 * Lots of minor tweaks and quality-of-life improvements across the application.
 

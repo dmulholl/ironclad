@@ -9,6 +9,7 @@ import (
     "os"
     "path/filepath"
     "io/ioutil"
+    "strings"
 )
 
 
@@ -36,14 +37,14 @@ func registerExportCmd(parser *janus.ArgParser) {
     cmd := parser.NewCmd("export", exportHelp, exportCallback)
     cmd.NewString("file f")
     cmd.NewString("tag t")
-    cmd.NewString("out o")
+    cmd.NewString("out o", "passwords.json")
 }
 
 
 func exportCallback(parser *janus.ArgParser) {
 
     // Load the database.
-    _, _, db := loadDB(parser)
+    filename, _, db := loadDB(parser)
 
     // Default to exporting all active entries.
     list := db.Active()
@@ -56,7 +57,15 @@ func exportCallback(parser *janus.ArgParser) {
     // Are we filtering by tag?
     if parser.GetString("tag") != "" {
         list = list.FilterByTag(parser.GetString("tag"))
-    }    
+    }
+
+    // Confirm export.
+    printCompact(list, db.Size(), filepath.Base(filename))
+    answer := input("  Export the entries listed above? (y/n): ")
+    if strings.ToLower(answer) != "y" {
+        fmt.Println("  Export aborted.")
+        os.Exit(0)
+    }
 
     // Create the JSON dump.
     jsonstr, err := list.Export()

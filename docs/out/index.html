@@ -129,7 +129,7 @@ You can find the source files on <a href="https://github.com/dmulholl/ironclad">
 Security
 </h3>
 <p>
-Database files are encrypted using industry-standard cryptography.
+Database files are encrypted using industry-standard cryptography.<sup class="footnote" id="fnref:1"><a href="#fn:1">1</a></sup>
 </p>
 <ul>
 <li>
@@ -162,18 +162,13 @@ Rationale
 </h3>
 <p>
 I built this cross-platform utility as a prototype implementation of Ironclad's core idea &mdash; an open-source password manager organized around a simple JSON data store.
-</p>
-<p>
 Complexity is the enemy of security, so Ironclad is as uncomplicated as possible. A password database is a simple JSON file which you can view using the <code>dump</code> command:
 </p>
 <pre>
 $ ironclad dump
 </pre>
 <p>
-This file is encrypted using 256-bit AES in CBC mode, chosen as the most widely-supported secure encryption algorithm available, with implementations in every popular programming language.
-</p>
-<p>
-The Ironclad application itself is a cross-platform prototype. However, alternative native clients should be straightforward to implement and can take better advantage of the built-in security features offered by specific operating systems.
+This file is encrypted using 256-bit AES, chosen as the most widely-supported secure encryption algorithm available, with implementations in every popular programming language.
 </p>
 <h3 id="license">
 License
@@ -181,6 +176,23 @@ License
 <p>
 Ironclad is released under an MIT license.
 </p>
+<h3 id="notes">
+Notes
+</h3>
+<dl class="footnotes">
+<div id="fn:1">
+<dt>
+<a href="#fnref:1">
+1
+</a>
+</dt>
+<dd>
+<p>
+Ironclad deliberately uses boring crypto. I originally intended to use ChaCha20-Poly1305 which was shiny and new, but it wasn't available in the Go standard library at the time. I realised that being easy to reimplement in different languages and environments was one of my key design goals for Ironclad so I chose instead the most widely-supported protocols from the set of secure industry-standard algorithms.
+</p>
+</dd>
+</div>
+</dl>
 
     </article>
 

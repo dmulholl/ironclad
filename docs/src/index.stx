@@ -35,9 +35,7 @@ Run `ironclad --help` to view the application's command line help:
       gen               Generate a new random password.
       init              Initialize a new password database.
       list              List database entries.
-      new               Alias for 'add'.
       pass              Copy a password to the clipboard.
-      show              Alias for 'list --verbose'.
       url               Copy a url to the clipboard.
       user              Copy a username to the clipboard.
 
@@ -52,6 +50,10 @@ Run `ironclad --help` to view the application's command line help:
       purge             Purge inactive entries from a database.
       masterpass        Change a database's master password.
       tags              List database tags.
+
+    Aliases:
+      new               Alias for 'add'.
+      show              Alias for 'list --verbose'.
 
     Command Help:
       help <command>    Print a command's help text.

@@ -30,9 +30,7 @@ Basic Commands:
   gen               Generate a new random password.
   init              Initialize a new password database.
   list              List database entries.
-  new               Alias for 'add'.
   pass              Copy a password to the clipboard.
-  show              Alias for 'list --verbose'.
   url               Copy a url to the clipboard.
   user              Copy a username to the clipboard.
 
@@ -48,6 +46,10 @@ Additional Commands:
   restore           Restore one or more previously deleted entries.
   masterpass        Change a database's master password.
   tags              List database tags.
+
+Aliases:
+  new               Alias for 'add'.
+  show              Alias for 'list --verbose'.
 
 Command Help:
   help <command>    Print the specified command's help text and exit.

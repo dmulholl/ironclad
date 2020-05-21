@@ -11,7 +11,7 @@ import (
 )
 
 
-const version = "2.1.0.dev"
+const version = "2.1.0"
 
 
 var helptext = fmt.Sprintf(`

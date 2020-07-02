@@ -1,52 +1,49 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>Upgrade Instructions</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="fonts.css">
-    <link rel="stylesheet" href="graphite.css">
-    <link rel="stylesheet" href="pygments.css">
-    
-    
-  </head>
-
-  <body class="node-upgrade node">
-
-    <header class="masthead">
-      <h1><a href="index.html">Ironclad</a></h1>
-      
-        <p class="tagline">A command line password manager.</p>
-      
-      
-        <p class="version">Version 2.1.0</p>
-      
-      <nav class="menu">
-        <input id="menu-check" type="checkbox"/>
-        <label id="menu-label" for="menu-check" class="unselectable">
-          <span class="icon close-icon">✕</span>
-          <span class="icon open-icon">☰</span>
-          <span class="text">Menu</span>
-        </label>
-        <ul>
+    <head>
+        <meta charset="utf-8">
+        <title>Upgrade Instructions</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="fonts.css">
+        <link rel="stylesheet" href="graphite.css">
+        <link rel="stylesheet" href="pygments.css">
+        
+        
+    </head>
+    <body class="node-upgrade node">
+        <header class="masthead">
+            <h1><a href="index.html">Ironclad</a></h1>
+            
+            <p class="tagline">A command line password manager.</p>
+            
+            
+            <p class="version">Version 2.1.0</p>
+            
+            <nav class="menu">
+                <input id="menu-check" type="checkbox"/>
+                <label id="menu-label" for="menu-check" class="unselectable">
+                    <span class="icon close-icon">✕</span>
+                    <span class="icon open-icon">☰</span>
+                    <span class="text">Menu</span>
+                </label>
+                <ul>
 <li><a href="index.html">Home</a></li>
 <li><a href="quickstart.html">Quickstart</a></li>
 <li><a href="releases.html">Releases</a></li>
 <li><a href="changelog.html">Changelog</a></li>
 <li><a href="https://github.com/dmulholl/ironclad">Source</a></li>
 </ul>
-      </nav>
-    </header>
-
-    <article class="main">
-      <header class="title">
-        <h1>Upgrade Instructions</h1>
-        
-          <p class="subtitle">How to migrate a V1 database to V2.</p>
-        
-        <hr>
-      </header>
-      <p>
+            </nav>
+        </header>
+        <article class="main">
+            <header class="title">
+                <h1>Upgrade Instructions</h1>
+                
+                <p class="subtitle">How to migrate a V1 database to V2.</p>
+                
+                <hr>
+            </header>
+            <p>
 Ironclad 2.0 introduced a new database format. Your old database files won't work with new versions of Ironclad but you can upgrade them easily using the instructions below.
 </p>
 <p>
@@ -70,10 +67,7 @@ $ ironclad import passwords.json
 <p>
 Be sure to securely delete the <code>passwords.json</code> file when you're done as it contains your exported passwords in plaintext.
 </p>
-
-    </article>
-
-    
-
-  </body>
+        </article>
+        
+    </body>
 </html>

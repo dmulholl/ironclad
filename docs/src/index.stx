@@ -82,7 +82,7 @@ You can find the source files on [Github][].
 
 ### Security
 
-Database files are encrypted using industry-standard cryptography.[fn:1]
+Database files are encrypted using industry-standard cryptography.[^1]
 
 * Data is encrypted using 256-bit AES in CBC mode.
 * Padding is performed using the PKCS #7 padding scheme.

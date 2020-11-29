@@ -1,7 +1,6 @@
 package main
 
 
-import "github.com/tonnerre/golang-text"
 import "github.com/mitchellh/go-wordwrap"
 
 
@@ -90,7 +89,7 @@ func printVerbose(list irondb.EntryList, dbsize int, title, filename string) {
         if entry.Notes != "" {
             printIndentedLineOfChar("·")
             wrapped := wordwrap.WrapString(entry.Notes, 76)
-            indented := text.Indent(wrapped, "  ")
+            indented := indent(wrapped, "  ")
             println(strings.Trim(indented, "\r\n"))
         }
 

@@ -249,3 +249,19 @@ func charstr(length int, char rune) string {
     }
     return string(runes)
 }
+
+
+// Inserts the prefix string at the beginning of each non-empty line.
+func indent(text, prefix string) string {
+	var output []byte
+	is_bol := true
+	for _, c := range []byte(text) {
+		if is_bol && c != '\n' {
+			output = append(output, []byte(prefix)...)
+		}
+		output = append(output, c)
+		is_bol = (c == '\n')
+	}
+	return string(output)
+}
+

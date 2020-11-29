@@ -83,7 +83,15 @@ func getCachedPassword(filename string) (masterpass string, success bool) {
         return "", false
     }
 
-    // Retrieve the master password from the server.
+    // Attempt to retrieve the master password from the server.
+    // Try first using an empty string as the cache password.
+    masterpass, err = client.GetPass(filename, "")
+    if err == nil {
+        return masterpass, true
+    }
+
+    // The empty string didn't work. Ask the user for their cache password
+    // and try again.
     cachepass := inputPass("Cache Password: ")
     masterpass, err = client.GetPass(filename, cachepass)
     if err != nil {

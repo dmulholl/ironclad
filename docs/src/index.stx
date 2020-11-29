@@ -95,7 +95,7 @@ Note that the application itself is a cross-platform utility written in a high-l
 
 ::: footnote 1
 
-    Ironclad deliberately uses boring crypto. I originally intended to use ChaCha20-Poly1305 which was shiny and new, but it wasn't available in the Go standard library at the time. I realised that being easy to reimplement in different languages and environments was one of my key design goals for Ironclad so I chose instead the most widely-supported protocols from the set of secure industry-standard algorithms.
+    Ironclad deliberately uses boring cryptography. I originally intended to use ChaCha20-Poly1305 but it wasn't available in the Go standard library at the time. I realised that being easy to reimplement in different languages and environments was one of my key design goals for Ironclad so I chose instead the most widely-supported protocols from the set of secure industry-standard algorithms.
 
 
 ### File Encryption

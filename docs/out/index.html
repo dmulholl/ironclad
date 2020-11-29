@@ -3,10 +3,10 @@
     <head>
         <meta charset="utf-8">
         <title>Ironclad &mdash; a command line password manager</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="fonts.css">
-        <link rel="stylesheet" href="graphite.css">
-        <link rel="stylesheet" href="pygments.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="assets/fonts.css">
+        <link rel="stylesheet" href="assets/graphite.css">
+        <link rel="stylesheet" href="assets/pygments.css">
         
         <meta name="description" content="Ironclad is a simple command line utility for creating and managing encrypted password databases.">
         
@@ -186,7 +186,7 @@ Notes
 </dt>
 <dd>
 <p>
-Ironclad deliberately uses boring crypto. I originally intended to use ChaCha20-Poly1305 which was shiny and new, but it wasn't available in the Go standard library at the time. I realised that being easy to reimplement in different languages and environments was one of my key design goals for Ironclad so I chose instead the most widely-supported protocols from the set of secure industry-standard algorithms.
+Ironclad deliberately uses boring cryptography. I originally intended to use ChaCha20-Poly1305 but it wasn't available in the Go standard library at the time. I realised that being easy to reimplement in different languages and environments was one of my key design goals for Ironclad so I chose instead the most widely-supported protocols from the set of secure industry-standard algorithms.
 </p>
 </dd>
 </div>

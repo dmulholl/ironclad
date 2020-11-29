@@ -17,7 +17,7 @@ const version = "2.2.0.dev1"
 var helptext = fmt.Sprintf(`
 Usage: %s [FLAGS] [COMMAND]
 
-  Ironclad is a command line password manager.
+  A utility for creating and managing encrypted password databases.
 
 Flags:
   -h, --help        Print the application's help text.

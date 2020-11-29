@@ -19,7 +19,7 @@
             <p class="tagline">A command line password manager.</p>
             
             
-            <p class="version">Version 2.1.0</p>
+            <p class="version">Version 2.2.0</p>
             
             <nav class="menu">
                 <input id="menu-check" type="checkbox"/>
@@ -59,12 +59,12 @@ Ironclad is a command line utility for creating and managing encrypted password 
 Usage
 </h3>
 <p>
-Run <code>ironclad --help</code> to view the application's command line help:
+Run <code>ironclad --help</code> to view the command line help:
 </p>
 <pre>
 Usage: ironclad [FLAGS] [COMMAND]
 
-  Ironclad is a command line password manager.
+  A utility for creating and managing encrypted password databases.
 
 Flags:
   -h, --help        Print the application&#x27;s help text.
@@ -72,17 +72,16 @@ Flags:
 
 Basic Commands:
   add               Add a new entry to a database.
-  delete            Delete entries from a database.
   edit              Edit an existing database entry.
   gen               Generate a new random password.
   init              Initialize a new password database.
   list              List database entries.
   pass              Copy a password to the clipboard.
+  retire            Mark one or more entries as inactive.
   url               Copy a url to the clipboard.
   user              Copy a username to the clipboard.
 
 Additional Commands:
-  cachepass         Change a database&#x27;s cache password.
   config            Set or print a configuration option.
   decrypt           Decrypt a file.
   dump              Dump a database&#x27;s JSON data store.
@@ -90,7 +89,8 @@ Additional Commands:
   export            Export entries from a database.
   import            Import entries into a database.
   purge             Purge inactive entries from a database.
-  masterpass        Change a database&#x27;s master password.
+  setcachepass      Change a database&#x27;s cache password.
+  setmasterpass     Change a database&#x27;s master password.
   tags              List database tags.
 
 Aliases:
@@ -160,7 +160,8 @@ Rationale
 </h3>
 <p>
 I built this cross-platform utility as a prototype implementation of Ironclad's core idea &mdash; an open-source password manager organized around a simple JSON data store.
-Complexity is the enemy of security, so Ironclad is as uncomplicated as possible. A password database is a simple JSON file which you can view using the <code>dump</code> command:
+Complexity is the enemy of security, so Ironclad is as uncomplicated as possible. A password
+database is a simple text file which you can view using the <code>dump</code> command:
 </p>
 <pre>
 $ ironclad dump

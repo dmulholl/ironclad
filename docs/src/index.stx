@@ -18,11 +18,11 @@ Ironclad is a command line utility for creating and managing encrypted password 
 
 ### Usage
 
-Run `ironclad --help` to view the application's command line help:
+Run `ironclad --help` to view the command line help:
 
     Usage: ironclad [FLAGS] [COMMAND]
 
-      Ironclad is a command line password manager.
+      A utility for creating and managing encrypted password databases.
 
     Flags:
       -h, --help        Print the application's help text.
@@ -30,17 +30,16 @@ Run `ironclad --help` to view the application's command line help:
 
     Basic Commands:
       add               Add a new entry to a database.
-      delete            Delete entries from a database.
       edit              Edit an existing database entry.
       gen               Generate a new random password.
       init              Initialize a new password database.
       list              List database entries.
       pass              Copy a password to the clipboard.
+      retire            Mark one or more entries as inactive.
       url               Copy a url to the clipboard.
       user              Copy a username to the clipboard.
 
     Additional Commands:
-      cachepass         Change a database's cache password.
       config            Set or print a configuration option.
       decrypt           Decrypt a file.
       dump              Dump a database's JSON data store.
@@ -48,7 +47,8 @@ Run `ironclad --help` to view the application's command line help:
       export            Export entries from a database.
       import            Import entries into a database.
       purge             Purge inactive entries from a database.
-      masterpass        Change a database's master password.
+      setcachepass      Change a database's cache password.
+      setmasterpass     Change a database's master password.
       tags              List database tags.
 
     Aliases:
@@ -107,7 +107,8 @@ The application doubles as a simple file encryption utility using the `encrypt` 
 ### Rationale
 
 I built this cross-platform utility as a prototype implementation of Ironclad's core idea --- an open-source password manager organized around a simple JSON data store.
-Complexity is the enemy of security, so Ironclad is as uncomplicated as possible. A password database is a simple JSON file which you can view using the `dump` command:
+Complexity is the enemy of security, so Ironclad is as uncomplicated as possible. A password
+database is a simple text file which you can view using the `dump` command:
 
     $ ironclad dump
 

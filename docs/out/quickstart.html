@@ -17,7 +17,7 @@
             <p class="tagline">A command line password manager.</p>
             
             
-            <p class="version">Version 2.1.0</p>
+            <p class="version">Version 2.2.0</p>
             
             <nav class="menu">
                 <input id="menu-check" type="checkbox"/>
@@ -51,7 +51,7 @@ Initialize a new database
 Use the <code>init</code> command to initialize a new password database. This command takes a single argument specifying the location of the database file.
 </p>
 <pre>
-$ ironclad init top/secret/passwords.idb
+$ ironclad init my/secret/passwords.idb
 </pre>
 <p>
 Ironclad will create a new database file at the specified location.
@@ -62,6 +62,9 @@ You'll be prompted to enter two passwords: a <b>master password</b> which will b
 </p>
 <p>
 Think of it like this: your master password protects your database file from the world so it needs to be long and complex. Your cache password protects your master password from people who have access to your computer while it's cached in memory; this is a much smaller attack surface so it can be considerably shorter and easier to type.
+</p>
+<p>
+(You can set your cache password to an empty string which will disable the prompt completely. This means that your master password is effectively unencrypted while cached in memory, but you may feel that the extra convenience is worth the risk.)
 </p>
 <h3 id="add-entries">
 Add entries
@@ -91,7 +94,7 @@ Use the <code>show</code> command to view the full details of each entry in the 
 $ ironclad show
 </pre>
 <p>
-(The <code>show</code> comand is an alias for <code>list --verbose</code>.)
+The <code>show</code> comand is an alias for <code>list --verbose</code>.
 </p>
 <h3 id="copy-a-password-or-username">
 Copy a password or username

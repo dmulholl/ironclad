@@ -22,7 +22,8 @@ Run `ironclad --help` to view the command line help:
 
     Usage: ironclad [FLAGS] [COMMAND]
 
-      A utility for creating and managing encrypted password databases.
+      A utility for creating and managing encrypted password
+      databases.
 
     Flags:
       -h, --help        Print the application's help text.

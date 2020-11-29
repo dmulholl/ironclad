@@ -9,4 +9,4 @@ Ironclad is a command line utility for creating and managing encrypted password 
 
 See the [documentation] for details.
 
-[documentation]: http://www.dmulholl.com/docs/ironclad/
+[documentation]: http://www.dmulholl.com/docs/ironclad/master/

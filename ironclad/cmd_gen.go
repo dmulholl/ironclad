@@ -117,7 +117,7 @@ func genPassword(
 
     // Use the default pool if no options were specified.
     if pool == "" {
-        pool = PoolDigits + PoolLower + PoolUpper + PoolSymbols
+        pool = PoolDigits + PoolLower + PoolUpper
     }
 
     // Are we excluding similar characters from the pool?

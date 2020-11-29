@@ -58,13 +58,18 @@ Ironclad will create a new database file at the specified location.
 You can call the file anything you like &mdash; Ironclad doesn't require any particular file extension for databases. (In fact, database files have no special markers and are indistinguishable from random data.)
 </p>
 <p>
-You'll be prompted to enter two passwords: a <b>master password</b> which will be used to encrypt your database file, and a <b>cache password</b> which will be used to encrypt your master password while it's temporarily cached in memory between application runs. (Ironclad defaults to caching your master password for 15 minutes but you can customize this using the <code>config</code> command.)
+You'll be prompted to enter two passwords: a <b>master password</b> which will be used to encrypt your
+database file, and a <b>cache password</b> which will be used to encrypt your master password while
+it's temporarily cached in memory between application runs. (Ironclad defaults to caching your
+master password for 15 minutes but you can customize this timeout using the <code>config</code> command.)
 </p>
 <p>
 Think of it like this: your master password protects your database file from the world so it needs to be long and complex. Your cache password protects your master password from people who have access to your computer while it's cached in memory; this is a much smaller attack surface so it can be considerably shorter and easier to type.
 </p>
 <p>
-(You can set your cache password to an empty string which will disable the prompt completely. This means that your master password is effectively unencrypted while cached in memory, but you may feel that the extra convenience is worth the risk.)
+(You can set your cache password to an empty string which will disable the prompt completely. This
+ means that your master password is effectively unencrypted while cached in memory, but you may
+ judge that the extra convenience is worth the risk.)
 </p>
 <h3 id="add-entries">
 Add entries

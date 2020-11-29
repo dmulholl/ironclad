@@ -25,26 +25,26 @@ Flags:
 
 Basic Commands:
   add               Add a new entry to a password database.
-  delete            Delete one or more entries from a database.
   edit              Edit an existing database entry.
   gen               Generate a new random password.
   init              Initialize a new password database.
   list              List database entries.
   pass              Copy a password to the clipboard.
+  retire            Mark one or more entries as inactive.
   url               Copy a url to the clipboard.
   user              Copy a username to the clipboard.
 
 Additional Commands:
-  cachepass         Change a database's cache password.
   config            Set or print a configuration option.
   decrypt           Decrypt a file.
   dump              Dump a database's internal JSON data store.
   encrypt           Encrypt a file.
   export            Export entries from a database.
   import            Import entries into a database.
-  purge             Purge inactive (i.e. deleted) entries from a database.
-  restore           Restore one or more previously deleted entries.
-  masterpass        Change a database's master password.
+  purge             Purge inactive entries from a database.
+  restore           Restore inactive entries to active status.
+  setcachepass      Change a database's cache password.
+  setmasterpass     Change a database's master password.
   tags              List database tags.
 
 Aliases:
@@ -68,7 +68,6 @@ func main() {
     registerCacheCmd(parser)
     registerConfigCmd(parser)
     registerDecryptCmd(parser)
-    registerDeleteCmd(parser)
     registerDumpCmd(parser)
     registerEditCmd(parser)
     registerEncryptCmd(parser)
@@ -80,8 +79,9 @@ func main() {
     registerPassCmd(parser)
     registerPurgeCmd(parser)
     registerRestoreCmd(parser)
-    registerMasterpassCmd(parser)
-    registerCachepassCmd(parser)
+    registerRetireCmd(parser)
+    registerSetMasterPassCmd(parser)
+    registerSetCachePassCmd(parser)
     registerTagsCmd(parser)
     registerUrlCmd(parser)
     registerUserCmd(parser)

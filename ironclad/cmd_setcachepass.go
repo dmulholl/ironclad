@@ -12,9 +12,13 @@ import (
 
 
 var cachepassHelp = fmt.Sprintf(`
-Usage: %s cachepass [FLAGS] [OPTIONS]
+Usage: %s setcachepass [FLAGS] [OPTIONS]
 
-  Change a database's cache password.
+  Change a database's cache password. This password is used to encrypt the
+  master password while it's temporarily cached in memory.
+
+  Note that if you set the cache password to an empty string you will not be
+  prompted to enter it.
 
 Options:
   -f, --file <str>          Database file. Defaults to the most recent file.
@@ -24,9 +28,8 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
-func registerCachepassCmd(parser *janus.ArgParser) {
-    cmd := parser.NewCmd(
-        "cachepass", cachepassHelp, cachepassCallback)
+func registerSetCachePassCmd(parser *janus.ArgParser) {
+    cmd := parser.NewCmd("setcachepass", cachepassHelp, cachepassCallback)
     cmd.NewString("file f")
 }
 
@@ -35,8 +38,8 @@ func cachepassCallback(parser *janus.ArgParser) {
     filename, masterpass, db := loadDB(parser)
 
     printLineOfChar("─")
-    newCachePass        := inputPass("Enter new cache password:   ")
-    confirmNewCachePass := inputPass("Confirm new cache password: ")
+    newCachePass        := inputPass("Enter new cache password: ")
+    confirmNewCachePass := inputPass("     Re-enter to confirm: ")
     printLineOfChar("─")
 
     if newCachePass == confirmNewCachePass {

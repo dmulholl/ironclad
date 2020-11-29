@@ -15,7 +15,7 @@ import (
 var purgeHelp = fmt.Sprintf(`
 Usage: %s purge [FLAGS] [OPTIONS]
 
-  Purge inactive entries from a database.
+  Purges all inactive entries from a database.
 
 Options:
   -f, --file <str>          Database file. Defaults to the last used file.

@@ -15,7 +15,7 @@ import (
 var restoreHelp = fmt.Sprintf(`
 Usage: %s restore [FLAGS] [OPTIONS] ARGUMENTS
 
-  Restore one or more deleted (i.e. inactive) entries. Entries to restore
+  Restore one or more inactive entries to active status. Entries to restore
   should be specified by ID.
 
 Arguments:

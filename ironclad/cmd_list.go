@@ -39,8 +39,8 @@ Options:
   -t, --tag <str>           Filter entries using the specified tag.
 
 Flags:
-  -d, --deleted             List deleted (i.e. inactive) entries.
   -h, --help                Print this command's help text and exit.
+  -i, --inactive            List inactive entries.
   -v, --verbose             Use the verbose list format.
 `, filepath.Base(os.Args[0]))
 
@@ -50,7 +50,7 @@ func registerListCmd(parser *janus.ArgParser) {
     cmd.NewString("file f")
     cmd.NewString("tag t")
     cmd.NewFlag("verbose v")
-    cmd.NewFlag("deleted d")
+    cmd.NewFlag("inactive i")
 }
 
 
@@ -61,9 +61,9 @@ func listCallback(parser *janus.ArgParser) {
     var list irondb.EntryList
     var title string
     var count int
-    if parser.GetFlag("deleted") {
+    if parser.GetFlag("inactive") {
         list = db.Inactive()
-        title = "Deleted Entries"
+        title = "Inactive Entries"
         count = len(list)
     } else {
         list = db.Active()

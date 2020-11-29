@@ -12,17 +12,16 @@ import (
 )
 
 
-var deleteHelp = fmt.Sprintf(`
-Usage: %s delete [FLAGS] [OPTIONS] ARGUMENTS
+var retireHelp = fmt.Sprintf(`
+Usage: %s retire [FLAGS] [OPTIONS] ARGUMENTS
 
-  Delete one or more entries from a database. Entries to delete should be
-  specified by ID.
+  Retire one or more entries. Entries to be retired should be specified by ID.
 
-  Deleted entries are marked as inactive and do not appear in normal listings
+  Retired entries are marked as inactive and do not appear in normal listings
   but their data remains in the database. Inactive entries can be stripped
   from the database using the 'purge' command.
 
-  You can view inactive entries using the 'list --deleted' command.
+  You can view inactive entries using the 'list --inactive' command.
 
 Arguments:
   <entries>                 List of entry IDs.
@@ -35,21 +34,21 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 
-func registerDeleteCmd(parser *janus.ArgParser) {
-    cmd := parser.NewCmd("delete", deleteHelp, deleteCallback)
+func registerRetireCmd(parser *janus.ArgParser) {
+    cmd := parser.NewCmd("retire", retireHelp, retireCallback)
     cmd.NewString("file f")
 }
 
 
-func deleteCallback(parser *janus.ArgParser) {
+func retireCallback(parser *janus.ArgParser) {
 
     // Check that at least one entry argument has been supplied.
     if !parser.HasArgs() {
-        exit("you must specify at least one entry to delete")
+        exit("you must specify at least one entry to retire")
     }
     filename, masterpass, db := loadDB(parser)
 
-    // Grab the entries to delete.
+    // Grab the entries to retire.
     list := db.Active().FilterByIDString(parser.GetArgs()...)
     if len(list) == 0 {
         exit("no matching entries")
@@ -57,15 +56,15 @@ func deleteCallback(parser *janus.ArgParser) {
 
     // Print a listing and request confirmation.
     printCompact(list, db.Size(), filepath.Base(filename))
-    answer := input("  Delete the entries listed above? (y/n): ")
+    answer := input("  Retire the entries listed above? (y/n): ")
     if strings.ToLower(answer) == "y" {
         for _, entry := range list {
             db.SetInactive(entry.Id)
         }
         saveDB(filename, masterpass, db)
-        fmt.Println("  Entries deleted.")
+        fmt.Println("  Entries retired.")
     } else {
-        fmt.Println("  Deletion aborted.")
+        fmt.Println("  Operation aborted.")
     }
     printLineOfChar("─")
 }

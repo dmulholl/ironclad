@@ -7,6 +7,19 @@ All binaries are hosted on [Github][]. Each download link is accompanied by a ha
 [github]: https://github.com/dmulholl/ironclad/releases
 
 
+### 2.2.0
+
+* [Linux](https://github.com/dmulholl/ironclad/releases/download/2.2.0/ironclad-linux-2.1.0.zip)
+* [Mac](https://github.com/dmulholl/ironclad/releases/download/2.2.0/ironclad-mac-2.1.0.zip)
+* [Windows](https://github.com/dmulholl/ironclad/releases/download/2.2.0/ironclad-win-2.1.0.zip)
+
+::: code
+    L: eab4a28d928447cf34d33e8bad1e89ecca701a553f42806c701c5f0ae54a7416
+    M: 11a127370fb736bd297b31894be17f8116c9b2b8f8e5134221b8e901c998323b
+    W: 0b5c7d834ce0c8216275ace4a78896ca8d8caf5ce4f3b9d554f7bf73686361d5
+
+
+
 ### 2.1.0
 
 * [Linux](https://github.com/dmulholl/ironclad/releases/download/2.1.0/ironclad-linux-2.1.0.zip)

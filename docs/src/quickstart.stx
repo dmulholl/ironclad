@@ -13,7 +13,7 @@ Download the latest version of Ironclad from the [releases][] page, unzip the pa
 
 Use the `init` command to initialize a new password database. This command takes a single argument specifying the location of the database file.
 
-    $ ironclad init my/secret/passwords.idb
+    $ ironclad init my/secret/passwords.db
 
 Ironclad will create a new database file at the specified location.
 You can call the file anything you like --- Ironclad doesn't require any particular file extension for databases. (In fact, database files have no special markers and are indistinguishable from random data.)

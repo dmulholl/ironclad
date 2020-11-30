@@ -13,7 +13,7 @@ import (
 
 
 var editHelp = fmt.Sprintf(`
-Usage: %s edit [FLAGS] [OPTIONS] ARGUMENTS
+Usage: %s edit <entry>
 
   Edit an existing database entry.
 

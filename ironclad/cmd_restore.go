@@ -13,7 +13,7 @@ import (
 
 
 var restoreHelp = fmt.Sprintf(`
-Usage: %s restore [FLAGS] [OPTIONS] ARGUMENTS
+Usage: %s restore <entries>
 
   Restore one or more inactive entries to active status. Entries to restore
   should be specified by ID.

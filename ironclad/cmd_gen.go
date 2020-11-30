@@ -25,7 +25,7 @@ const (
 
 
 var genHelp = fmt.Sprintf(`
-Usage: %s gen [FLAGS] ARGUMENTS
+Usage: %s gen [length]
 
   Generate a random ASCII password. The password is automatically copied to
   the system clipboard. The password can alternatively be printed to stdout.

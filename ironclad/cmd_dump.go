@@ -14,7 +14,7 @@ import (
 
 
 var dumpHelp = fmt.Sprintf(`
-Usage: %s dump [FLAGS] [OPTIONS]
+Usage: %s dump
 
   Dump a database's internal JSON data store to stdout.
 

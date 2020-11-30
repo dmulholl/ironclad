@@ -14,7 +14,7 @@ import (
 
 
 var importHelp = fmt.Sprintf(`
-Usage: %s import [FLAGS] [OPTIONS] [ARGUMENT]
+Usage: %s import <file>
 
   Import a previously-exported list of entries in JSON format.
 

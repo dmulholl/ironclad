@@ -13,7 +13,7 @@ import (
 
 
 var retireHelp = fmt.Sprintf(`
-Usage: %s retire [FLAGS] [OPTIONS] ARGUMENTS
+Usage: %s retire <entries>
 
   Retire one or more entries. Entries to be retired should be specified by ID.
 

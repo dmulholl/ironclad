@@ -19,7 +19,7 @@ import (
 
 
 var configHelp = fmt.Sprintf(`
-Usage: %s config [FLAGS] [ARGUMENTS]
+Usage: %s config [key] [value]
 
   Set or display a configuration value.
 

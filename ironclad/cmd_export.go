@@ -14,7 +14,7 @@ import (
 
 
 var exportHelp = fmt.Sprintf(`
-Usage: %s export [FLAGS] [OPTIONS] [ARGUMENTS]
+Usage: %s export [entries]
 
   Export a list of entries in JSON format. Entries can be specified by ID or
   by title. (Titles are checked for a case-insensitive substring match.) If no

@@ -13,7 +13,7 @@ import (
 
 
 var tagsHelp = fmt.Sprintf(`
-Usage: %s tags [FLAGS] [OPTIONS]
+Usage: %s tags
 
   List the tags in a database.
 

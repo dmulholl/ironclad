@@ -11,11 +11,11 @@ import (
 )
 
 
-const version = "2.2.2"
+const version = "2.2.3"
 
 
 var helptext = fmt.Sprintf(`
-Usage: %s [FLAGS] [COMMAND]
+Usage: %s [command]
 
   A utility for creating and managing encrypted password databases.
 

@@ -13,7 +13,7 @@ import (
 
 
 var purgeHelp = fmt.Sprintf(`
-Usage: %s purge [FLAGS] [OPTIONS]
+Usage: %s purge
 
   Purges all inactive entries from a database.
 

@@ -12,7 +12,7 @@ import (
 
 
 var urlHelp = fmt.Sprintf(`
-Usage: %s url [FLAGS] [OPTIONS] ARGUMENTS
+Usage: %s url <entry>
 
   Copy a stored url to the system clipboard or print it to stdout.
 

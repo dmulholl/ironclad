@@ -12,7 +12,7 @@ import (
 
 
 var masterpassHelp = fmt.Sprintf(`
-Usage: %s setmasterpass [FLAGS] [OPTIONS]
+Usage: %s setmasterpass
 
   Change a database's master password.
 

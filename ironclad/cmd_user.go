@@ -12,7 +12,7 @@ import (
 
 
 var userHelp = fmt.Sprintf(`
-Usage: %s user [FLAGS] [OPTIONS] ARGUMENTS
+Usage: %s user <entry>
 
   Copy a stored username to the system clipboard or print it to stdout. This
   command will fall back on the email address if the username field is empty.

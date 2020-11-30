@@ -12,7 +12,7 @@ import (
 
 
 var cachepassHelp = fmt.Sprintf(`
-Usage: %s setcachepass [FLAGS] [OPTIONS]
+Usage: %s setcachepass
 
   Change a database's cache password. This password is used to encrypt the
   master password while it's temporarily cached in memory.

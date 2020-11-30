@@ -21,7 +21,7 @@ import (
 
 
 var cacheHelp = fmt.Sprintf(`
-Usage: %s cache [FLAGS]
+Usage: %s cache
 
   Run the cached-password server. This comand is run automatically when
   required; it should not be run manually.

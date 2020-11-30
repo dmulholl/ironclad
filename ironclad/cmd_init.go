@@ -17,7 +17,7 @@ import (
 
 
 var initHelp = fmt.Sprintf(`
-Usage: %s init [FLAGS] ARGUMENTS
+Usage: %s init <file>
 
   Create a new encrypted password database. You will be prompted to supply
   a master password.

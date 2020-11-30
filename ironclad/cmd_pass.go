@@ -12,7 +12,7 @@ import (
 
 
 var passHelp = fmt.Sprintf(`
-Usage: %s pass [FLAGS] [OPTIONS] ARGUMENTS
+Usage: %s pass <entry>
 
   Copy a stored password to the system clipboard or print it to stdout.
 

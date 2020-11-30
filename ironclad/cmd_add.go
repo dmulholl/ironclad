@@ -18,7 +18,7 @@ import (
 
 
 var addHelp = fmt.Sprintf(`
-Usage: %s add [FLAGS] [OPTIONS]
+Usage: %s add
 
   Add a new entry to a database. You will be prompted to supply values for
   the entry's fields - press return to leave an unwanted field blank.

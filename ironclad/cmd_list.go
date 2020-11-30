@@ -17,7 +17,7 @@ import (
 
 
 var listHelp = fmt.Sprintf(`
-Usage: %s list [FLAGS] [OPTIONS] [ARGUMENTS]
+Usage: %s list [entries]
 
   Print a list of entries from a database. Entries to list can be specified by
   ID or by title. (Titles are checked for a case-insensitive substring match.)

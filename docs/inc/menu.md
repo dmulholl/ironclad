@@ -2,4 +2,4 @@
 * [Quickstart](@root/quickstart//)
 * [Releases](@root/releases//)
 * [Changelog](@root/changelog//)
-* [Source](https://github.com/dmulholl/ironclad)
+* [Github](https://github.com/dmulholl/ironclad)

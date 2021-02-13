@@ -20,7 +20,7 @@ Ironclad is a command line utility for creating and managing encrypted password 
 
 Run `ironclad --help` to view the command line help:
 
-    Usage: ironclad [comand]
+    Usage: ironclad [command]
 
       A utility for creating and managing encrypted password
       databases.

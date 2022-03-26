@@ -1,5 +1,6 @@
 ---
 title: Getting Started
+meta_title: Ironclad &mdash; Quickstart Tutorial
 ---
 
 Download the latest version of Ironclad from the [releases][] page, unzip the package and place the binary somewhere on your system's [$PATH][].

@@ -1,5 +1,6 @@
 ---
 title: Releases
+meta_title: Ironclad &mdash; Releases
 ---
 
 All binaries are hosted on [Github][]. Each download link is accompanied by a hash of the corresponding binary. V2 hashes use SHA-256, V1 hashes use SHA-1. All pre-built binaries are 64-bit.

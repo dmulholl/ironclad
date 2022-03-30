@@ -27,7 +27,7 @@ Usage: %s gen [length]
   the system clipboard. The password can alternatively be printed to stdout.
 
   The default password length is 24 characters. The default character pool
-  consists of uppercase letters, lowercase letters, symbols, and digits.
+  consists of uppercase letters, lowercase letters, digits, and symbols.
 
   The full list of possible symbols is:
 
@@ -48,10 +48,10 @@ Character Flags:
   -u, --uppercase           Include uppercase letters [A-Z].
 
 Flags:
-  -x, --exclude-similar     Exclude similar characters.
   -h, --help                Print this command's help text and exit.
   -p, --print               Print the password to stdout.
   -r, --readable            Add spaces for readability.
+  -x, --exclude-similar     Exclude similar characters.
 `, filepath.Base(os.Args[0]), PoolSymbols, PoolSimilars)
 
 func registerGenCmd(parser *argo.ArgParser) {

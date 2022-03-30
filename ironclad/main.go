@@ -27,6 +27,7 @@ Basic Commands:
   list              List database entries.
   pass              Copy a password to the clipboard.
   retire            Mark one or more entries as inactive.
+  show              Show entry content.
   url               Copy a url to the clipboard.
   user              Copy a username to the clipboard.
 
@@ -45,7 +46,6 @@ Additional Commands:
 
 Aliases:
   new               Alias for 'add'.
-  show              Alias for 'list --verbose'.
 
 Command Help:
   help <command>    Print the specified command's help text and exit.
@@ -80,6 +80,7 @@ func main() {
 	registerTagsCmd(parser)
 	registerUrlCmd(parser)
 	registerUserCmd(parser)
+	registerShowCmd(parser)
 
 	// Parse the command line arguments.
 	parser.Parse()

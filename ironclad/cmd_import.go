@@ -36,7 +36,7 @@ func importCallback(cmdName string, cmdParser *argo.ArgParser) {
 	var input []byte
 	var err error
 	if cmdParser.HasArgs() {
-		input, err = ioutil.ReadFile(cmdParser.Arg(0))
+		input, err = ioutil.ReadFile(cmdParser.Args[0])
 		if err != nil {
 			exit(err)
 		}

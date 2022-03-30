@@ -38,7 +38,7 @@ func decryptCallback(cmdName string, cmdParser *argo.ArgParser) {
 		exit("missing filename")
 	}
 
-	inputfile := cmdParser.Arg(0)
+	inputfile := cmdParser.Args[0]
 	outputfile := cmdParser.StringValue("out")
 	if outputfile == "" {
 		outputfile = inputfile + ".decrypted"
@@ -52,6 +52,7 @@ func decryptCallback(cmdName string, cmdParser *argo.ArgParser) {
 
 	err = ioutil.WriteFile(outputfile, content, 0644)
 	if err != nil {
+
 		exit(err)
 	}
 }

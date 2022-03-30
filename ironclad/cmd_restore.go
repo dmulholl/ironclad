@@ -39,7 +39,7 @@ func restoreCallback(cmdName string, cmdParser *argo.ArgParser) {
 	filename, masterpass, db := loadDB(cmdParser)
 
 	// Grab the entries to restore.
-	list := db.Inactive().FilterByIDString(cmdParser.Args()...)
+	list := db.Inactive().FilterByIDString(cmdParser.Args...)
 	if len(list) == 0 {
 		exit("no matching entries")
 	}

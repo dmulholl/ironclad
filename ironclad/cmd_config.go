@@ -50,7 +50,7 @@ func configCallback(cmdName string, cmdParser *argo.ArgParser) {
 		}
 		fmt.Println(strings.TrimSpace(string(content)))
 	} else if cmdParser.CountArgs() == 1 {
-		value, found, err := ironconfig.Get(cmdParser.Arg(0))
+		value, found, err := ironconfig.Get(cmdParser.Args[0])
 		if err != nil {
 			exit(err)
 		}
@@ -59,7 +59,7 @@ func configCallback(cmdName string, cmdParser *argo.ArgParser) {
 		}
 		fmt.Println(value)
 	} else if cmdParser.CountArgs() == 2 {
-		err := ironconfig.Set(cmdParser.Arg(0), cmdParser.Arg(1))
+		err := ironconfig.Set(cmdParser.Args[0], cmdParser.Args[1])
 		if err != nil {
 			exit(err)
 		}

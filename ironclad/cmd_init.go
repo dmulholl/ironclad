@@ -32,7 +32,7 @@ func initCallback(cmdName string, cmdParser *argo.ArgParser) {
 	if !cmdParser.HasArgs() {
 		exit("you must supply a filename for the database")
 	}
-	filename := cmdParser.Arg(0)
+	filename := cmdParser.Args[0]
 
 	masterpass1 := inputPass("Enter the master password for the new database: ")
 	masterpass2 := inputPass("                           Re-enter to confirm: ")

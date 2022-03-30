@@ -47,7 +47,7 @@ func retireCallback(cmdName string, cmdParser *argo.ArgParser) {
 	filename, masterpass, db := loadDB(cmdParser)
 
 	// Grab the entries to retire.
-	list := db.Active().FilterByIDString(cmdParser.Args()...)
+	list := db.Active().FilterByIDString(cmdParser.Args...)
 	if len(list) == 0 {
 		exit("no matching entries")
 	}

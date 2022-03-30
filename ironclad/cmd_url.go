@@ -42,7 +42,7 @@ func urlCallback(cmdName string, cmdParser *argo.ArgParser) {
 	filename, _, db := loadDB(cmdParser)
 
 	// Search for an entry corresponding to the supplied arguments.
-	list := db.Active().FilterByAll(cmdParser.Args()...)
+	list := db.Active().FilterByAll(cmdParser.Args...)
 	if len(list) == 0 {
 		exit("no matching entry")
 	} else if len(list) > 1 {

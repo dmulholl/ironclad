@@ -31,7 +31,7 @@ Flags:
   -h, --help                Print this command's help text and exit.
   -i, --inactive            Show inactive entries.
   -n, --show-notes          Show each entry's notes.
-  -p, --show-password       Show each entry's password in clear text.
+  -p, --show-passwords      Show each entry's password in clear text.
 `, filepath.Base(os.Args[0]))
 
 func registerShowCmd(parser *argo.ArgParser) {
@@ -41,7 +41,7 @@ func registerShowCmd(parser *argo.ArgParser) {
 	cmdParser.NewStringOption("file f", "")
 	cmdParser.NewStringOption("tag t", "")
 	cmdParser.NewFlag("inactive i")
-	cmdParser.NewFlag("show-password p")
+	cmdParser.NewFlag("show-passwords p")
 	cmdParser.NewFlag("show-notes n")
 }
 
@@ -64,7 +64,7 @@ func showCallback(cmdName string, cmdParser *argo.ArgParser) {
 
 	// Do we have query strings to filter on?
 	if cmdParser.HasArgs() {
-		list = list.FilterByAny(cmdParser.Args()...)
+		list = list.FilterByAny(cmdParser.Args...)
 		title = "Matching Entries"
 	}
 
@@ -78,7 +78,7 @@ func showCallback(cmdName string, cmdParser *argo.ArgParser) {
 	printVerbose(
 		list,
 		totalCount,
-		cmdParser.Found("show-password"),
+		cmdParser.Found("show-passwords"),
 		cmdParser.Found("show-notes"),
 		title,
 		filepath.Base(filename))

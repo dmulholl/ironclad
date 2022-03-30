@@ -48,7 +48,7 @@ func exportCallback(cmdName string, cmdParser *argo.ArgParser) {
 
 	// Do we have query strings to filter on?
 	if cmdParser.HasArgs() {
-		list = list.FilterByAny(cmdParser.Args()...)
+		list = list.FilterByAny(cmdParser.Args...)
 	}
 
 	// Are we filtering by tag?

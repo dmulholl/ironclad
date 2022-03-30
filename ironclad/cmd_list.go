@@ -33,7 +33,7 @@ Flags:
 `, filepath.Base(os.Args[0]))
 
 func registerListCmd(parser *argo.ArgParser) {
-	cmdParser := parser.NewCommand("list show")
+	cmdParser := parser.NewCommand("list")
 	cmdParser.Helptext = listHelp
 	cmdParser.Callback = listCallback
 	cmdParser.NewStringOption("file f", "")

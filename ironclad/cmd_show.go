@@ -30,8 +30,8 @@ Options:
 Flags:
   -h, --help                Print this command's help text and exit.
   -i, --inactive            Show inactive entries.
-  -n, --notes               Show notes.
-  -p, --pass                Show passwords in clear text.
+  -n, --show-notes          Show each entry's notes.
+  -p, --show-password       Show each entry's password in clear text.
 `, filepath.Base(os.Args[0]))
 
 func registerShowCmd(parser *argo.ArgParser) {
@@ -41,8 +41,8 @@ func registerShowCmd(parser *argo.ArgParser) {
 	cmdParser.NewStringOption("file f", "")
 	cmdParser.NewStringOption("tag t", "")
 	cmdParser.NewFlag("inactive i")
-	cmdParser.NewFlag("pass p")
-	cmdParser.NewFlag("notes n")
+	cmdParser.NewFlag("show-password p")
+	cmdParser.NewFlag("show-notes n")
 }
 
 func showCallback(cmdName string, cmdParser *argo.ArgParser) {
@@ -75,5 +75,11 @@ func showCallback(cmdName string, cmdParser *argo.ArgParser) {
 	}
 
 	// Print the list of entries.
-	printVerbose(list, totalCount, cmdParser.Found("pass"), cmdParser.Found("notes"), title, filepath.Base(filename))
+	printVerbose(
+		list,
+		totalCount,
+		cmdParser.Found("show-password"),
+		cmdParser.Found("show-notes"),
+		title,
+		filepath.Base(filename))
 }

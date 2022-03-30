@@ -1,8 +1,5 @@
 package main
 
-import "github.com/howeyc/gopass"
-import "golang.org/x/crypto/ssh/terminal"
-
 import (
 	"bufio"
 	"fmt"
@@ -11,10 +8,10 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
-)
 
-import (
 	"github.com/dmulholl/ironclad/ironconfig"
+	"github.com/howeyc/gopass"
+	"golang.org/x/crypto/ssh/terminal"
 )
 
 // Reader for reading user input from stdin.

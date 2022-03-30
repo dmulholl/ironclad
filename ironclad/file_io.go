@@ -1,15 +1,12 @@
 package main
 
-import "github.com/dmulholl/janus/v2"
-
 import (
 	"os"
 	"path/filepath"
-)
 
-import (
 	"github.com/dmulholl/ironclad/irondb"
 	"github.com/dmulholl/ironclad/ironio"
+	"github.com/dmulholl/janus/v2"
 )
 
 // Load a database from an encrypted file.

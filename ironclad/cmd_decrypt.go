@@ -1,16 +1,13 @@
 package main
 
-import "github.com/dmulholl/janus/v2"
-
 import (
 	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
-)
 
-import (
 	"github.com/dmulholl/ironclad/ironio"
+	"github.com/dmulholl/janus/v2"
 )
 
 var decryptHelp = fmt.Sprintf(`

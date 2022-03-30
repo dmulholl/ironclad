@@ -1,11 +1,11 @@
 package main
 
-import "github.com/dmulholl/janus/v2"
-
 import (
 	"fmt"
 	"os"
 	"path/filepath"
+
+	"github.com/dmulholl/janus/v2"
 )
 
 var masterpassHelp = fmt.Sprintf(`

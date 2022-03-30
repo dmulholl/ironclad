@@ -1,12 +1,12 @@
 package main
 
-import "github.com/dmulholl/janus/v2"
-
 import (
 	"fmt"
 	"os"
 	"path/filepath"
 	"sort"
+
+	"github.com/dmulholl/janus/v2"
 )
 
 var tagsHelp = fmt.Sprintf(`

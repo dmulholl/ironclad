@@ -1,13 +1,10 @@
 package main
 
-import "github.com/mitchellh/go-wordwrap"
-
 import (
 	"strings"
-)
 
-import (
 	"github.com/dmulholl/ironclad/irondb"
+	"github.com/mitchellh/go-wordwrap"
 )
 
 // Print a list of entries in compact format.

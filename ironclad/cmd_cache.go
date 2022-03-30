@@ -1,7 +1,5 @@
 package main
 
-import "github.com/dmulholl/janus/v2"
-
 import (
 	"fmt"
 	"os"
@@ -9,11 +7,10 @@ import (
 	"path/filepath"
 	"strconv"
 	"time"
-)
 
-import (
 	"github.com/dmulholl/ironclad/ironconfig"
 	"github.com/dmulholl/ironclad/ironrpc"
+	"github.com/dmulholl/janus/v2"
 )
 
 var cacheHelp = fmt.Sprintf(`

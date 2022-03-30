@@ -5,9 +5,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"time"
-)
 
-import (
 	"github.com/dmulholl/ironclad/ironconfig"
 	"github.com/dmulholl/ironclad/ironrpc"
 )

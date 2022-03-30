@@ -1,13 +1,13 @@
 package main
 
-import "github.com/dmulholl/janus/v2"
-
 import (
 	"bytes"
 	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
+
+	"github.com/dmulholl/janus/v2"
 )
 
 var dumpHelp = fmt.Sprintf(`

@@ -1,7 +1,5 @@
 package main
 
-import "github.com/dmulholl/janus/v2"
-
 import (
 	"crypto/rand"
 	"fmt"
@@ -9,6 +7,8 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/dmulholl/janus/v2"
 )
 
 const (

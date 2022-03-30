@@ -1,15 +1,12 @@
 package main
 
-import "github.com/atotto/clipboard"
-
 import (
 	"fmt"
 	"os"
 	"strconv"
 	"time"
-)
 
-import (
+	"github.com/atotto/clipboard"
 	"github.com/dmulholl/ironclad/ironconfig"
 )
 

@@ -1,17 +1,14 @@
 package main
 
-import "github.com/dmulholl/janus/v2"
-
 import (
 	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
-)
 
-import (
 	"github.com/dmulholl/ironclad/ironconfig"
+	"github.com/dmulholl/janus/v2"
 )
 
 var configHelp = fmt.Sprintf(`

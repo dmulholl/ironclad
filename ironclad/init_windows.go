@@ -1,8 +1,9 @@
 package main
 
 import (
-	"golang.org/x/sys/windows"
 	"os"
+
+	"golang.org/x/sys/windows"
 )
 
 // Enable support for ANSI escape sequences in the Windows console.

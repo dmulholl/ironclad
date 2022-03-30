@@ -1,15 +1,12 @@
 package main
 
-import "github.com/dmulholl/janus/v2"
-
 import (
 	"fmt"
 	"os"
 	"path/filepath"
-)
 
-import (
 	"github.com/dmulholl/ironclad/irondb"
+	"github.com/dmulholl/janus/v2"
 )
 
 var listHelp = fmt.Sprintf(`

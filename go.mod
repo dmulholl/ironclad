@@ -3,11 +3,12 @@ module github.com/dmulholl/ironclad
 go 1.15
 
 require (
-	github.com/atotto/clipboard v0.1.0
+	github.com/atotto/clipboard v0.1.4
 	github.com/dmulholl/janus/v2 v2.1.0
-	github.com/howeyc/gopass v0.0.0-20170109162249-bf9dde6d0d2c
+	github.com/howeyc/gopass v0.0.0-20210920133722-c8aef6fb66ef
 	github.com/mitchellh/go-wordwrap v1.0.1
-	github.com/pelletier/go-toml v1.8.1
-	golang.org/x/crypto v0.0.0-20180527072434-ab813273cd59
-	golang.org/x/sys v0.0.0-20180525142821-c11f84a56e43
+	github.com/pelletier/go-toml v1.9.4
+	golang.org/x/crypto v0.0.0-20220321153916-2c7772ba3064
+	golang.org/x/sys v0.0.0-20220330033206-e17cdc41300f
+	golang.org/x/term v0.0.0-20210927222741-03fcf44c2211 // indirect
 )

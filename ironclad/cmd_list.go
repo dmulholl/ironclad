@@ -1,20 +1,16 @@
 package main
 
-
 import "github.com/dmulholl/janus/v2"
 
-
 import (
-    "fmt"
-    "os"
-    "path/filepath"
+	"fmt"
+	"os"
+	"path/filepath"
 )
 
-
 import (
-    "github.com/dmulholl/ironclad/irondb"
+	"github.com/dmulholl/ironclad/irondb"
 )
-
 
 var listHelp = fmt.Sprintf(`
 Usage: %s list [entries]
@@ -44,49 +40,47 @@ Flags:
   -v, --verbose             Use the verbose list format.
 `, filepath.Base(os.Args[0]))
 
-
 func registerListCmd(parser *janus.ArgParser) {
-    cmd := parser.NewCmd("list show", listHelp, listCallback)
-    cmd.NewString("file f")
-    cmd.NewString("tag t")
-    cmd.NewFlag("verbose v")
-    cmd.NewFlag("inactive i")
+	cmd := parser.NewCmd("list show", listHelp, listCallback)
+	cmd.NewString("file f")
+	cmd.NewString("tag t")
+	cmd.NewFlag("verbose v")
+	cmd.NewFlag("inactive i")
 }
 
-
 func listCallback(parser *janus.ArgParser) {
-    filename, _, db := loadDB(parser)
+	filename, _, db := loadDB(parser)
 
-    // Default to displaying all active entries.
-    var list irondb.EntryList
-    var title string
-    var count int
-    if parser.GetFlag("inactive") {
-        list = db.Inactive()
-        title = "Inactive Entries"
-        count = len(list)
-    } else {
-        list = db.Active()
-        title = "All Entries"
-        count = len(list)
-    }
+	// Default to displaying all active entries.
+	var list irondb.EntryList
+	var title string
+	var count int
+	if parser.GetFlag("inactive") {
+		list = db.Inactive()
+		title = "Inactive Entries"
+		count = len(list)
+	} else {
+		list = db.Active()
+		title = "All Entries"
+		count = len(list)
+	}
 
-    // Do we have query strings to filter on?
-    if parser.HasArgs() {
-        list = list.FilterByAny(parser.GetArgs()...)
-        title = "Matching Entries"
-    }
+	// Do we have query strings to filter on?
+	if parser.HasArgs() {
+		list = list.FilterByAny(parser.GetArgs()...)
+		title = "Matching Entries"
+	}
 
-    // Are we filtering by tag?
-    if parser.GetString("tag") != "" {
-        list = list.FilterByTag(parser.GetString("tag"))
-        title = "Matching Entries"
-    }
+	// Are we filtering by tag?
+	if parser.GetString("tag") != "" {
+		list = list.FilterByTag(parser.GetString("tag"))
+		title = "Matching Entries"
+	}
 
-    // Print the list of entries.
-    if parser.GetFlag("verbose") || parser.GetParent().GetCmdName() == "show" {
-        printVerbose(list, count, title, filepath.Base(filename))
-    } else {
-        printCompact(list, count, filepath.Base(filename))
-    }
+	// Print the list of entries.
+	if parser.GetFlag("verbose") || parser.GetParent().GetCmdName() == "show" {
+		printVerbose(list, count, title, filepath.Base(filename))
+	} else {
+		printCompact(list, count, filepath.Base(filename))
+	}
 }

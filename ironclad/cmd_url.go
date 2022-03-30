@@ -1,15 +1,12 @@
 package main
 
-
 import "github.com/dmulholl/janus/v2"
 
-
 import (
-    "fmt"
-    "os"
-    "path/filepath"
+	"fmt"
+	"os"
+	"path/filepath"
 )
-
 
 var urlHelp = fmt.Sprintf(`
 Usage: %s url <entry>
@@ -30,40 +27,38 @@ Flags:
   -p, --print               Print the url to stdout.
 `, filepath.Base(os.Args[0]))
 
-
 func registerUrlCmd(parser *janus.ArgParser) {
-    cmd := parser.NewCmd("url", urlHelp, urlCallback)
-    cmd.NewString("file f")
-    cmd.NewFlag("print p")
+	cmd := parser.NewCmd("url", urlHelp, urlCallback)
+	cmd.NewString("file f")
+	cmd.NewFlag("print p")
 }
 
-
 func urlCallback(parser *janus.ArgParser) {
-    if !parser.HasArgs() {
-        exit("missing entry argument")
-    }
-    filename, _, db := loadDB(parser)
+	if !parser.HasArgs() {
+		exit("missing entry argument")
+	}
+	filename, _, db := loadDB(parser)
 
-    // Search for an entry corresponding to the supplied arguments.
-    list := db.Active().FilterByAll(parser.GetArgs()...)
-    if len(list) == 0 {
-        exit("no matching entry")
-    } else if len(list) > 1 {
-        println("Error: the query string matches multiple entries.")
-        printCompact(list, len(db.Active()), filepath.Base(filename))
-        os.Exit(1)
-    }
-    entry := list[0]
+	// Search for an entry corresponding to the supplied arguments.
+	list := db.Active().FilterByAll(parser.GetArgs()...)
+	if len(list) == 0 {
+		exit("no matching entry")
+	} else if len(list) > 1 {
+		println("Error: the query string matches multiple entries.")
+		printCompact(list, len(db.Active()), filepath.Base(filename))
+		os.Exit(1)
+	}
+	entry := list[0]
 
-    // Print the url to stdout.
-    if parser.GetFlag("print") {
-        fmt.Print(entry.Url)
-        if stdoutIsTerminal() {
-            fmt.Println()
-        }
-        return
-    }
+	// Print the url to stdout.
+	if parser.GetFlag("print") {
+		fmt.Print(entry.Url)
+		if stdoutIsTerminal() {
+			fmt.Println()
+		}
+		return
+	}
 
-    // Copy the url to the clipboard.
-    writeToClipboard(entry.Url)
+	// Copy the url to the clipboard.
+	writeToClipboard(entry.Url)
 }

@@ -1,22 +1,18 @@
 package main
 
-
 import "github.com/dmulholl/janus/v2"
 
-
 import (
-    "fmt"
-    "os"
-    "path/filepath"
-    "io/ioutil"
-    "strings"
+	"fmt"
+	"io/ioutil"
+	"os"
+	"path/filepath"
+	"strings"
 )
 
-
 import (
-    "github.com/dmulholl/ironclad/ironconfig"
+	"github.com/dmulholl/ironclad/ironconfig"
 )
-
 
 var configHelp = fmt.Sprintf(`
 Usage: %s config [key] [value]
@@ -40,37 +36,35 @@ Flags:
   -h, --help                Print this command's help text and exit.
 `, filepath.Base(os.Args[0]))
 
-
 func registerConfigCmd(parser *janus.ArgParser) {
-    parser.NewCmd("config", configHelp, configCallback)
+	parser.NewCmd("config", configHelp, configCallback)
 }
 
-
 func configCallback(parser *janus.ArgParser) {
-    if !parser.HasArgs() {
-        if !ironconfig.FileExists() {
-            exit("no config file exists")
-        }
-        content, err := ioutil.ReadFile(ironconfig.ConfigFile)
-        if err != nil {
-            exit(err)
-        }
-        fmt.Println(strings.TrimSpace(string(content)))
-    } else if parser.NumArgs() == 1 {
-        value, found, err := ironconfig.Get(parser.GetArg(0))
-        if err != nil {
-            exit(err)
-        }
-        if !found {
-            exit("key not found")
-        }
-        fmt.Println(value)
-    } else if parser.NumArgs() == 2 {
-        err := ironconfig.Set(parser.GetArg(0), parser.GetArg(1))
-        if err != nil {
-            exit(err)
-        }
-    } else {
-        exit("too many arguments")
-    }
+	if !parser.HasArgs() {
+		if !ironconfig.FileExists() {
+			exit("no config file exists")
+		}
+		content, err := ioutil.ReadFile(ironconfig.ConfigFile)
+		if err != nil {
+			exit(err)
+		}
+		fmt.Println(strings.TrimSpace(string(content)))
+	} else if parser.NumArgs() == 1 {
+		value, found, err := ironconfig.Get(parser.GetArg(0))
+		if err != nil {
+			exit(err)
+		}
+		if !found {
+			exit("key not found")
+		}
+		fmt.Println(value)
+	} else if parser.NumArgs() == 2 {
+		err := ironconfig.Set(parser.GetArg(0), parser.GetArg(1))
+		if err != nil {
+			exit(err)
+		}
+	} else {
+		exit("too many arguments")
+	}
 }

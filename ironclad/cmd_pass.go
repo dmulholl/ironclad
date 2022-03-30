@@ -1,15 +1,12 @@
 package main
 
-
 import "github.com/dmulholl/janus/v2"
 
-
 import (
-    "fmt"
-    "os"
-    "path/filepath"
+	"fmt"
+	"os"
+	"path/filepath"
 )
-
 
 var passHelp = fmt.Sprintf(`
 Usage: %s pass <entry>
@@ -31,47 +28,45 @@ Flags:
   -r, --readable            Add spaces to the password for readability.
 `, filepath.Base(os.Args[0]))
 
-
 func registerPassCmd(parser *janus.ArgParser) {
-    cmd := parser.NewCmd("pass", passHelp, passCallback)
-    cmd.NewString("file f")
-    cmd.NewFlag("readable r")
-    cmd.NewFlag("print p")
+	cmd := parser.NewCmd("pass", passHelp, passCallback)
+	cmd.NewString("file f")
+	cmd.NewFlag("readable r")
+	cmd.NewFlag("print p")
 }
 
-
 func passCallback(parser *janus.ArgParser) {
-    if !parser.HasArgs() {
-        exit("missing entry argument")
-    }
-    filename, _, db := loadDB(parser)
+	if !parser.HasArgs() {
+		exit("missing entry argument")
+	}
+	filename, _, db := loadDB(parser)
 
-    // Search for an entry corresponding to the specified arguments.
-    list := db.Active().FilterByAll(parser.GetArgs()...)
-    if len(list) == 0 {
-        exit("no matching entry")
-    } else if len(list) > 1 {
-        println("Error: the query string matches multiple entries.")
-        printCompact(list, len(db.Active()), filepath.Base(filename))
-        os.Exit(1)
-    }
-    entry := list[0]
+	// Search for an entry corresponding to the specified arguments.
+	list := db.Active().FilterByAll(parser.GetArgs()...)
+	if len(list) == 0 {
+		exit("no matching entry")
+	} else if len(list) > 1 {
+		println("Error: the query string matches multiple entries.")
+		printCompact(list, len(db.Active()), filepath.Base(filename))
+		os.Exit(1)
+	}
+	entry := list[0]
 
-    // Add spaces if required.
-    password := entry.GetPassword()
-    if parser.GetFlag("readable") {
-        password = addSpaces(password)
-    }
+	// Add spaces if required.
+	password := entry.GetPassword()
+	if parser.GetFlag("readable") {
+		password = addSpaces(password)
+	}
 
-    // Print the password to stdout.
-    if parser.GetFlag("print") {
-        fmt.Print(password)
-        if stdoutIsTerminal() {
-            fmt.Println()
-        }
-        return
-    }
+	// Print the password to stdout.
+	if parser.GetFlag("print") {
+		fmt.Print(password)
+		if stdoutIsTerminal() {
+			fmt.Println()
+		}
+		return
+	}
 
-    // Copy the password to the clipboard.
-    writeToClipboard(password)
+	// Copy the password to the clipboard.
+	writeToClipboard(password)
 }

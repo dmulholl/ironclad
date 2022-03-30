@@ -1,16 +1,13 @@
 package main
 
-
 import "github.com/dmulholl/janus/v2"
 
-
 import (
-    "fmt"
-    "os"
-    "strings"
-    "path/filepath"
+	"fmt"
+	"os"
+	"path/filepath"
+	"strings"
 )
-
 
 var retireHelp = fmt.Sprintf(`
 Usage: %s retire <entries>
@@ -33,38 +30,36 @@ Flags:
   -h, --help                Print this command's help text and exit.
 `, filepath.Base(os.Args[0]))
 
-
 func registerRetireCmd(parser *janus.ArgParser) {
-    cmd := parser.NewCmd("retire", retireHelp, retireCallback)
-    cmd.NewString("file f")
+	cmd := parser.NewCmd("retire", retireHelp, retireCallback)
+	cmd.NewString("file f")
 }
-
 
 func retireCallback(parser *janus.ArgParser) {
 
-    // Check that at least one entry argument has been supplied.
-    if !parser.HasArgs() {
-        exit("you must specify at least one entry to retire")
-    }
-    filename, masterpass, db := loadDB(parser)
+	// Check that at least one entry argument has been supplied.
+	if !parser.HasArgs() {
+		exit("you must specify at least one entry to retire")
+	}
+	filename, masterpass, db := loadDB(parser)
 
-    // Grab the entries to retire.
-    list := db.Active().FilterByIDString(parser.GetArgs()...)
-    if len(list) == 0 {
-        exit("no matching entries")
-    }
+	// Grab the entries to retire.
+	list := db.Active().FilterByIDString(parser.GetArgs()...)
+	if len(list) == 0 {
+		exit("no matching entries")
+	}
 
-    // Print a listing and request confirmation.
-    printCompact(list, db.Size(), filepath.Base(filename))
-    answer := input("  Retire the entries listed above? (y/n): ")
-    if strings.ToLower(answer) == "y" {
-        for _, entry := range list {
-            db.SetInactive(entry.Id)
-        }
-        saveDB(filename, masterpass, db)
-        fmt.Println("  Entries retired.")
-    } else {
-        fmt.Println("  Operation aborted.")
-    }
-    printLineOfChar("─")
+	// Print a listing and request confirmation.
+	printCompact(list, db.Size(), filepath.Base(filename))
+	answer := input("  Retire the entries listed above? (y/n): ")
+	if strings.ToLower(answer) == "y" {
+		for _, entry := range list {
+			db.SetInactive(entry.Id)
+		}
+		saveDB(filename, masterpass, db)
+		fmt.Println("  Entries retired.")
+	} else {
+		fmt.Println("  Operation aborted.")
+	}
+	printLineOfChar("─")
 }

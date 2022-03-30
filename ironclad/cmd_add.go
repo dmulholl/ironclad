@@ -1,21 +1,17 @@
 package main
 
-
 import "github.com/dmulholl/janus/v2"
 
-
 import (
-    "fmt"
-    "strings"
-    "os"
-    "path/filepath"
+	"fmt"
+	"os"
+	"path/filepath"
+	"strings"
 )
 
-
 import (
-    "github.com/dmulholl/ironclad/irondb"
+	"github.com/dmulholl/ironclad/irondb"
 )
-
 
 var addHelp = fmt.Sprintf(`
 Usage: %s add
@@ -33,65 +29,63 @@ Flags:
       --no-editor           Do not launch an external editor to add notes.
 `, filepath.Base(os.Args[0]))
 
-
 func registerAddCmd(parser *janus.ArgParser) {
-    cmd := parser.NewCmd("add new", addHelp, addCallback)
-    cmd.NewString("file f")
-    cmd.NewFlag("no-editor")
+	cmd := parser.NewCmd("add new", addHelp, addCallback)
+	cmd.NewString("file f")
+	cmd.NewFlag("no-editor")
 }
 
-
 func addCallback(parser *janus.ArgParser) {
-    filename, masterpass, db := loadDB(parser)
+	filename, masterpass, db := loadDB(parser)
 
-    // Create a new Entry object to add to the database.
-    entry := irondb.NewEntry()
+	// Create a new Entry object to add to the database.
+	entry := irondb.NewEntry()
 
-    // Fetch user input.
-    printHeading("Add Entry", filepath.Base(filename))
-    entry.Title     = input("  Title:      ")
-    entry.Url       = input("  URL:        ")
-    entry.Username  = input("  Username:   ")
-    entry.Email     = input("  Email:      ")
+	// Fetch user input.
+	printHeading("Add Entry", filepath.Base(filename))
+	entry.Title = input("  Title:      ")
+	entry.Url = input("  URL:        ")
+	entry.Username = input("  Username:   ")
+	entry.Email = input("  Email:      ")
 
-    // Get or autogenerate a password.
-    printLineOfChar("─")
-    prompt := "  Enter a password or press return to automatically generate one"
-    prompt += ":\n\u001B[90m  >>\u001B[0m  "
-    entrypass := input(prompt)
-    entrypass = strings.TrimSpace(entrypass)
-    if entrypass == "" {
-        entrypass = genPassword(DefaultLength, true, true, true, true, false)
-    }
-    entry.SetPassword(entrypass)
+	// Get or autogenerate a password.
+	printLineOfChar("─")
+	prompt := "  Enter a password or press return to automatically generate one"
+	prompt += ":\n\u001B[90m  >>\u001B[0m  "
+	entrypass := input(prompt)
+	entrypass = strings.TrimSpace(entrypass)
+	if entrypass == "" {
+		entrypass = genPassword(DefaultLength, true, true, true, true, false)
+	}
+	entry.SetPassword(entrypass)
 
-    // Split tags on commas.
-    printLineOfChar("─")
-    prompt = "  Enter a comma-separated list of tags for this entry"
-    prompt += ":\n\u001B[90m  >>\u001B[0m  "
-    tagstring := input(prompt)
-    for _, tag := range strings.Split(tagstring, ",") {
-        tag = strings.TrimSpace(tag)
-        if tag != "" {
-            entry.Tags = append(entry.Tags, tag)
-        }
-    }
+	// Split tags on commas.
+	printLineOfChar("─")
+	prompt = "  Enter a comma-separated list of tags for this entry"
+	prompt += ":\n\u001B[90m  >>\u001B[0m  "
+	tagstring := input(prompt)
+	for _, tag := range strings.Split(tagstring, ",") {
+		tag = strings.TrimSpace(tag)
+		if tag != "" {
+			entry.Tags = append(entry.Tags, tag)
+		}
+	}
 
-    // Add a note?
-    printLineOfChar("─")
-    answer := input("  Add a note to this entry? (y/n): ")
-    if strings.ToLower(answer) == "y" {
-        if parser.GetFlag("no-editor") {
-            printLineOfChar("─")
-            entry.Notes = inputViaStdin()
-        } else {
-            entry.Notes = inputViaEditor("add-note", "")
-        }
-    } else {
-        entry.Notes = ""
-    }
-    printLineOfChar("─")
+	// Add a note?
+	printLineOfChar("─")
+	answer := input("  Add a note to this entry? (y/n): ")
+	if strings.ToLower(answer) == "y" {
+		if parser.GetFlag("no-editor") {
+			printLineOfChar("─")
+			entry.Notes = inputViaStdin()
+		} else {
+			entry.Notes = inputViaEditor("add-note", "")
+		}
+	} else {
+		entry.Notes = ""
+	}
+	printLineOfChar("─")
 
-    db.Add(entry)
-    saveDB(filename, masterpass, db)
+	db.Add(entry)
+	saveDB(filename, masterpass, db)
 }

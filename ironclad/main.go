@@ -1,18 +1,14 @@
 package main
 
-
 import "github.com/dmulholl/janus/v2"
 
-
 import (
-    "fmt"
-    "os"
-    "path/filepath"
+	"fmt"
+	"os"
+	"path/filepath"
 )
 
-
 const version = "2.2.4"
-
 
 var helptext = fmt.Sprintf(`
 Usage: %s [command]
@@ -55,40 +51,39 @@ Command Help:
   help <command>    Print the specified command's help text and exit.
 `, filepath.Base(os.Args[0]))
 
-
 func main() {
 
-    // Instantiate an argument parser.
-    parser := janus.NewParser()
-    parser.Helptext = helptext
-    parser.Version = version
+	// Instantiate an argument parser.
+	parser := janus.NewParser()
+	parser.Helptext = helptext
+	parser.Version = version
 
-    // Register commands.
-    registerAddCmd(parser)
-    registerCacheCmd(parser)
-    registerConfigCmd(parser)
-    registerDecryptCmd(parser)
-    registerDumpCmd(parser)
-    registerEditCmd(parser)
-    registerEncryptCmd(parser)
-    registerExportCmd(parser)
-    registerGenCmd(parser)
-    registerImportCmd(parser)
-    registerInitCmd(parser)
-    registerListCmd(parser)
-    registerPassCmd(parser)
-    registerPurgeCmd(parser)
-    registerRestoreCmd(parser)
-    registerRetireCmd(parser)
-    registerSetMasterPassCmd(parser)
-    registerSetCachePassCmd(parser)
-    registerTagsCmd(parser)
-    registerUrlCmd(parser)
-    registerUserCmd(parser)
+	// Register commands.
+	registerAddCmd(parser)
+	registerCacheCmd(parser)
+	registerConfigCmd(parser)
+	registerDecryptCmd(parser)
+	registerDumpCmd(parser)
+	registerEditCmd(parser)
+	registerEncryptCmd(parser)
+	registerExportCmd(parser)
+	registerGenCmd(parser)
+	registerImportCmd(parser)
+	registerInitCmd(parser)
+	registerListCmd(parser)
+	registerPassCmd(parser)
+	registerPurgeCmd(parser)
+	registerRestoreCmd(parser)
+	registerRetireCmd(parser)
+	registerSetMasterPassCmd(parser)
+	registerSetCachePassCmd(parser)
+	registerTagsCmd(parser)
+	registerUrlCmd(parser)
+	registerUserCmd(parser)
 
-    // Parse the command line arguments.
-    parser.Parse()
-    if !parser.HasCmd() {
-        parser.ExitHelp()
-    }
+	// Parse the command line arguments.
+	parser.Parse()
+	if !parser.HasCmd() {
+		parser.ExitHelp()
+	}
 }

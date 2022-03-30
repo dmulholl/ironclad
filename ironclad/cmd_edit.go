@@ -1,16 +1,13 @@
 package main
 
-
 import "github.com/dmulholl/janus/v2"
 
-
 import (
-    "fmt"
-    "os"
-    "path/filepath"
-    "strings"
+	"fmt"
+	"os"
+	"path/filepath"
+	"strings"
 )
-
 
 var editHelp = fmt.Sprintf(`
 Usage: %s edit <entry>
@@ -42,116 +39,113 @@ Flags:
   -u, --username            Edit the entry's username.
 `, filepath.Base(os.Args[0]))
 
-
 func registerEditCmd(parser *janus.ArgParser) {
-    cmd := parser.NewCmd("edit", editHelp, editCallback)
-    cmd.NewString("file f")
-    cmd.NewFlag("title t")
-    cmd.NewFlag("url l")
-    cmd.NewFlag("username u")
-    cmd.NewFlag("password p")
-    cmd.NewFlag("notes n")
-    cmd.NewFlag("tags s")
-    cmd.NewFlag("email e")
-    cmd.NewFlag("no-editor")
+	cmd := parser.NewCmd("edit", editHelp, editCallback)
+	cmd.NewString("file f")
+	cmd.NewFlag("title t")
+	cmd.NewFlag("url l")
+	cmd.NewFlag("username u")
+	cmd.NewFlag("password p")
+	cmd.NewFlag("notes n")
+	cmd.NewFlag("tags s")
+	cmd.NewFlag("email e")
+	cmd.NewFlag("no-editor")
 }
-
 
 func editCallback(parser *janus.ArgParser) {
-    if !parser.HasArgs() {
-        exit("missing entry argument")
-    }
-    filename, masterpass, db := loadDB(parser)
+	if !parser.HasArgs() {
+		exit("missing entry argument")
+	}
+	filename, masterpass, db := loadDB(parser)
 
-    // Search for an entry corresponding to the supplied arguments.
-    list := db.Active().FilterByAll(parser.GetArgs()...)
-    if len(list) == 0 {
-        exit("no matching entry")
-    } else if len(list) > 1 {
-        println("Error: the query string matches multiple entries.")
-        printCompact(list, len(db.Active()), filepath.Base(filename))
-        os.Exit(1)
-    }
-    entry := list[0]
+	// Search for an entry corresponding to the supplied arguments.
+	list := db.Active().FilterByAll(parser.GetArgs()...)
+	if len(list) == 0 {
+		exit("no matching entry")
+	} else if len(list) > 1 {
+		println("Error: the query string matches multiple entries.")
+		printCompact(list, len(db.Active()), filepath.Base(filename))
+		os.Exit(1)
+	}
+	entry := list[0]
 
-    // Default to editing all fields if no flags are present.
-    allFields := false
-    if !parser.GetFlag("title") && !parser.GetFlag("url") &&
-        !parser.GetFlag("username") && !parser.GetFlag("password") &&
-        !parser.GetFlag("tags") && !parser.GetFlag("notes") &&
-        !parser.GetFlag("email") {
-        allFields = true
-    }
+	// Default to editing all fields if no flags are present.
+	allFields := false
+	if !parser.GetFlag("title") && !parser.GetFlag("url") &&
+		!parser.GetFlag("username") && !parser.GetFlag("password") &&
+		!parser.GetFlag("tags") && !parser.GetFlag("notes") &&
+		!parser.GetFlag("email") {
+		allFields = true
+	}
 
-    printHeading("Editing Entry: " + entry.Title, filepath.Base(filename))
+	printHeading("Editing Entry: "+entry.Title, filepath.Base(filename))
 
-    if parser.GetFlag("title") || (allFields && editField("title")) {
-        fmt.Println("  Old title: " + entry.Title)
-        entry.Title = input("  New title: ")
-        printLineOfChar("·")
-    }
+	if parser.GetFlag("title") || (allFields && editField("title")) {
+		fmt.Println("  Old title: " + entry.Title)
+		entry.Title = input("  New title: ")
+		printLineOfChar("·")
+	}
 
-    if parser.GetFlag("url") || (allFields && editField("url")) {
-        fmt.Println("  Old URL: " + entry.Url)
-        entry.Url = input("  New URL: ")
-        printLineOfChar("·")
-    }
+	if parser.GetFlag("url") || (allFields && editField("url")) {
+		fmt.Println("  Old URL: " + entry.Url)
+		entry.Url = input("  New URL: ")
+		printLineOfChar("·")
+	}
 
-    if parser.GetFlag("username") || (allFields && editField("username")) {
-        fmt.Println("  Old username: " + entry.Username)
-        entry.Username = input("  New username: ")
-        printLineOfChar("·")
-    }
+	if parser.GetFlag("username") || (allFields && editField("username")) {
+		fmt.Println("  Old username: " + entry.Username)
+		entry.Username = input("  New username: ")
+		printLineOfChar("·")
+	}
 
-    if parser.GetFlag("password") || (allFields && editField("password")) {
-        fmt.Println("  Old password: " + entry.GetPassword())
-        entry.SetPassword(input("  New password: "))
-        printLineOfChar("·")
-    }
+	if parser.GetFlag("password") || (allFields && editField("password")) {
+		fmt.Println("  Old password: " + entry.GetPassword())
+		entry.SetPassword(input("  New password: "))
+		printLineOfChar("·")
+	}
 
-    if parser.GetFlag("email") || (allFields && editField("email")) {
-        fmt.Println("  Old email: " + entry.Email)
-        entry.Email = input("  New email: ")
-        printLineOfChar("·")
-    }
+	if parser.GetFlag("email") || (allFields && editField("email")) {
+		fmt.Println("  Old email: " + entry.Email)
+		entry.Email = input("  New email: ")
+		printLineOfChar("·")
+	}
 
-    if parser.GetFlag("tags") || (allFields && editField("tags")) {
-        fmt.Println("  Old tags: " + strings.Join(entry.Tags, ", "))
-        tagstring := input("  New tags: ")
-        tagslice := strings.Split(tagstring, ",")
-        entry.Tags = make([]string, 0)
-        for _, tag := range tagslice {
-            tag = strings.TrimSpace(tag)
-            if tag != "" {
-                entry.Tags = append(entry.Tags, tag)
-            }
-        }
-        printLineOfChar("·")
-    }
+	if parser.GetFlag("tags") || (allFields && editField("tags")) {
+		fmt.Println("  Old tags: " + strings.Join(entry.Tags, ", "))
+		tagstring := input("  New tags: ")
+		tagslice := strings.Split(tagstring, ",")
+		entry.Tags = make([]string, 0)
+		for _, tag := range tagslice {
+			tag = strings.TrimSpace(tag)
+			if tag != "" {
+				entry.Tags = append(entry.Tags, tag)
+			}
+		}
+		printLineOfChar("·")
+	}
 
-    if parser.GetFlag("notes") || (allFields && editField("notes")) {
-        if parser.GetFlag("no-editor") {
-            oldnotes := strings.Trim(entry.Notes, "\r\n")
-            if oldnotes != "" {
-                fmt.Println(oldnotes)
-                printLineOfChar("·")
-            }
-            entry.Notes = inputViaStdin()
-            printLineOfChar("·")
-        } else {
-            entry.Notes = inputViaEditor("edit-note", entry.Notes)
-        }
-    }
+	if parser.GetFlag("notes") || (allFields && editField("notes")) {
+		if parser.GetFlag("no-editor") {
+			oldnotes := strings.Trim(entry.Notes, "\r\n")
+			if oldnotes != "" {
+				fmt.Println(oldnotes)
+				printLineOfChar("·")
+			}
+			entry.Notes = inputViaStdin()
+			printLineOfChar("·")
+		} else {
+			entry.Notes = inputViaEditor("edit-note", entry.Notes)
+		}
+	}
 
-    saveDB(filename, masterpass, db)
-    fmt.Println("  Entry updated.")
-    printLineOfChar("─")
+	saveDB(filename, masterpass, db)
+	fmt.Println("  Entry updated.")
+	printLineOfChar("─")
 }
-
 
 // Ask the user whether they want to edit the specified field.
 func editField(field string) bool {
-    answer := input("  Edit " + field + "? (y/n) ")
-    printLineOfChar("·")
-    return strings.ToLower(answer) == "y"
+	answer := input("  Edit " + field + "? (y/n) ")
+	printLineOfChar("·")
+	return strings.ToLower(answer) == "y"
 }

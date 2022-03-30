@@ -1,21 +1,17 @@
 package main
 
-
 import "github.com/dmulholl/janus/v2"
 
-
 import (
-    "fmt"
-    "os"
-    "path/filepath"
-    "io/ioutil"
+	"fmt"
+	"io/ioutil"
+	"os"
+	"path/filepath"
 )
 
-
 import (
-    "github.com/dmulholl/ironclad/ironio"
+	"github.com/dmulholl/ironclad/ironio"
 )
-
 
 var encryptHelp = fmt.Sprintf(`
 Usage: %s encrypt <file>
@@ -40,32 +36,30 @@ Flags:
   -h, --help                Print this command's help text and exit.
 `, filepath.Base(os.Args[0]))
 
-
 func registerEncryptCmd(parser *janus.ArgParser) {
-    cmd := parser.NewCmd("encrypt", encryptHelp, encryptCallback)
-    cmd.NewString("out o")
+	cmd := parser.NewCmd("encrypt", encryptHelp, encryptCallback)
+	cmd.NewString("out o")
 }
 
-
 func encryptCallback(parser *janus.ArgParser) {
-    if !parser.HasArgs() {
-        exit("missing filename")
-    }
+	if !parser.HasArgs() {
+		exit("missing filename")
+	}
 
-    inputfile := parser.GetArg(0)
-    outputfile := parser.GetString("out")
-    if outputfile == "" {
-        outputfile = inputfile + ".encrypted"
-    }
+	inputfile := parser.GetArg(0)
+	outputfile := parser.GetString("out")
+	if outputfile == "" {
+		outputfile = inputfile + ".encrypted"
+	}
 
-    password := inputPass("Password: ")
-    content, err := ioutil.ReadFile(inputfile)
-    if err != nil {
-        exit(err)
-    }
+	password := inputPass("Password: ")
+	content, err := ioutil.ReadFile(inputfile)
+	if err != nil {
+		exit(err)
+	}
 
-    err = ironio.Save(outputfile, password, content)
-    if err != nil {
-        exit(err)
-    }
+	err = ironio.Save(outputfile, password, content)
+	if err != nil {
+		exit(err)
+	}
 }

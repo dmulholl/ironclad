@@ -1,21 +1,17 @@
 package main
 
-
 import "github.com/dmulholl/janus/v2"
 
-
 import (
-    "fmt"
-    "os"
-    "path/filepath"
-    "io/ioutil"
+	"fmt"
+	"io/ioutil"
+	"os"
+	"path/filepath"
 )
 
-
 import (
-    "github.com/dmulholl/ironclad/ironio"
+	"github.com/dmulholl/ironclad/ironio"
 )
-
 
 var decryptHelp = fmt.Sprintf(`
 Usage: %s decrypt <file>
@@ -33,32 +29,30 @@ Flags:
   -h, --help                Print this command's help text and exit.
 `, filepath.Base(os.Args[0]))
 
-
 func registerDecryptCmd(parser *janus.ArgParser) {
-    cmd := parser.NewCmd("decrypt", decryptHelp, decryptCallback)
-    cmd.NewString("out o")
+	cmd := parser.NewCmd("decrypt", decryptHelp, decryptCallback)
+	cmd.NewString("out o")
 }
 
-
 func decryptCallback(parser *janus.ArgParser) {
-    if !parser.HasArgs() {
-        exit("missing filename")
-    }
+	if !parser.HasArgs() {
+		exit("missing filename")
+	}
 
-    inputfile := parser.GetArg(0)
-    outputfile := parser.GetString("out")
-    if outputfile == "" {
-        outputfile = inputfile + ".decrypted"
-    }
+	inputfile := parser.GetArg(0)
+	outputfile := parser.GetString("out")
+	if outputfile == "" {
+		outputfile = inputfile + ".decrypted"
+	}
 
-    password := inputPass("Password: ")
-    content, err := ironio.Load(inputfile, password)
-    if err != nil {
-        exit(err)
-    }
+	password := inputPass("Password: ")
+	content, err := ironio.Load(inputfile, password)
+	if err != nil {
+		exit(err)
+	}
 
-    err = ioutil.WriteFile(outputfile, content, 0644)
-    if err != nil {
-        exit(err)
-    }
+	err = ioutil.WriteFile(outputfile, content, 0644)
+	if err != nil {
+		exit(err)
+	}
 }

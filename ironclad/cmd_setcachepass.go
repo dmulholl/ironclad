@@ -1,15 +1,12 @@
 package main
 
-
 import "github.com/dmulholl/janus/v2"
 
-
 import (
-    "fmt"
-    "os"
-    "path/filepath"
+	"fmt"
+	"os"
+	"path/filepath"
 )
-
 
 var cachepassHelp = fmt.Sprintf(`
 Usage: %s setcachepass
@@ -27,26 +24,24 @@ Flags:
   -h, --help                Print this command's help text and exit.
 `, filepath.Base(os.Args[0]))
 
-
 func registerSetCachePassCmd(parser *janus.ArgParser) {
-    cmd := parser.NewCmd("setcachepass", cachepassHelp, cachepassCallback)
-    cmd.NewString("file f")
+	cmd := parser.NewCmd("setcachepass", cachepassHelp, cachepassCallback)
+	cmd.NewString("file f")
 }
 
-
 func cachepassCallback(parser *janus.ArgParser) {
-    filename, masterpass, db := loadDB(parser)
+	filename, masterpass, db := loadDB(parser)
 
-    printLineOfChar("─")
-    newCachePass        := inputPass("Enter new cache password: ")
-    confirmNewCachePass := inputPass("     Re-enter to confirm: ")
-    printLineOfChar("─")
+	printLineOfChar("─")
+	newCachePass := inputPass("Enter new cache password: ")
+	confirmNewCachePass := inputPass("     Re-enter to confirm: ")
+	printLineOfChar("─")
 
-    if newCachePass == confirmNewCachePass {
-        db.CachePass = newCachePass
-        saveDB(filename, masterpass, db)
-        setCachedPassword(filename, masterpass, newCachePass)
-    } else {
-        exit("passwords do not match")
-    }
+	if newCachePass == confirmNewCachePass {
+		db.CachePass = newCachePass
+		saveDB(filename, masterpass, db)
+		setCachedPassword(filename, masterpass, newCachePass)
+	} else {
+		exit("passwords do not match")
+	}
 }

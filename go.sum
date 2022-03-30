@@ -1,7 +1,7 @@
 github.com/atotto/clipboard v0.1.4 h1:EH0zSVneZPSuFR11BlR9YppQTVDbh5+16AmcJi4g1z4=
 github.com/atotto/clipboard v0.1.4/go.mod h1:ZY9tmq7sm5xIbd9bOK4onWV4S6X0u6GY7Vn0Yu86PYI=
-github.com/dmulholl/janus/v2 v2.1.0 h1:LfzDk+iKaWWpM0zPbj6sV5IzHwvUQ/HBl/neDTtZy6A=
-github.com/dmulholl/janus/v2 v2.1.0/go.mod h1:8JFAGg6DOhB3Rs3wK/6nkuypFj1SWha22OiThlvWjkk=
+github.com/dmulholl/argo v0.2.0 h1:ys4MRY6xVuR8LYtCR7xkUqewG+kqiYNGbnIh5NEVVP8=
+github.com/dmulholl/argo v0.2.0/go.mod h1:aOUydVB19iGXHLa1rq0/gazE2HFnf7t4EdAZCbo09nQ=
 github.com/howeyc/gopass v0.0.0-20210920133722-c8aef6fb66ef h1:A9HsByNhogrvm9cWb28sjiS3i7tcKCkflWFEkHfuAgM=
 github.com/howeyc/gopass v0.0.0-20210920133722-c8aef6fb66ef/go.mod h1:lADxMC39cJJqL93Duh1xhAs4I2Zs8mKS89XWXFGp9cs=
 github.com/mitchellh/go-wordwrap v1.0.1 h1:TLuKupo69TCn6TQSyGxwI1EblZZEsQ0vMlAFQflz0v0=

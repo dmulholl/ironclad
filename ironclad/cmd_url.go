@@ -5,13 +5,13 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/dmulholl/janus/v2"
+	"github.com/dmulholl/argo"
 )
 
 var urlHelp = fmt.Sprintf(`
 Usage: %s url <entry>
 
-  Copy a stored url to the system clipboard or print it to stdout.
+  Copies a stored url to the system clipboard or prints it to stdout.
 
   The entry can be specified by its ID or by any unique set of case-insensitive
   substrings of its title.
@@ -27,20 +27,22 @@ Flags:
   -p, --print               Print the url to stdout.
 `, filepath.Base(os.Args[0]))
 
-func registerUrlCmd(parser *janus.ArgParser) {
-	cmd := parser.NewCmd("url", urlHelp, urlCallback)
-	cmd.NewString("file f")
-	cmd.NewFlag("print p")
+func registerUrlCmd(parser *argo.ArgParser) {
+	cmdParser := parser.NewCommand("url")
+	cmdParser.Helptext = urlHelp
+	cmdParser.Callback = urlCallback
+	cmdParser.NewStringOption("file f", "")
+	cmdParser.NewFlag("print p")
 }
 
-func urlCallback(parser *janus.ArgParser) {
-	if !parser.HasArgs() {
+func urlCallback(cmdName string, cmdParser *argo.ArgParser) {
+	if !cmdParser.HasArgs() {
 		exit("missing entry argument")
 	}
-	filename, _, db := loadDB(parser)
+	filename, _, db := loadDB(cmdParser)
 
 	// Search for an entry corresponding to the supplied arguments.
-	list := db.Active().FilterByAll(parser.GetArgs()...)
+	list := db.Active().FilterByAll(cmdParser.Args()...)
 	if len(list) == 0 {
 		exit("no matching entry")
 	} else if len(list) > 1 {
@@ -51,7 +53,7 @@ func urlCallback(parser *janus.ArgParser) {
 	entry := list[0]
 
 	// Print the url to stdout.
-	if parser.GetFlag("print") {
+	if cmdParser.Found("print") {
 		fmt.Print(entry.Url)
 		if stdoutIsTerminal() {
 			fmt.Println()

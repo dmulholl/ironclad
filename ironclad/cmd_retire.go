@@ -6,13 +6,14 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/dmulholl/janus/v2"
+	"github.com/dmulholl/argo"
 )
 
 var retireHelp = fmt.Sprintf(`
 Usage: %s retire <entries>
 
-  Retire one or more entries. Entries to be retired should be specified by ID.
+  Retires one or more entries from the database. Entries to be retired should
+  be specified by ID.
 
   Retired entries are marked as inactive and do not appear in normal listings
   but their data remains in the database. Inactive entries can be stripped
@@ -30,21 +31,23 @@ Flags:
   -h, --help                Print this command's help text and exit.
 `, filepath.Base(os.Args[0]))
 
-func registerRetireCmd(parser *janus.ArgParser) {
-	cmd := parser.NewCmd("retire", retireHelp, retireCallback)
-	cmd.NewString("file f")
+func registerRetireCmd(parser *argo.ArgParser) {
+	cmdParser := parser.NewCommand("retire")
+	cmdParser.Helptext = retireHelp
+	cmdParser.Callback = retireCallback
+	cmdParser.NewStringOption("file f", "")
 }
 
-func retireCallback(parser *janus.ArgParser) {
+func retireCallback(cmdName string, cmdParser *argo.ArgParser) {
 
 	// Check that at least one entry argument has been supplied.
-	if !parser.HasArgs() {
+	if !cmdParser.HasArgs() {
 		exit("you must specify at least one entry to retire")
 	}
-	filename, masterpass, db := loadDB(parser)
+	filename, masterpass, db := loadDB(cmdParser)
 
 	// Grab the entries to retire.
-	list := db.Active().FilterByIDString(parser.GetArgs()...)
+	list := db.Active().FilterByIDString(cmdParser.Args()...)
 	if len(list) == 0 {
 		exit("no matching entries")
 	}

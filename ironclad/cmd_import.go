@@ -7,13 +7,13 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/dmulholl/janus/v2"
+	"github.com/dmulholl/argo"
 )
 
 var importHelp = fmt.Sprintf(`
 Usage: %s import <file>
 
-  Import a previously-exported list of entries in JSON format.
+  Imports a previously-exported list of entries in JSON format.
 
 Arguments:
   <file>                    File to import.
@@ -25,16 +25,18 @@ Flags:
   -h, --help                Print this command's help text and exit.
 `, filepath.Base(os.Args[0]))
 
-func registerImportCmd(parser *janus.ArgParser) {
-	cmd := parser.NewCmd("import", importHelp, importCallback)
-	cmd.NewString("file f")
+func registerImportCmd(parser *argo.ArgParser) {
+	cmdParser := parser.NewCommand("import")
+	cmdParser.Helptext = importHelp
+	cmdParser.Callback = importCallback
+	cmdParser.NewStringOption("file f", "")
 }
 
-func importCallback(parser *janus.ArgParser) {
+func importCallback(cmdName string, cmdParser *argo.ArgParser) {
 	var input []byte
 	var err error
-	if parser.HasArgs() {
-		input, err = ioutil.ReadFile(parser.GetArg(0))
+	if cmdParser.HasArgs() {
+		input, err = ioutil.ReadFile(cmdParser.Arg(0))
 		if err != nil {
 			exit(err)
 		}
@@ -47,7 +49,7 @@ func importCallback(parser *janus.ArgParser) {
 	trimmed := strings.Trim(string(input), "*")
 	input = []byte(trimmed)
 
-	filename, masterpass, db := loadDB(parser)
+	filename, masterpass, db := loadDB(cmdParser)
 	count, err := db.Import(input)
 	if err != nil {
 		exit(err)

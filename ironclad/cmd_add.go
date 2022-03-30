@@ -6,14 +6,14 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/dmulholl/argo"
 	"github.com/dmulholl/ironclad/irondb"
-	"github.com/dmulholl/janus/v2"
 )
 
 var addHelp = fmt.Sprintf(`
 Usage: %s add
 
-  Add a new entry to a database. You will be prompted to supply values for
+  Adds a new entry to a database. You will be prompted to supply values for
   the entry's fields - press return to leave an unwanted field blank.
 
   This command has an alias, 'new', which works identically.
@@ -26,14 +26,16 @@ Flags:
       --no-editor           Do not launch an external editor to add notes.
 `, filepath.Base(os.Args[0]))
 
-func registerAddCmd(parser *janus.ArgParser) {
-	cmd := parser.NewCmd("add new", addHelp, addCallback)
-	cmd.NewString("file f")
-	cmd.NewFlag("no-editor")
+func registerAddCmd(parser *argo.ArgParser) {
+	cmdParser := parser.NewCommand("add new")
+	cmdParser.Helptext = addHelp
+	cmdParser.Callback = addCallback
+	cmdParser.NewStringOption("file f", "")
+	cmdParser.NewFlag("no-editor")
 }
 
-func addCallback(parser *janus.ArgParser) {
-	filename, masterpass, db := loadDB(parser)
+func addCallback(cmdName string, cmdParser *argo.ArgParser) {
+	filename, masterpass, db := loadDB(cmdParser)
 
 	// Create a new Entry object to add to the database.
 	entry := irondb.NewEntry()
@@ -72,7 +74,7 @@ func addCallback(parser *janus.ArgParser) {
 	printLineOfChar("─")
 	answer := input("  Add a note to this entry? (y/n): ")
 	if strings.ToLower(answer) == "y" {
-		if parser.GetFlag("no-editor") {
+		if cmdParser.Found("no-editor") {
 			printLineOfChar("─")
 			entry.Notes = inputViaStdin()
 		} else {

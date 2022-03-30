@@ -5,13 +5,13 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/dmulholl/janus/v2"
+	"github.com/dmulholl/argo"
 )
 
 var cachepassHelp = fmt.Sprintf(`
 Usage: %s setcachepass
 
-  Change a database's cache password. This password is used to encrypt the
+  Changes a database's cache password. This password is used to encrypt the
   master password while it's temporarily cached in memory.
 
   Note that if you set the cache password to an empty string you will not be
@@ -24,13 +24,15 @@ Flags:
   -h, --help                Print this command's help text and exit.
 `, filepath.Base(os.Args[0]))
 
-func registerSetCachePassCmd(parser *janus.ArgParser) {
-	cmd := parser.NewCmd("setcachepass", cachepassHelp, cachepassCallback)
-	cmd.NewString("file f")
+func registerSetCachePassCmd(parser *argo.ArgParser) {
+	cmdParser := parser.NewCommand("setcachepass")
+	cmdParser.Helptext = cachepassHelp
+	cmdParser.Callback = cachepassCallback
+	cmdParser.NewStringOption("file f", "")
 }
 
-func cachepassCallback(parser *janus.ArgParser) {
-	filename, masterpass, db := loadDB(parser)
+func cachepassCallback(cmdName string, cmdParser *argo.ArgParser) {
+	filename, masterpass, db := loadDB(cmdParser)
 
 	printLineOfChar("─")
 	newCachePass := inputPass("Enter new cache password: ")

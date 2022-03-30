@@ -5,15 +5,15 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/dmulholl/argo"
 	"github.com/dmulholl/ironclad/irondb"
-	"github.com/dmulholl/janus/v2"
 )
 
 var initHelp = fmt.Sprintf(`
 Usage: %s init <file>
 
-  Create a new encrypted password database. You will be prompted to supply
-  a master password.
+  Creates a new encrypted password database. You will be prompted to supply
+  a master password for the database.
 
 Arguments:
   <file>                    Filename for the new database.
@@ -22,15 +22,17 @@ Flags:
   -h, --help                Print this command's help text and exit.
 `, filepath.Base(os.Args[0]))
 
-func registerInitCmd(parser *janus.ArgParser) {
-	parser.NewCmd("init", initHelp, initCallback)
+func registerInitCmd(parser *argo.ArgParser) {
+	cmdParser := parser.NewCommand("init")
+	cmdParser.Helptext = initHelp
+	cmdParser.Callback = initCallback
 }
 
-func initCallback(parser *janus.ArgParser) {
-	if !parser.HasArgs() {
+func initCallback(cmdName string, cmdParser *argo.ArgParser) {
+	if !cmdParser.HasArgs() {
 		exit("you must supply a filename for the database")
 	}
-	filename := parser.GetArgs()[0]
+	filename := cmdParser.Arg(0)
 
 	masterpass1 := inputPass("Enter the master password for the new database: ")
 	masterpass2 := inputPass("                           Re-enter to confirm: ")

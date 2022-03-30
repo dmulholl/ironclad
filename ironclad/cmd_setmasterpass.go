@@ -5,13 +5,13 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/dmulholl/janus/v2"
+	"github.com/dmulholl/argo"
 )
 
 var masterpassHelp = fmt.Sprintf(`
 Usage: %s setmasterpass
 
-  Change a database's master password.
+  Changes a database's master password.
 
 Options:
   -f, --file <str>          Database file. Defaults to the most recent file.
@@ -20,13 +20,15 @@ Flags:
   -h, --help                Print this command's help text and exit.
 `, filepath.Base(os.Args[0]))
 
-func registerSetMasterPassCmd(parser *janus.ArgParser) {
-	cmd := parser.NewCmd("setmasterpass", masterpassHelp, masterpassCallback)
-	cmd.NewString("file f")
+func registerSetMasterPassCmd(parser *argo.ArgParser) {
+	cmdParser := parser.NewCommand("setmasterpass")
+	cmdParser.Helptext = masterpassHelp
+	cmdParser.Callback = masterpassCallback
+	cmdParser.NewStringOption("file f", "")
 }
 
-func masterpassCallback(parser *janus.ArgParser) {
-	filename, _, db := loadDB(parser)
+func masterpassCallback(cmdName string, cmdParser *argo.ArgParser) {
+	filename, _, db := loadDB(cmdParser)
 
 	printLineOfChar("─")
 	newMasterPass := inputPass("Enter new master password: ")

@@ -5,14 +5,14 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/dmulholl/argo"
 	"github.com/dmulholl/ironclad/irondb"
-	"github.com/dmulholl/janus/v2"
 )
 
 var listHelp = fmt.Sprintf(`
 Usage: %s list [entries]
 
-  Print a list of entries from a database. Entries to list can be specified by
+  Prints a list of entries from a database. Entries to list can be specified by
   ID or by title. (Titles are checked for a case-insensitive substring match.)
 
   If no arguments are specified, all the entries in the database will be
@@ -37,22 +37,24 @@ Flags:
   -v, --verbose             Use the verbose list format.
 `, filepath.Base(os.Args[0]))
 
-func registerListCmd(parser *janus.ArgParser) {
-	cmd := parser.NewCmd("list show", listHelp, listCallback)
-	cmd.NewString("file f")
-	cmd.NewString("tag t")
-	cmd.NewFlag("verbose v")
-	cmd.NewFlag("inactive i")
+func registerListCmd(parser *argo.ArgParser) {
+	cmdParser := parser.NewCommand("list show")
+	cmdParser.Helptext = listHelp
+	cmdParser.Callback = listCallback
+	cmdParser.NewStringOption("file f", "")
+	cmdParser.NewStringOption("tag t", "")
+	cmdParser.NewFlag("verbose v")
+	cmdParser.NewFlag("inactive i")
 }
 
-func listCallback(parser *janus.ArgParser) {
-	filename, _, db := loadDB(parser)
+func listCallback(cmdName string, cmdParser *argo.ArgParser) {
+	filename, _, db := loadDB(cmdParser)
 
 	// Default to displaying all active entries.
 	var list irondb.EntryList
 	var title string
 	var count int
-	if parser.GetFlag("inactive") {
+	if cmdParser.Found("inactive") {
 		list = db.Inactive()
 		title = "Inactive Entries"
 		count = len(list)
@@ -63,19 +65,19 @@ func listCallback(parser *janus.ArgParser) {
 	}
 
 	// Do we have query strings to filter on?
-	if parser.HasArgs() {
-		list = list.FilterByAny(parser.GetArgs()...)
+	if cmdParser.HasArgs() {
+		list = list.FilterByAny(cmdParser.Args()...)
 		title = "Matching Entries"
 	}
 
 	// Are we filtering by tag?
-	if parser.GetString("tag") != "" {
-		list = list.FilterByTag(parser.GetString("tag"))
+	if cmdParser.StringValue("tag") != "" {
+		list = list.FilterByTag(cmdParser.StringValue("tag"))
 		title = "Matching Entries"
 	}
 
 	// Print the list of entries.
-	if parser.GetFlag("verbose") || parser.GetParent().GetCmdName() == "show" {
+	if cmdParser.Found("verbose") || cmdName == "show" {
 		printVerbose(list, count, title, filepath.Base(filename))
 	} else {
 		printCompact(list, count, filepath.Base(filename))

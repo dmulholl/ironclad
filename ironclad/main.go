@@ -5,10 +5,10 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/dmulholl/janus/v2"
+	"github.com/dmulholl/argo"
 )
 
-const version = "2.2.4"
+const version = "2.3.0-dev"
 
 var helptext = fmt.Sprintf(`
 Usage: %s [command]
@@ -54,7 +54,7 @@ Command Help:
 func main() {
 
 	// Instantiate an argument parser.
-	parser := janus.NewParser()
+	parser := argo.NewParser()
 	parser.Helptext = helptext
 	parser.Version = version
 
@@ -83,7 +83,7 @@ func main() {
 
 	// Parse the command line arguments.
 	parser.Parse()
-	if !parser.HasCmd() {
-		parser.ExitHelp()
+	if !parser.HasCommand() {
+		parser.ExitWithHelptext()
 	}
 }

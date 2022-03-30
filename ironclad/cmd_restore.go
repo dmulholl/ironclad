@@ -6,13 +6,13 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/dmulholl/janus/v2"
+	"github.com/dmulholl/argo"
 )
 
 var restoreHelp = fmt.Sprintf(`
 Usage: %s restore <entries>
 
-  Restore one or more inactive entries to active status. Entries to restore
+  Restores one or more inactive entries to active status. Entries to restore
   should be specified by ID.
 
 Arguments:
@@ -25,19 +25,21 @@ Flags:
   -h, --help                Print this command's help text and exit.
 `, filepath.Base(os.Args[0]))
 
-func registerRestoreCmd(parser *janus.ArgParser) {
-	cmd := parser.NewCmd("restore", restoreHelp, restoreCallback)
-	cmd.NewString("file f")
+func registerRestoreCmd(parser *argo.ArgParser) {
+	cmdParser := parser.NewCommand("restore")
+	cmdParser.Helptext = restoreHelp
+	cmdParser.Callback = restoreCallback
+	cmdParser.NewStringOption("file f", "")
 }
 
-func restoreCallback(parser *janus.ArgParser) {
-	if !parser.HasArgs() {
+func restoreCallback(cmdName string, cmdParser *argo.ArgParser) {
+	if !cmdParser.HasArgs() {
 		exit("you must specify at least one entry to restore")
 	}
-	filename, masterpass, db := loadDB(parser)
+	filename, masterpass, db := loadDB(cmdParser)
 
 	// Grab the entries to restore.
-	list := db.Inactive().FilterByIDString(parser.GetArgs()...)
+	list := db.Inactive().FilterByIDString(cmdParser.Args()...)
 	if len(list) == 0 {
 		exit("no matching entries")
 	}

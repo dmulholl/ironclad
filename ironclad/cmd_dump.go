@@ -7,13 +7,13 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/dmulholl/janus/v2"
+	"github.com/dmulholl/argo"
 )
 
 var dumpHelp = fmt.Sprintf(`
 Usage: %s dump
 
-  Dump a database's internal JSON data store to stdout.
+  Dumps a database's internal JSON data store to stdout.
 
 Options:
   -f, --file <str>          Database file. Defaults to the last used file.
@@ -22,15 +22,16 @@ Flags:
   -h, --help                Print this command's help text and exit.
 `, filepath.Base(os.Args[0]))
 
-func registerDumpCmd(parser *janus.ArgParser) {
-	cmd := parser.NewCmd("dump", dumpHelp, dumpCallback)
-	cmd.NewString("file f")
+func registerDumpCmd(parser *argo.ArgParser) {
+	cmdParser := parser.NewCommand("dump")
+	cmdParser.Helptext = dumpHelp
+	cmdParser.Callback = dumpCallback
+	cmdParser.NewStringOption("file f", "")
 }
 
-func dumpCallback(parser *janus.ArgParser) {
-
+func dumpCallback(cmdName string, cmdParser *argo.ArgParser) {
 	// Load the database.
-	_, _, db := loadDB(parser)
+	_, _, db := loadDB(cmdParser)
 
 	// Serialize the database as a byte-slice of JSON.
 	data, err := db.ToJSON()

@@ -6,14 +6,14 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/dmulholl/argo"
 	"github.com/dmulholl/ironclad/ironio"
-	"github.com/dmulholl/janus/v2"
 )
 
 var encryptHelp = fmt.Sprintf(`
 Usage: %s encrypt <file>
 
-  Encrypt a file using 256-bit AES encryption.
+  Encrypts a file using 256-bit AES encryption.
 
   This command encrypts an arbitrary file using the same 256-bit AES
   encryption that Ironclad uses for password databases. Note that the file
@@ -33,18 +33,20 @@ Flags:
   -h, --help                Print this command's help text and exit.
 `, filepath.Base(os.Args[0]))
 
-func registerEncryptCmd(parser *janus.ArgParser) {
-	cmd := parser.NewCmd("encrypt", encryptHelp, encryptCallback)
-	cmd.NewString("out o")
+func registerEncryptCmd(parser *argo.ArgParser) {
+	cmdParser := parser.NewCommand("encrypt")
+	cmdParser.Helptext = encryptHelp
+	cmdParser.Callback = encryptCallback
+	cmdParser.NewStringOption("out o", "")
 }
 
-func encryptCallback(parser *janus.ArgParser) {
-	if !parser.HasArgs() {
+func encryptCallback(cmdName string, cmdParser *argo.ArgParser) {
+	if !cmdParser.HasArgs() {
 		exit("missing filename")
 	}
 
-	inputfile := parser.GetArg(0)
-	outputfile := parser.GetString("out")
+	inputfile := cmdParser.Arg(0)
+	outputfile := cmdParser.StringValue("out")
 	if outputfile == "" {
 		outputfile = inputfile + ".encrypted"
 	}

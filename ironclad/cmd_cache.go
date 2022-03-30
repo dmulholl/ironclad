@@ -8,27 +8,28 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/dmulholl/argo"
 	"github.com/dmulholl/ironclad/ironconfig"
 	"github.com/dmulholl/ironclad/ironrpc"
-	"github.com/dmulholl/janus/v2"
 )
 
 var cacheHelp = fmt.Sprintf(`
 Usage: %s cache
 
-  Run the cached-password server. This comand is run automatically when
+  Runs the cached-password server. This comand is run automatically when
   required; it should not be run manually.
 
 Flags:
   -h, --help    Print this command's help text and exit.
 `, filepath.Base(os.Args[0]))
 
-func registerCacheCmd(parser *janus.ArgParser) {
-	parser.NewCmd("cache", cacheHelp, cacheCallback)
+func registerCacheCmd(parser *argo.ArgParser) {
+	cmdParser := parser.NewCommand("cache")
+	cmdParser.Helptext = cacheHelp
+	cmdParser.Callback = cacheCallback
 }
 
-func cacheCallback(parser *janus.ArgParser) {
-
+func cacheCallback(cmdName string, cmdParser *argo.ArgParser) {
 	// Set up a handler to intercept SIGINT interrupts. This fixes an annoying
 	// bug where hitting Ctrl-C to short-circuit a clipboard countdown could
 	// kill the cache server, forcing the user to re-enter their password.

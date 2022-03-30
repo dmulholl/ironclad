@@ -7,13 +7,13 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/dmulholl/janus/v2"
+	"github.com/dmulholl/argo"
 )
 
 var exportHelp = fmt.Sprintf(`
 Usage: %s export [entries]
 
-  Export a list of entries in JSON format. Entries can be specified by ID or
+  Exports a list of entries in JSON format. Entries can be specified by ID or
   by title. (Titles are checked for a case-insensitive substring match.) If no
   entries are specified, all entries will be exported.
 
@@ -29,29 +29,31 @@ Flags:
   -h, --help                Print this command's help text and exit.
 `, filepath.Base(os.Args[0]))
 
-func registerExportCmd(parser *janus.ArgParser) {
-	cmd := parser.NewCmd("export", exportHelp, exportCallback)
-	cmd.NewString("file f")
-	cmd.NewString("tag t")
-	cmd.NewString("out o", "passwords.json")
+func registerExportCmd(parser *argo.ArgParser) {
+	cmdParser := parser.NewCommand("export")
+	cmdParser.Helptext = exportHelp
+	cmdParser.Callback = exportCallback
+	cmdParser.NewStringOption("file f", "")
+	cmdParser.NewStringOption("tag t", "")
+	cmdParser.NewStringOption("out o", "passwords.json")
 }
 
-func exportCallback(parser *janus.ArgParser) {
+func exportCallback(cmdName string, cmdParser *argo.ArgParser) {
 
 	// Load the database.
-	filename, _, db := loadDB(parser)
+	filename, _, db := loadDB(cmdParser)
 
 	// Default to exporting all active entries.
 	list := db.Active()
 
 	// Do we have query strings to filter on?
-	if parser.HasArgs() {
-		list = list.FilterByAny(parser.GetArgs()...)
+	if cmdParser.HasArgs() {
+		list = list.FilterByAny(cmdParser.Args()...)
 	}
 
 	// Are we filtering by tag?
-	if parser.GetString("tag") != "" {
-		list = list.FilterByTag(parser.GetString("tag"))
+	if cmdParser.StringValue("tag") != "" {
+		list = list.FilterByTag(cmdParser.StringValue("tag"))
 	}
 
 	// Confirm export.
@@ -69,7 +71,7 @@ func exportCallback(parser *janus.ArgParser) {
 	}
 
 	// Write to file.
-	err = ioutil.WriteFile(parser.GetString("out"), []byte(jsonstr), 0644)
+	err = ioutil.WriteFile(cmdParser.StringValue("out"), []byte(jsonstr), 0644)
 	if err != nil {
 		exit(err)
 	}

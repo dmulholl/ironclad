@@ -6,13 +6,13 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/dmulholl/janus/v2"
+	"github.com/dmulholl/argo"
 )
 
 var editHelp = fmt.Sprintf(`
 Usage: %s edit <entry>
 
-  Edit an existing database entry.
+  Edits an existing database entry.
 
   You can specify the fields to edit using the flags listed below. If no flags
   are specified you will be prompted to edit each field in turn. Enter 'y' to
@@ -39,27 +39,29 @@ Flags:
   -u, --username            Edit the entry's username.
 `, filepath.Base(os.Args[0]))
 
-func registerEditCmd(parser *janus.ArgParser) {
-	cmd := parser.NewCmd("edit", editHelp, editCallback)
-	cmd.NewString("file f")
-	cmd.NewFlag("title t")
-	cmd.NewFlag("url l")
-	cmd.NewFlag("username u")
-	cmd.NewFlag("password p")
-	cmd.NewFlag("notes n")
-	cmd.NewFlag("tags s")
-	cmd.NewFlag("email e")
-	cmd.NewFlag("no-editor")
+func registerEditCmd(parser *argo.ArgParser) {
+	cmdParser := parser.NewCommand("edit")
+	cmdParser.Helptext = editHelp
+	cmdParser.Callback = editCallback
+	cmdParser.NewStringOption("file f", "")
+	cmdParser.NewFlag("title t")
+	cmdParser.NewFlag("url l")
+	cmdParser.NewFlag("username u")
+	cmdParser.NewFlag("password p")
+	cmdParser.NewFlag("notes n")
+	cmdParser.NewFlag("tags s")
+	cmdParser.NewFlag("email e")
+	cmdParser.NewFlag("no-editor")
 }
 
-func editCallback(parser *janus.ArgParser) {
-	if !parser.HasArgs() {
+func editCallback(cmdName string, cmdParser *argo.ArgParser) {
+	if !cmdParser.HasArgs() {
 		exit("missing entry argument")
 	}
-	filename, masterpass, db := loadDB(parser)
+	filename, masterpass, db := loadDB(cmdParser)
 
 	// Search for an entry corresponding to the supplied arguments.
-	list := db.Active().FilterByAll(parser.GetArgs()...)
+	list := db.Active().FilterByAll(cmdParser.Args()...)
 	if len(list) == 0 {
 		exit("no matching entry")
 	} else if len(list) > 1 {
@@ -71,46 +73,46 @@ func editCallback(parser *janus.ArgParser) {
 
 	// Default to editing all fields if no flags are present.
 	allFields := false
-	if !parser.GetFlag("title") && !parser.GetFlag("url") &&
-		!parser.GetFlag("username") && !parser.GetFlag("password") &&
-		!parser.GetFlag("tags") && !parser.GetFlag("notes") &&
-		!parser.GetFlag("email") {
+	if !cmdParser.Found("title") && !cmdParser.Found("url") &&
+		!cmdParser.Found("username") && !cmdParser.Found("password") &&
+		!cmdParser.Found("tags") && !cmdParser.Found("notes") &&
+		!cmdParser.Found("email") {
 		allFields = true
 	}
 
 	printHeading("Editing Entry: "+entry.Title, filepath.Base(filename))
 
-	if parser.GetFlag("title") || (allFields && editField("title")) {
+	if cmdParser.Found("title") || (allFields && editField("title")) {
 		fmt.Println("  Old title: " + entry.Title)
 		entry.Title = input("  New title: ")
 		printLineOfChar("·")
 	}
 
-	if parser.GetFlag("url") || (allFields && editField("url")) {
+	if cmdParser.Found("url") || (allFields && editField("url")) {
 		fmt.Println("  Old URL: " + entry.Url)
 		entry.Url = input("  New URL: ")
 		printLineOfChar("·")
 	}
 
-	if parser.GetFlag("username") || (allFields && editField("username")) {
+	if cmdParser.Found("username") || (allFields && editField("username")) {
 		fmt.Println("  Old username: " + entry.Username)
 		entry.Username = input("  New username: ")
 		printLineOfChar("·")
 	}
 
-	if parser.GetFlag("password") || (allFields && editField("password")) {
+	if cmdParser.Found("password") || (allFields && editField("password")) {
 		fmt.Println("  Old password: " + entry.GetPassword())
 		entry.SetPassword(input("  New password: "))
 		printLineOfChar("·")
 	}
 
-	if parser.GetFlag("email") || (allFields && editField("email")) {
+	if cmdParser.Found("email") || (allFields && editField("email")) {
 		fmt.Println("  Old email: " + entry.Email)
 		entry.Email = input("  New email: ")
 		printLineOfChar("·")
 	}
 
-	if parser.GetFlag("tags") || (allFields && editField("tags")) {
+	if cmdParser.Found("tags") || (allFields && editField("tags")) {
 		fmt.Println("  Old tags: " + strings.Join(entry.Tags, ", "))
 		tagstring := input("  New tags: ")
 		tagslice := strings.Split(tagstring, ",")
@@ -124,8 +126,8 @@ func editCallback(parser *janus.ArgParser) {
 		printLineOfChar("·")
 	}
 
-	if parser.GetFlag("notes") || (allFields && editField("notes")) {
-		if parser.GetFlag("no-editor") {
+	if cmdParser.Found("notes") || (allFields && editField("notes")) {
+		if cmdParser.Found("no-editor") {
 			oldnotes := strings.Trim(entry.Notes, "\r\n")
 			if oldnotes != "" {
 				fmt.Println(oldnotes)

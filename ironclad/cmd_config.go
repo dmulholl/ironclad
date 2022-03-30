@@ -7,14 +7,14 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/dmulholl/argo"
 	"github.com/dmulholl/ironclad/ironconfig"
-	"github.com/dmulholl/janus/v2"
 )
 
 var configHelp = fmt.Sprintf(`
 Usage: %s config [key] [value]
 
-  Set or display a configuration value.
+  Sets or displays a configuration value.
 
   A single argument will be treated as a key and the associated value
   displayed. Two arguments will be treated as a key-value pair to be set.
@@ -33,12 +33,14 @@ Flags:
   -h, --help                Print this command's help text and exit.
 `, filepath.Base(os.Args[0]))
 
-func registerConfigCmd(parser *janus.ArgParser) {
-	parser.NewCmd("config", configHelp, configCallback)
+func registerConfigCmd(parser *argo.ArgParser) {
+	cmdParser := parser.NewCommand("config")
+	cmdParser.Helptext = configHelp
+	cmdParser.Callback = configCallback
 }
 
-func configCallback(parser *janus.ArgParser) {
-	if !parser.HasArgs() {
+func configCallback(cmdName string, cmdParser *argo.ArgParser) {
+	if !cmdParser.HasArgs() {
 		if !ironconfig.FileExists() {
 			exit("no config file exists")
 		}
@@ -47,8 +49,8 @@ func configCallback(parser *janus.ArgParser) {
 			exit(err)
 		}
 		fmt.Println(strings.TrimSpace(string(content)))
-	} else if parser.NumArgs() == 1 {
-		value, found, err := ironconfig.Get(parser.GetArg(0))
+	} else if cmdParser.CountArgs() == 1 {
+		value, found, err := ironconfig.Get(cmdParser.Arg(0))
 		if err != nil {
 			exit(err)
 		}
@@ -56,8 +58,8 @@ func configCallback(parser *janus.ArgParser) {
 			exit("key not found")
 		}
 		fmt.Println(value)
-	} else if parser.NumArgs() == 2 {
-		err := ironconfig.Set(parser.GetArg(0), parser.GetArg(1))
+	} else if cmdParser.CountArgs() == 2 {
+		err := ironconfig.Set(cmdParser.Arg(0), cmdParser.Arg(1))
 		if err != nil {
 			exit(err)
 		}

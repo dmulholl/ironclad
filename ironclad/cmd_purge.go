@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/dmulholl/janus/v2"
+	"github.com/dmulholl/argo"
 )
 
 var purgeHelp = fmt.Sprintf(`
@@ -21,13 +21,15 @@ Flags:
   -h, --help                Print this command's help text and exit.
 `, filepath.Base(os.Args[0]))
 
-func registerPurgeCmd(parser *janus.ArgParser) {
-	cmd := parser.NewCmd("purge", purgeHelp, purgeCallback)
-	cmd.NewString("file f")
+func registerPurgeCmd(parser *argo.ArgParser) {
+	cmdParser := parser.NewCommand("purge")
+	cmdParser.Helptext = purgeHelp
+	cmdParser.Callback = purgeCallback
+	cmdParser.NewStringOption("file f", "")
 }
 
-func purgeCallback(parser *janus.ArgParser) {
-	filename, masterpass, db := loadDB(parser)
+func purgeCallback(cmdName string, cmdParser *argo.ArgParser) {
+	filename, masterpass, db := loadDB(cmdParser)
 
 	list := db.Inactive()
 	if len(list) == 0 {

@@ -5,13 +5,13 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/dmulholl/janus/v2"
+	"github.com/dmulholl/argo"
 )
 
 var userHelp = fmt.Sprintf(`
 Usage: %s user <entry>
 
-  Copy a stored username to the system clipboard or print it to stdout. This
+  Copies a stored username to the system clipboard or prints it to stdout. This
   command will fall back on the email address if the username field is empty.
 
   The entry can be specified by its ID or by any unique set of case-insensitive
@@ -28,20 +28,22 @@ Flags:
   -p, --print               Print the username to stdout.
 `, filepath.Base(os.Args[0]))
 
-func registerUserCmd(parser *janus.ArgParser) {
-	cmd := parser.NewCmd("user", userHelp, userCallback)
-	cmd.NewString("file f")
-	cmd.NewFlag("print p")
+func registerUserCmd(parser *argo.ArgParser) {
+	cmdParser := parser.NewCommand("user")
+	cmdParser.Helptext = userHelp
+	cmdParser.Callback = userCallback
+	cmdParser.NewStringOption("file f", "")
+	cmdParser.NewFlag("print p")
 }
 
-func userCallback(parser *janus.ArgParser) {
-	if !parser.HasArgs() {
+func userCallback(cmdName string, cmdParser *argo.ArgParser) {
+	if !cmdParser.HasArgs() {
 		exit("missing entry argument")
 	}
-	filename, _, db := loadDB(parser)
+	filename, _, db := loadDB(cmdParser)
 
 	// Search for an entry corresponding to the supplied arguments.
-	list := db.Active().FilterByAll(parser.GetArgs()...)
+	list := db.Active().FilterByAll(cmdParser.Args()...)
 	if len(list) == 0 {
 		exit("no matching entry")
 	} else if len(list) > 1 {
@@ -58,7 +60,7 @@ func userCallback(parser *janus.ArgParser) {
 	}
 
 	// Print the username to stdout.
-	if parser.GetFlag("print") {
+	if cmdParser.Found("print") {
 		fmt.Print(user)
 		if stdoutIsTerminal() {
 			fmt.Println()

@@ -6,13 +6,13 @@ import (
 	"path/filepath"
 	"sort"
 
-	"github.com/dmulholl/janus/v2"
+	"github.com/dmulholl/argo"
 )
 
 var tagsHelp = fmt.Sprintf(`
 Usage: %s tags
 
-  List the tags in a database.
+  Lists the tags in a database.
 
 Options:
   -f, --file <str>          Database file. Defaults to the last used file.
@@ -21,13 +21,15 @@ Flags:
   -h, --help                Print this command's help text and exit.
 `, filepath.Base(os.Args[0]))
 
-func registerTagsCmd(parser *janus.ArgParser) {
-	cmd := parser.NewCmd("tags", tagsHelp, tagsCallback)
-	cmd.NewString("file f")
+func registerTagsCmd(parser *argo.ArgParser) {
+	cmdParser := parser.NewCommand("tags")
+	cmdParser.Helptext = tagsHelp
+	cmdParser.Callback = tagsCallback
+	cmdParser.NewStringOption("file f", "")
 }
 
-func tagsCallback(parser *janus.ArgParser) {
-	_, _, db := loadDB(parser)
+func tagsCallback(cmdName string, cmdParser *argo.ArgParser) {
+	_, _, db := loadDB(cmdParser)
 
 	// Assemble a map of tags.
 	tagmap := db.TagMap()

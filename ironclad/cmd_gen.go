@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/dmulholl/janus/v2"
+	"github.com/dmulholl/argo"
 )
 
 const (
@@ -23,7 +23,7 @@ const (
 var genHelp = fmt.Sprintf(`
 Usage: %s gen [length]
 
-  Generate a random ASCII password. The password is automatically copied to
+  Generates a random ASCII password. The password is automatically copied to
   the system clipboard. The password can alternatively be printed to stdout.
 
   The default password length is 24 characters. The default character pool
@@ -54,39 +54,41 @@ Flags:
   -r, --readable            Add spaces for readability.
 `, filepath.Base(os.Args[0]), PoolSymbols, PoolSimilars)
 
-func registerGenCmd(parser *janus.ArgParser) {
-	cmd := parser.NewCmd("gen", genHelp, genCallback)
-	cmd.NewString("file f")
-	cmd.NewFlag("digits d")
-	cmd.NewFlag("exclude-similar x")
-	cmd.NewFlag("lowercase l")
-	cmd.NewFlag("symbols s")
-	cmd.NewFlag("uppercase u")
-	cmd.NewFlag("readable r")
-	cmd.NewFlag("print p")
+func registerGenCmd(parser *argo.ArgParser) {
+	cmdParser := parser.NewCommand("gen")
+	cmdParser.Helptext = genHelp
+	cmdParser.Callback = genCallback
+	cmdParser.NewStringOption("file f", "")
+	cmdParser.NewFlag("digits d")
+	cmdParser.NewFlag("exclude-similar x")
+	cmdParser.NewFlag("lowercase l")
+	cmdParser.NewFlag("symbols s")
+	cmdParser.NewFlag("uppercase u")
+	cmdParser.NewFlag("readable r")
+	cmdParser.NewFlag("print p")
 }
 
-func genCallback(parser *janus.ArgParser) {
+func genCallback(cmdName string, cmdParser *argo.ArgParser) {
 	var length int
-	if parser.HasArgs() {
-		length = parser.GetArgsAsInts()[0]
+	if cmdParser.HasArgs() {
+		length = int(cmdParser.ArgsAsInts()[0])
 	} else {
 		length = DefaultLength
 	}
 
 	password := genPassword(
 		length,
-		parser.GetFlag("uppercase"),
-		parser.GetFlag("lowercase"),
-		parser.GetFlag("symbols"),
-		parser.GetFlag("digits"),
-		parser.GetFlag("exclude-similar"))
+		cmdParser.Found("uppercase"),
+		cmdParser.Found("lowercase"),
+		cmdParser.Found("symbols"),
+		cmdParser.Found("digits"),
+		cmdParser.Found("exclude-similar"))
 
-	if parser.GetFlag("readable") {
+	if cmdParser.Found("readable") {
 		password = addSpaces(password)
 	}
 
-	if parser.GetFlag("print") {
+	if cmdParser.Found("print") {
 		fmt.Print(password)
 		if stdoutIsTerminal() {
 			fmt.Println()
@@ -98,8 +100,7 @@ func genCallback(parser *janus.ArgParser) {
 }
 
 // Generate a new password.
-func genPassword(
-	length int, upper, lower, symbols, digits, xSimilar bool) string {
+func genPassword(length int, upper, lower, symbols, digits, excludeSimilar bool) string {
 
 	// Assemble the character pool.
 	var pool string
@@ -122,7 +123,7 @@ func genPassword(
 	}
 
 	// Are we excluding similar characters from the pool?
-	if xSimilar {
+	if excludeSimilar {
 		newpool := make([]rune, 0)
 		for _, r := range pool {
 			if !strings.ContainsRune(PoolSimilars, r) {

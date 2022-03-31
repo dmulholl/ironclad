@@ -84,8 +84,8 @@ $ ironclad add
 <p>
 You'll be prompted to supply values for the entry's fields &mdash; simply press return to leave any unwanted field empty.
 </p>
-<h3 id="list-entries">
-List entries
+<h3 id="view-entries">
+View entries
 </h3>
 <p>
 Use the <code>list</code> command to see a list of all the database's entries.
@@ -100,7 +100,14 @@ Use the <code>show</code> command to view the full details of each entry in the 
 $ ironclad show
 </pre>
 <p>
-The <code>show</code> comand is an alias for <code>list --verbose</code>.
+You can specify the entries to <code>list</code> or <code>show</code> by ID or by title:
+</p>
+<pre>
+$ ironclad show 123
+$ ironclad show gmail
+</pre>
+<p>
+Titles are checked for a case-insensitive substring match.
 </p>
 <h3 id="copy-a-password-or-username">
 Copy a password or username

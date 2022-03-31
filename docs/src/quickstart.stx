@@ -42,7 +42,7 @@ You'll be prompted to supply values for the entry's fields --- simply press retu
 
 
 
-### List entries
+### View entries
 
 Use the `list` command to see a list of all the database's entries.
 
@@ -52,7 +52,12 @@ Use the `show` command to view the full details of each entry in the list.
 
     $ ironclad show
 
-The `show` comand is an alias for `list --verbose`.
+You can specify the entries to `list` or `show` by ID or by title:
+
+    $ ironclad show 123
+    $ ironclad show gmail
+
+Titles are checked for a case-insensitive substring match.
 
 
 

@@ -47,19 +47,19 @@ func cacheCallback(cmdName string, cmdParser *argo.ArgParser) {
 	}()
 
 	// Check if a cache timeout has been set in the config file.
-	timeout, found, err := ironconfig.Get("cache-timeout")
+	timeout, found, err := ironconfig.Get("cache-timeout-minutes")
 	if err != nil {
 		exit("cacheCallback:", err)
 	}
 	if found {
-		minutes, err := strconv.ParseInt(timeout, 10, 64)
+		numMinutes, err := strconv.ParseInt(timeout, 10, 64)
 		if err != nil {
 			exit("cacheCallback:", err)
 		}
-		if minutes == 0 {
+		if numMinutes == 0 {
 			os.Exit(0)
 		}
-		ironrpc.CacheTimeout = time.Duration(minutes) * time.Minute
+		ironrpc.CacheTimeout = time.Duration(numMinutes) * time.Minute
 	}
 
 	// Run the cache server.

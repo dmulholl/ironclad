@@ -22,15 +22,15 @@ Usage: %s config [key] [value]
 
   The following options are supported:
 
-  cache-timeout             Cache timeout in minutes.
-  clipboard-timeout         Clipboard timeout in seconds.
+  cache-timeout-minutes         Master-password cache timeout in minutes.
+  clipboard-timeout-seconds     Clipboard timeout in seconds.
 
 Arguments:
-  [key]                     Key to set or print.
-  [value]                   Value to set.
+  [key]                         Key to set or print.
+  [value]                       Value to set.
 
 Flags:
-  -h, --help                Print this command's help text and exit.
+  -h, --help                    Print this command's help text and exit.
 `, filepath.Base(os.Args[0]))
 
 func registerConfigCmd(parser *argo.ArgParser) {

@@ -35,7 +35,7 @@ func getCachedFilename() (filename string, found bool) {
 func setCachedPassword(filename, masterpass, cachepass string) {
 
 	// If the cache timeout has been set to 0, do nothing.
-	timeout, found, _ := ironconfig.Get("timeout")
+	timeout, found, _ := ironconfig.Get("cache-timeout-minutes")
 	if found && timeout == "0" {
 		return
 	}

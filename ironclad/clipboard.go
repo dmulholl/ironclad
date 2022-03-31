@@ -21,7 +21,7 @@ func writeToClipboard(value string) {
 	milliseconds := 15000
 
 	// Check for a custom timeout.
-	strval, found, err := ironconfig.Get("clipboard-timeout")
+	strval, found, err := ironconfig.Get("clipboard-timeout-seconds")
 	if err != nil {
 		exit(err)
 	}

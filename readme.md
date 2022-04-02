@@ -12,7 +12,7 @@ See the [documentation][1] for details.
 
 Ironclad is written in Go. If you have a Go compiler installed you can install Ironclad by running:
 
-    go install github.com/dmulholl/ironclad@latest
+    go install github.com/dmulholl/ironclad/ironclad@latest
 
 This will download, compile, and install the latest version of the application to your `$GOPATH/bin` directory.
 Alternatively, you can download a [pre-compiled binary][2].

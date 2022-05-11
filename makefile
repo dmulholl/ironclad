@@ -3,7 +3,7 @@ all:
 	GOOS=linux GOARCH=amd64 go build -o build/ironclad-linux-amd64/ironclad ./ironclad
 	GOOS=darwin GOARCH=amd64 go build -o build/ironclad-mac-amd64/ironclad ./ironclad
 	GOOS=darwin GOARCH=arm64 go build -o build/ironclad-mac-arm64/ironclad ./ironclad
-	GOOS=windows GOARCH=amd64 go build -o build/ironclad-windows-amd64/ironclad ./ironclad
+	GOOS=windows GOARCH=amd64 go build -o build/ironclad-windows-amd64/ironclad.exe ./ironclad
 	@termline grey
 	@tree build
 	@termline grey

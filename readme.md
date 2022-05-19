@@ -19,7 +19,7 @@ You can download a pre-compiled binary from the [releases page][2].
 
 
 
-## Install From Source
+## Build
 
 Ironclad is written in Go. If you have a Go compiler installed you can install Ironclad by running:
 

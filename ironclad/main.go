@@ -8,7 +8,7 @@ import (
 	"github.com/dmulholl/argo"
 )
 
-const version = "2.3.0"
+const version = "2.4.0"
 
 var helptext = fmt.Sprintf(`
 Usage: %s [command]
@@ -23,6 +23,7 @@ Basic Commands:
   add               Add a new entry to a password database.
   edit              Edit an existing database entry.
   gen               Generate a new random password.
+  go                Open an entry's URL in the default browser.
   init              Initialize a new password database.
   list              List database entries.
   pass              Copy a password to the clipboard.
@@ -81,6 +82,7 @@ func main() {
 	registerUrlCmd(parser)
 	registerUserCmd(parser)
 	registerShowCmd(parser)
+	registerGoCmd(parser)
 
 	// Parse the command line arguments.
 	parser.Parse()

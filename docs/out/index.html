@@ -19,7 +19,7 @@
                 <p class="tagline">A command line password manager.</p>
             
             
-                <p class="version">Version 2.3.0</p>
+                <p class="version">Version 2.4.0</p>
             
             <nav class="menu">
                 <input id="menu-check" type="checkbox"/>
@@ -47,7 +47,7 @@
             <p>
 Ironclad is a command line utility for creating and managing encrypted password databases.
 </p>
-<img alt="" src="screenshot.png">
+<img>
 <ul>
 <li>
 <a href="https://github.com/dmulholl/ironclad/releases">Downloads</a>
@@ -66,13 +66,14 @@ Usage: ironclad [command]
   databases.
 
 Flags:
-  -h, --help        Print the application&#x27;s help text.
-  -v, --version     Print the application&#x27;s version number.
+  -h, --help        Print the application's help text.
+  -v, --version     Print the application's version number.
 
 Basic Commands:
   add               Add a new entry to a database.
   edit              Edit an existing database entry.
   gen               Generate a new random password.
+  go                Open an entry's URL.
   init              Initialize a new password database.
   list              List database entries.
   pass              Copy a password to the clipboard.
@@ -84,21 +85,21 @@ Basic Commands:
 Additional Commands:
   config            Set or print a configuration option.
   decrypt           Decrypt a file.
-  dump              Dump a database&#x27;s JSON data store.
+  dump              Dump a database's JSON data store.
   encrypt           Encrypt a file.
   export            Export entries from a database.
   import            Import entries into a database.
   purge             Purge inactive entries from a database.
-  restore           Restore inactive entries to active status.
-  setcachepass      Change a database&#x27;s cache password.
-  setmasterpass     Change a database&#x27;s master password.
+  restore           Restore inactive entries.
+  setcachepass      Change a database's cache password.
+  setmasterpass     Change a database's master password.
   tags              List database tags.
 
 Aliases:
-  new               Alias for &#x27;add&#x27;.
+  new               Alias for 'add'.
 
 Command Help:
-  help &lt;command&gt;    Print a command&#x27;s help text.
+  help &lt;command&gt;    Print a command's help text.
 </pre>
 <p>
 Run <code>ironclad help &lt;command&gt;</code> to view the help text for a specific command.

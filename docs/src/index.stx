@@ -8,7 +8,7 @@ meta description: >
 
 Ironclad is a command line utility for creating and managing encrypted password databases.
 
-:img @root/screenshot.png
+:img src=@root/screenshot.png
 
 
 * [Downloads](https://github.com/dmulholl/ironclad/releases)

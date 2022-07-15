@@ -7,7 +7,7 @@ meta_title: Ironclad &mdash; Changelog
 
 * The licence has been changed to the Zero-Clause BSD (0BSD).
 
-* The `show` command now obscures passwords by default. Use the `--show-passwords` flag to display them.
+* The `show` command now obscures passwords by default. Use the `-p/--show-passwords` flag to display them.
 
 
 

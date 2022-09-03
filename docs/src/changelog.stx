@@ -3,6 +3,19 @@ title: Changelog
 meta_title: Ironclad &mdash; Changelog
 ---
 
+
+### 2.5.0
+
+* Add authorization token for the cache server.
+
+
+
+### 2.4.0
+
+* Add a `go` command for opening URLs.
+
+
+
 ### 2.3.0
 
 * The licence has been changed to the Zero-Clause BSD (0BSD).

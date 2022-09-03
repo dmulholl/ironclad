@@ -8,7 +8,7 @@ import (
 	"github.com/dmulholl/argo"
 )
 
-const version = "2.4.0"
+const version = "2.5.0"
 
 var helptext = fmt.Sprintf(`
 Usage: %s [command]

@@ -2,6 +2,7 @@ package ironrpc
 
 import (
 	"errors"
+	"fmt"
 	"net"
 	"net/rpc"
 	"os"
@@ -22,6 +23,7 @@ type IsCachedData struct {
 type GetPassData struct {
 	Filename  string
 	CachePass string
+	Token     string
 }
 
 type SetPassData struct {
@@ -69,20 +71,34 @@ func (server *CacheServer) GetPass(data GetPassData, password *string) error {
 	server.mutex.Lock()
 	defer server.mutex.Unlock()
 
+	// If the token matches, it validates that the caller has read access to $HOME.
+	token, found, err := ironconfig.Get("token")
+	if err != nil {
+		return fmt.Errorf("GetPass(): %v", err)
+	}
+	if !found {
+		return fmt.Errorf("GetPass(): token not found")
+	}
+	if token != data.Token {
+		return fmt.Errorf("GetPass(): invalid token")
+	}
+
 	// Do we have a cache entry for the specified database file?
 	entry, found := server.cache[data.Filename]
 	if !found {
-		return errors.New("GetPass: filename not in cache")
+		return fmt.Errorf("GetPass(): filename not in cache")
 	}
 
 	// Use the cache password and salt to regenerate the encryption key.
 	key := ironcrypt.Key(data.CachePass, entry.salt, 10000, aes.KeySize)
 
-	// Attempt to decrypt the entry. Delete the entry from the cache on failure.
+	// Attempt to decrypt the entry.
 	plaintext, err := aes.Decrypt(entry.data, key)
 	if err != nil {
-		delete(server.cache, data.Filename)
-		return errors.New("GetPass: decryption failure")
+		if data.CachePass != "" {
+			delete(server.cache, data.Filename)
+		}
+		return fmt.Errorf("invalid cache password")
 	}
 
 	*password = string(plaintext)
@@ -112,7 +128,8 @@ func (server *CacheServer) SetPass(data SetPassData, notused *bool) error {
 
 	server.cache[data.Filename] = CacheEntry{
 		salt: salt,
-		data: ciphertext}
+		data: ciphertext,
+	}
 	return nil
 }
 

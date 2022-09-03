@@ -11,7 +11,6 @@ import (
 
 // Load a database from an encrypted file.
 func loadDB(args *argo.ArgParser) (filename, masterpass string, db *irondb.DB) {
-
 	// Determine the file to use.
 	// 1. Has a filename been specified on the command line?
 	// 2. Look for a cached filename.

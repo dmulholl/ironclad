@@ -1,6 +1,6 @@
 /*
-   Package ironconfig provides read and write access to the application's
-   TOML configuration file.
+Package ironconfig provides read and write access to the application's
+TOML configuration file.
 */
 package ironconfig
 

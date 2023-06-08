@@ -1,6 +1,6 @@
 /*
-   Package ironcrypt is a symmetric encryption library built from secure,
-   industry-standard components.
+Package ironcrypt is a symmetric encryption library built from secure,
+industry-standard components.
 */
 package ironcrypt
 

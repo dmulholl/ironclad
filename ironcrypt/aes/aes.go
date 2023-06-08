@@ -1,31 +1,31 @@
 /*
-   Package ironcrypt/aes is a symmetric encryption library built from secure,
-   industry-standard components.
+Package ironcrypt/aes is a symmetric encryption library built from secure,
+industry-standard components.
 
-   Encryption is performed using 256-bit AES in CBC mode. Message padding
-   is handled transparently using the PKCS #7 padding scheme. Message
-   authentication is handled transparently using the HMAC-SHA-256 algorithm.
+Encryption is performed using 256-bit AES in CBC mode. Message padding
+is handled transparently using the PKCS #7 padding scheme. Message
+authentication is handled transparently using the HMAC-SHA-256 algorithm.
 
-   Encryption requires a 32-byte key.
+Encryption requires a 32-byte key.
 
-   Note that this package acts as a wrapper around Go's native cryptographic
-   libraries. It does not reimplement the cryptographic primitives it uses.
+Note that this package acts as a wrapper around Go's native cryptographic
+libraries. It does not reimplement the cryptographic primitives it uses.
 
-   The output of the Encrypt() function is structured as follows:
+The output of the Encrypt() function is structured as follows:
 
-       |-- IV --|-- Payload --|-- HMAC --|
-           16         16n          32
+	|-- IV --|-- Payload --|-- HMAC --|
+	    16         16n          32
 
-       IV: initialization vector
-       Payload: encrypted plaintext
-       HMAC: authentication code
+	IV: initialization vector
+	Payload: encrypted plaintext
+	HMAC: authentication code
 
-   Lengths are given in bytes. The length of the payload will be a multiple
-   of the AES block size (16 bytes).
+Lengths are given in bytes. The length of the payload will be a multiple
+of the AES block size (16 bytes).
 
-   Note that the padding algorithm appends a null block to the plaintext
-   when the length of the plaintext is a multiple of the block size. This
-   padding is automatically removed during decryption.
+Note that the padding algorithm appends a null block to the plaintext
+when the length of the plaintext is a multiple of the block size. This
+padding is automatically removed during decryption.
 */
 package aes
 

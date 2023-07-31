@@ -54,7 +54,7 @@ func goCallback(cmdName string, cmdParser *argo.ArgParser) {
 
 	err := browser.OpenURL(entry.Url)
 	if err != nil {
-		fmt.Printf("Error: {}.\n", err)
+		fmt.Printf("Error: %v.\n", err)
 		os.Exit(1)
 	}
 }

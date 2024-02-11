@@ -23,8 +23,8 @@ const (
 var genHelp = fmt.Sprintf(`
 Usage: %s gen [length]
 
-  Generates a random ASCII password. The password is automatically copied to
-  the system clipboard. The password can alternatively be printed to stdout.
+  Generates a random ASCII password. By default, the password is copied to the
+  system clipboard. Alternatively, the password can be printed to stdout.
 
   The default password length is 24 characters. The default character pool
   consists of uppercase letters, lowercase letters, digits, and symbols.
@@ -101,7 +101,6 @@ func genCallback(cmdName string, cmdParser *argo.ArgParser) {
 
 // Generate a new password.
 func genPassword(length int, upper, lower, symbols, digits, excludeSimilar bool) string {
-
 	// Assemble the character pool.
 	var pool string
 	if digits {
@@ -119,7 +118,7 @@ func genPassword(length int, upper, lower, symbols, digits, excludeSimilar bool)
 
 	// Use the default pool if no options were specified.
 	if pool == "" {
-		pool = PoolDigits + PoolLower + PoolUpper
+		pool = PoolDigits + PoolLower + PoolUpper + PoolSymbols
 	}
 
 	// Are we excluding similar characters from the pool?

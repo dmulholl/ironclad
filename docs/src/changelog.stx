@@ -4,6 +4,12 @@ meta_title: Ironclad &mdash; Changelog
 ---
 
 
+### 2.6.0
+
+* Include symbols in the default character pool.
+
+
+
 ### 2.5.0
 
 * Add authorization token for the cache server.

@@ -1,3 +1,6 @@
+help:
+	@cat ./makefile
+
 all:
 	@termline grey
 	GOOS=linux GOARCH=amd64 go build -o build/ironclad-linux-amd64/ironclad ./ironclad

@@ -5,7 +5,7 @@ import (
 	"os"
 
 	"github.com/dmulholl/argo/v4"
-	"github.com/dmulholl/ironclad/internal/ironio"
+	"github.com/dmulholl/ironclad/internal/fileio"
 )
 
 var encryptCmdHelptext = `
@@ -55,7 +55,7 @@ func encryptCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 		return fmt.Errorf("error reading file: %w", err)
 	}
 
-	err = ironio.Save(outputfile, password, content)
+	err = fileio.Save(outputfile, password, content)
 	if err != nil {
 		return fmt.Errorf("error saving file: %w", err)
 	}

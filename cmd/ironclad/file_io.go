@@ -5,8 +5,8 @@ import (
 	"path/filepath"
 
 	"github.com/dmulholl/argo/v4"
+	"github.com/dmulholl/ironclad/internal/fileio"
 	"github.com/dmulholl/ironclad/internal/irondb"
-	"github.com/dmulholl/ironclad/internal/ironio"
 )
 
 // Load a database from an encrypted file.
@@ -34,11 +34,11 @@ func loadDB(args *argo.ArgParser) (filename, masterpass string, db *irondb.DB) {
 	// password may be invalid for the current file so if it fails prompt
 	// the user to enter a new one.
 	if masterpass, success := getCachedPassword(filename); success {
-		data, err := ironio.Load(filename, masterpass)
+		data, err := fileio.Load(filename, masterpass)
 		if err != nil {
 			println("Error: the cached password was invalid for the database.")
 			masterpass = inputPass("Master Password: ")
-			data, err = ironio.Load(filename, masterpass)
+			data, err = fileio.Load(filename, masterpass)
 			if err != nil {
 				exit(err)
 			}
@@ -54,7 +54,7 @@ func loadDB(args *argo.ArgParser) (filename, masterpass string, db *irondb.DB) {
 
 	// No cached password. Prompt the user to enter one.
 	masterpass = inputPass("Master Password: ")
-	data, err := ironio.Load(filename, masterpass)
+	data, err := fileio.Load(filename, masterpass)
 	if err != nil {
 		exit(err)
 	}
@@ -69,7 +69,6 @@ func loadDB(args *argo.ArgParser) (filename, masterpass string, db *irondb.DB) {
 
 // Encrypt and save a database file.
 func saveDB(filename, password string, db *irondb.DB) {
-
 	// Serialize the database as a byte-slice of JSON.
 	json, err := db.ToJSON()
 	if err != nil {
@@ -77,7 +76,7 @@ func saveDB(filename, password string, db *irondb.DB) {
 	}
 
 	// Encrypt the serialized database and write it to disk.
-	err = ironio.Save(filename, password, json)
+	err = fileio.Save(filename, password, json)
 	if err != nil {
 		exit(err)
 	}

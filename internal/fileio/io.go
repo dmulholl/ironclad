@@ -1,7 +1,7 @@
 /*
-Package ironio provides read/write access to the content of encrypted files.
+Package fileio provides read/write access to the content of encrypted files.
 */
-package ironio
+package fileio
 
 import (
 	"bytes"

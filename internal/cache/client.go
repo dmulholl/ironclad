@@ -1,4 +1,4 @@
-package ironrpc
+package cache
 
 import (
 	"errors"
@@ -6,7 +6,7 @@ import (
 	"net/rpc"
 	"time"
 
-	"github.com/dmulholl/ironclad/internal/ironconfig"
+	"github.com/dmulholl/ironclad/internal/config"
 )
 
 var ClientTimeout = 100 * time.Millisecond
@@ -17,7 +17,7 @@ type CacheClient struct {
 
 // NewClient returns an initialized RPC client.
 func NewClient() (*CacheClient, error) {
-	address, found, err := ironconfig.Get("address")
+	address, found, err := config.Get("address")
 	if err != nil {
 		return nil, errors.New("NewClient: cannot read config file")
 	}

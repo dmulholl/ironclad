@@ -1,10 +1,6 @@
-/*
-Package ironconfig provides read/write access to the application's TOML configuration file.
-*/
-package ironconfig
+package config
 
 import (
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -12,7 +8,7 @@ import (
 	"github.com/pelletier/go-toml"
 )
 
-// Location of the configuration file.
+// Location of the TOML configuration file.
 var ConfigDir string
 var ConfigFile string
 
@@ -79,5 +75,5 @@ func saveToml(tree *toml.Tree) error {
 	if err != nil {
 		return err
 	}
-	return ioutil.WriteFile(ConfigFile, []byte(tree.String()), 0600)
+	return os.WriteFile(ConfigFile, []byte(tree.String()), 0600)
 }

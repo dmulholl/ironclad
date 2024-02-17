@@ -1,4 +1,4 @@
-package ironrpc
+package cache
 
 import (
 	"errors"
@@ -9,7 +9,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/dmulholl/ironclad/internal/ironconfig"
+	"github.com/dmulholl/ironclad/internal/config"
 	"github.com/dmulholl/ironclad/internal/ironcrypt"
 	"github.com/dmulholl/ironclad/internal/ironcrypt/aes"
 )
@@ -72,7 +72,7 @@ func (server *CacheServer) GetPass(data GetPassData, password *string) error {
 	defer server.mutex.Unlock()
 
 	// If the token matches, it validates that the caller has read access to $HOME.
-	token, found, err := ironconfig.Get("token")
+	token, found, err := config.Get("token")
 	if err != nil {
 		return fmt.Errorf("GetPass(): %v", err)
 	}
@@ -163,7 +163,7 @@ func Serve() error {
 	defer listener.Close()
 
 	address := listener.Addr().String()
-	err = ironconfig.Set("address", address)
+	err = config.Set("address", address)
 	if err != nil {
 		return errors.New("Serve: cannot set address")
 	}

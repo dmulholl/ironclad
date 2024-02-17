@@ -9,8 +9,6 @@ import (
 
 // Print a list of entries in compact format.
 func printCompact(list irondb.EntryList, dbsize int, filename string) {
-
-	// Bail if we have no entries to display.
 	if len(list) == 0 {
 		printHeading("No Entries", filename)
 		return
@@ -43,8 +41,6 @@ func printCompact(list irondb.EntryList, dbsize int, filename string) {
 
 // Print a list of entries in verbose format.
 func printVerbose(list irondb.EntryList, dbsize int, showPassword, showNotes bool, title, filename string) {
-
-	// Bail if we have no entries to display.
 	if len(list) == 0 {
 		printHeading("No Entries", filename)
 		return

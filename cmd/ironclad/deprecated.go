@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/dmulholl/ironclad/internal/ironconfig"
+	"github.com/dmulholl/ironclad/internal/config"
 	"github.com/howeyc/gopass"
 	"golang.org/x/crypto/ssh/terminal"
 )
@@ -51,12 +51,11 @@ func inputViaStdin() string {
 
 // Launch a text editor and capture its output.
 func inputViaEditor(file, template string) string {
-
 	// Set the file for the editor to open.
-	file = filepath.Join(ironconfig.ConfigDir, file)
+	file = filepath.Join(config.ConfigDir, file)
 
 	// Create a file for the editor to open.
-	os.MkdirAll(ironconfig.ConfigDir, 0777)
+	os.MkdirAll(config.ConfigDir, 0777)
 	err := ioutil.WriteFile(file, []byte(template), 0600)
 	if err != nil {
 		exit(err)
@@ -179,26 +178,6 @@ func printHeading(text, meta string) {
 	}
 	printlnGrey(meta)
 	printLineOfChar("─")
-}
-
-// Returns the set of strings that are in slice1 but not in slice2.
-func diff(slice1, slice2 []string) []string {
-	diff := make([]string, 0)
-
-	for _, s1 := range slice1 {
-		found := false
-		for _, s2 := range slice2 {
-			if s1 == s2 {
-				found = true
-				break
-			}
-		}
-		if !found {
-			diff = append(diff, s1)
-		}
-	}
-
-	return diff
 }
 
 // Add spaces to a string after every fourth character.

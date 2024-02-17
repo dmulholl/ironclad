@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/dmulholl/argo/v4"
-	"github.com/dmulholl/ironclad/internal/ironconfig"
+	"github.com/dmulholl/ironclad/internal/config"
 )
 
 var configCmdHelptext = `
@@ -43,11 +43,11 @@ func registerConfigCmd(parser *argo.ArgParser) {
 
 func configCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 	if len(cmdParser.Args) == 0 {
-		if !ironconfig.FileExists() {
+		if !config.FileExists() {
 			return fmt.Errorf("config file not found")
 		}
 
-		content, err := os.ReadFile(ironconfig.ConfigFile)
+		content, err := os.ReadFile(config.ConfigFile)
 		if err != nil {
 			return fmt.Errorf("error reading config file: %w", err)
 		}
@@ -57,7 +57,7 @@ func configCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 	}
 
 	if len(cmdParser.Args) == 1 {
-		value, found, err := ironconfig.Get(cmdParser.Args[0])
+		value, found, err := config.Get(cmdParser.Args[0])
 		if err != nil {
 			return fmt.Errorf("error reading config file: %w", err)
 		}
@@ -71,7 +71,7 @@ func configCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 	}
 
 	if len(cmdParser.Args) == 2 {
-		err := ironconfig.Set(cmdParser.Args[0], cmdParser.Args[1])
+		err := config.Set(cmdParser.Args[0], cmdParser.Args[1])
 		if err != nil {
 			return fmt.Errorf("error setting config value: %w", err)
 		}

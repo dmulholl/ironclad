@@ -8,8 +8,8 @@ import (
 	"time"
 
 	"github.com/dmulholl/argo/v4"
-	"github.com/dmulholl/ironclad/internal/ironconfig"
-	"github.com/dmulholl/ironclad/internal/ironrpc"
+	"github.com/dmulholl/ironclad/internal/cache"
+	"github.com/dmulholl/ironclad/internal/config"
 )
 
 var cacheCmdHelptext = `
@@ -46,7 +46,7 @@ func cacheCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 	}()
 
 	// Check if a cache timeout has been set in the config file.
-	timeout, found, err := ironconfig.Get("cache-timeout-minutes")
+	timeout, found, err := config.Get("cache-timeout-minutes")
 	if err != nil {
 		return fmt.Errorf("ironclad cache server: failed to get timeout: %w", err)
 	}
@@ -59,11 +59,11 @@ func cacheCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 		if numMinutes == 0 {
 			return nil
 		}
-		ironrpc.CacheTimeout = time.Duration(numMinutes) * time.Minute
+		cache.CacheTimeout = time.Duration(numMinutes) * time.Minute
 	}
 
 	// Run the cache server.
-	err = ironrpc.Serve()
+	err = cache.Serve()
 	if err != nil {
 		return fmt.Errorf("ironclad cache server: %w", err)
 	}

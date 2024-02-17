@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/atotto/clipboard"
-	"github.com/dmulholl/ironclad/internal/ironconfig"
+	"github.com/dmulholl/ironclad/internal/config"
 )
 
 // Write a string to the system clipboard. Automatically overwrite the
@@ -21,7 +21,7 @@ func writeToClipboard(value string) {
 	milliseconds := 15000
 
 	// Check for a custom timeout.
-	strval, found, err := ironconfig.Get("clipboard-timeout-seconds")
+	strval, found, err := config.Get("clipboard-timeout-seconds")
 	if err != nil {
 		exit(err)
 	}

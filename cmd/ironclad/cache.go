@@ -8,9 +8,9 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/dmulholl/ironclad/internal/ironconfig"
+	"github.com/dmulholl/ironclad/internal/cache"
+	"github.com/dmulholl/ironclad/internal/config"
 	"github.com/dmulholl/ironclad/internal/ironcrypt"
-	"github.com/dmulholl/ironclad/internal/ironrpc"
 )
 
 // Cache the current filename for the application's next run.
@@ -19,7 +19,7 @@ func setCachedFilename(filename string) {
 	if err != nil {
 		exit(err)
 	}
-	err = ironconfig.Set("file", filename)
+	err = config.Set("file", filename)
 	if err != nil {
 		exit(err)
 	}
@@ -27,7 +27,7 @@ func setCachedFilename(filename string) {
 
 // Fetch the cached filename (if it exists) from the application's last run.
 func getCachedFilename() (filename string, found bool) {
-	filename, found, err := ironconfig.Get("file")
+	filename, found, err := config.Get("file")
 	if err != nil {
 		exit(err)
 	}
@@ -37,14 +37,14 @@ func getCachedFilename() (filename string, found bool) {
 // Cache the database password for the application's next run.
 func setCachedPassword(filename, masterpass, cachepass string) {
 	// If the cache timeout has been set to 0, do nothing.
-	timeout, found, _ := ironconfig.Get("cache-timeout-minutes")
+	timeout, found, _ := config.Get("cache-timeout-minutes")
 	if found && timeout == "0" {
 		return
 	}
 
 	// Attempt to connect to the cache server. If we can't make a connection,
 	// launch a new server.
-	client, err := ironrpc.NewClient()
+	client, err := cache.NewClient()
 	if err != nil {
 		cmd := exec.Command(os.Args[0], "cache")
 		cmd.Stderr = os.Stderr
@@ -52,7 +52,7 @@ func setCachedPassword(filename, masterpass, cachepass string) {
 
 		// Give the new server time to warm up and try again.
 		time.Sleep(time.Millisecond * 100)
-		client, err = ironrpc.NewClient()
+		client, err = cache.NewClient()
 		if err != nil {
 			return
 		}
@@ -66,7 +66,7 @@ func setCachedPassword(filename, masterpass, cachepass string) {
 		exit("setCachedPassword():", err)
 	}
 	token := base64.StdEncoding.EncodeToString(bytes)
-	err = ironconfig.Set("token", token)
+	err = config.Set("token", token)
 	if err != nil {
 		exit("setCachedPassword():", err)
 	}
@@ -75,7 +75,7 @@ func setCachedPassword(filename, masterpass, cachepass string) {
 // Fetch the cached master password (if it exists) from the application's last run.
 func getCachedPassword(filename string) (masterpass string, success bool) {
 	// Read the authentication token from the config file.
-	token, found, err := ironconfig.Get("token")
+	token, found, err := config.Get("token")
 	if err != nil {
 		exit(err)
 	}
@@ -84,7 +84,7 @@ func getCachedPassword(filename string) (masterpass string, success bool) {
 	}
 
 	// Attempt to make a connection to the cache server.
-	client, err := ironrpc.NewClient()
+	client, err := cache.NewClient()
 	if err != nil {
 		return "", false
 	}

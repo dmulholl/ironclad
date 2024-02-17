@@ -49,8 +49,27 @@ func Set(key, value string) error {
 
 	config.Set(key, value)
 
-	err = saveToml(config)
+	if err := saveToml(config); err != nil {
+		return fmt.Errorf("failed to save config file: %w", err)
+	}
+
+	return nil
+}
+
+// Delete deletes an entry from the configuration file.
+func Delete(key string) error {
+	config, err := loadToml()
 	if err != nil {
+		return fmt.Errorf("failed to load config file: %w", err)
+	}
+
+	if config.Has(key) {
+		if err := config.Delete(key); err != nil {
+			return fmt.Errorf("failed to delete entry from config file: %w", err)
+		}
+	}
+
+	if err := saveToml(config); err != nil {
 		return fmt.Errorf("failed to save config file: %w", err)
 	}
 

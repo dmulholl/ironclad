@@ -9,18 +9,15 @@ import (
 	"github.com/pelletier/go-toml"
 )
 
-// Location of the TOML configuration file.
-var ConfigDir string
+// Filepath of the TOML configuration file.
 var ConfigFile string
 
 // Initialize the path to the config file depending on the OS.
 func init() {
 	if runtime.GOOS == "windows" {
-		ConfigDir = filepath.Join(os.Getenv("LOCALAPPDATA"), "Ironclad")
-		ConfigFile = filepath.Join(ConfigDir, "goconfig.toml")
+		ConfigFile = filepath.Join(os.Getenv("LOCALAPPDATA"), "Ironclad", "goconfig.toml")
 	} else {
-		ConfigDir = filepath.Join(os.Getenv("HOME"), ".config", "ironclad")
-		ConfigFile = filepath.Join(ConfigDir, "goconfig.toml")
+		ConfigFile = filepath.Join(os.Getenv("HOME"), ".config", "ironclad", "goconfig.toml")
 	}
 }
 

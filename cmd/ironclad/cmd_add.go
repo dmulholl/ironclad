@@ -78,7 +78,7 @@ func addCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 			printLineOfChar("─")
 			entry.Notes = inputViaStdin()
 		} else {
-			entry.Notes = inputViaEditor("add-note", "")
+			entry.Notes = inputViaEditor("")
 		}
 	} else {
 		entry.Notes = ""

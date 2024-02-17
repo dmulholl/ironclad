@@ -138,7 +138,7 @@ func editCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 			entry.Notes = inputViaStdin()
 			printLineOfChar("·")
 		} else {
-			entry.Notes = inputViaEditor("edit-note", entry.Notes)
+			entry.Notes = inputViaEditor(entry.Notes)
 		}
 	}
 

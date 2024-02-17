@@ -6,10 +6,8 @@ import (
 	"io/ioutil"
 	"os"
 	"os/exec"
-	"path/filepath"
 	"strings"
 
-	"github.com/dmulholl/ironclad/internal/config"
 	"github.com/howeyc/gopass"
 	"golang.org/x/crypto/ssh/terminal"
 )
@@ -50,50 +48,58 @@ func inputViaStdin() string {
 }
 
 // Launch a text editor and capture its output.
-func inputViaEditor(file, template string) string {
-	// Set the file for the editor to open.
-	file = filepath.Join(config.ConfigDir, file)
-
-	// Create a file for the editor to open.
-	os.MkdirAll(config.ConfigDir, 0777)
-	err := ioutil.WriteFile(file, []byte(template), 0600)
+func inputViaEditor(template string) string {
+	file, err := os.CreateTemp("", "ironclad-input")
 	if err != nil {
 		exit(err)
 	}
 
-	// Determine the editor to use.
+	defer os.Remove(file.Name())
+
+	err = file.Close()
+	if err != nil {
+		exit(err)
+	}
+
+	err = os.Chmod(file.Name(), 0600)
+	if err != nil {
+		exit(err)
+	}
+
 	editor := os.Getenv("EDITOR")
 	if editor == "" {
 		editor = "vim"
 	}
+
 	_, err = exec.LookPath(editor)
 	if err != nil {
 		exit("cannot locate text editor:", editor)
 	}
 
+	// Write the template to the temporary file.
+	err = os.WriteFile(file.Name(), []byte(template), 0600)
+	if err != nil {
+		exit(err)
+	}
+
 	// Launch the editor and wait for it to complete.
-	cmd := exec.Command(editor, file)
+	cmd := exec.Command(editor, file.Name())
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
+
 	err = cmd.Run()
 	if err != nil {
 		exit(err)
 	}
 
 	// Load the editor's output.
-	input, err := ioutil.ReadFile(file)
+	output, err := os.ReadFile(file.Name())
 	if err != nil {
 		exit(err)
 	}
 
-	// Delete the input file.
-	err = os.Remove(file)
-	if err != nil {
-		exit(err)
-	}
-
-	return string(input)
+	return string(output)
 }
 
 // Returns true if stdout is connected to a terminal.

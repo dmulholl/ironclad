@@ -2,14 +2,12 @@ package main
 
 import (
 	"fmt"
-	"os"
-	"path/filepath"
 
-	"github.com/dmulholl/argo"
+	"github.com/dmulholl/argo/v4"
 )
 
-var masterpassHelp = fmt.Sprintf(`
-Usage: %s setmasterpass
+var masterpassCmdHelptext = `
+Usage: ironclad setmasterpass
 
   Changes a database's master password.
 
@@ -18,16 +16,16 @@ Options:
 
 Flags:
   -h, --help                Print this command's help text and exit.
-`, filepath.Base(os.Args[0]))
+`
 
 func registerSetMasterPassCmd(parser *argo.ArgParser) {
 	cmdParser := parser.NewCommand("setmasterpass")
-	cmdParser.Helptext = masterpassHelp
-	cmdParser.Callback = masterpassCallback
+	cmdParser.Helptext = masterpassCmdHelptext
+	cmdParser.Callback = masterpassCmdCallback
 	cmdParser.NewStringOption("file f", "")
 }
 
-func masterpassCallback(cmdName string, cmdParser *argo.ArgParser) {
+func masterpassCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 	filename, _, db := loadDB(cmdParser)
 
 	printLineOfChar("─")
@@ -35,10 +33,12 @@ func masterpassCallback(cmdName string, cmdParser *argo.ArgParser) {
 	confirmNewMasterPass := inputPass("      Re-enter to confirm: ")
 	printLineOfChar("─")
 
-	if newMasterPass == confirmNewMasterPass {
-		saveDB(filename, newMasterPass, db)
-		setCachedPassword(filename, newMasterPass, db.CachePass)
-	} else {
-		exit("passwords do not match")
+	if newMasterPass != confirmNewMasterPass {
+		return fmt.Errorf("passwords do not match")
 	}
+
+	saveDB(filename, newMasterPass, db)
+	setCachedPassword(filename, newMasterPass, db.CachePass)
+
+	return nil
 }

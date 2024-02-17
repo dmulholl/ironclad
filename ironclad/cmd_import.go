@@ -2,16 +2,13 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
-	"path/filepath"
-	"strings"
 
-	"github.com/dmulholl/argo"
+	"github.com/dmulholl/argo/v4"
 )
 
-var importHelp = fmt.Sprintf(`
-Usage: %s import <file>
+var importCmdHelptext = `
+Usage: ironclad import <file>
 
   Imports a previously-exported list of entries in JSON format.
 
@@ -23,37 +20,34 @@ Options:
 
 Flags:
   -h, --help                Print this command's help text and exit.
-`, filepath.Base(os.Args[0]))
+`
 
 func registerImportCmd(parser *argo.ArgParser) {
 	cmdParser := parser.NewCommand("import")
-	cmdParser.Helptext = importHelp
-	cmdParser.Callback = importCallback
+	cmdParser.Helptext = importCmdHelptext
+	cmdParser.Callback = importCmdCallback
 	cmdParser.NewStringOption("file f", "")
 }
 
-func importCallback(cmdName string, cmdParser *argo.ArgParser) {
-	var input []byte
-	var err error
-	if cmdParser.HasArgs() {
-		input, err = ioutil.ReadFile(cmdParser.Args[0])
-		if err != nil {
-			exit(err)
-		}
-	} else {
-		exit("you must specify a file to import")
+func importCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
+	if len(cmdParser.Args) == 0 {
+		return fmt.Errorf("missing filename argument")
 	}
 
-	// V1 exports could sometimes get polluted with leading asterisks
-	// from the password input.
-	trimmed := strings.Trim(string(input), "*")
-	input = []byte(trimmed)
+	input, err := os.ReadFile(cmdParser.Args[0])
+	if err != nil {
+		return fmt.Errorf("failed to read file: %w", err)
+	}
 
 	filename, masterpass, db := loadDB(cmdParser)
+
 	count, err := db.Import(input)
 	if err != nil {
-		exit(err)
+		return fmt.Errorf("failed to import entries: %w", err)
 	}
+
 	saveDB(filename, masterpass, db)
 	fmt.Printf("%d entries imported.\n", count)
+
+	return nil
 }

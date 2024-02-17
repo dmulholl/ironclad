@@ -2,14 +2,13 @@ package main
 
 import (
 	"fmt"
-	"os"
 	"path/filepath"
 
-	"github.com/dmulholl/argo"
+	"github.com/dmulholl/argo/v4"
 )
 
-var userHelp = fmt.Sprintf(`
-Usage: %s user <entry>
+var userCmdHelptext = `
+Usage: ironclad user <entry>
 
   Copies a stored username to the system clipboard or prints it to stdout. This
   command will fall back on the email address if the username field is empty.
@@ -26,32 +25,35 @@ Options:
 Flags:
   -h, --help                Print this command's help text and exit.
   -p, --print               Print the username to stdout.
-`, filepath.Base(os.Args[0]))
+`
 
 func registerUserCmd(parser *argo.ArgParser) {
 	cmdParser := parser.NewCommand("user")
-	cmdParser.Helptext = userHelp
-	cmdParser.Callback = userCallback
+	cmdParser.Helptext = userCmdHelptext
+	cmdParser.Callback = userCmdCallback
 	cmdParser.NewStringOption("file f", "")
 	cmdParser.NewFlag("print p")
 }
 
-func userCallback(cmdName string, cmdParser *argo.ArgParser) {
-	if !cmdParser.HasArgs() {
-		exit("missing entry argument")
+func userCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
+	if len(cmdParser.Args) == 0 {
+		return fmt.Errorf("missing entry argument")
 	}
+
 	filename, _, db := loadDB(cmdParser)
 
-	// Search for an entry corresponding to the supplied arguments.
-	list := db.Active().FilterByAll(cmdParser.Args...)
-	if len(list) == 0 {
-		exit("no matching entry")
-	} else if len(list) > 1 {
-		println("Error: the query string matches multiple entries.")
-		printCompact(list, len(db.Active()), filepath.Base(filename))
-		os.Exit(1)
+	matchingEntries := db.Active().FilterByAll(cmdParser.Args...)
+	if len(matchingEntries) == 0 {
+		return fmt.Errorf("no matching entries")
 	}
-	entry := list[0]
+
+	if len(matchingEntries) > 1 {
+		fmt.Println("The query string matches multiple entries:")
+		printCompact(matchingEntries, len(db.Active()), filepath.Base(filename))
+		return nil
+	}
+
+	entry := matchingEntries[0]
 
 	// Return the email field if the username field is empty.
 	user := entry.Username
@@ -59,15 +61,14 @@ func userCallback(cmdName string, cmdParser *argo.ArgParser) {
 		user = entry.Email
 	}
 
-	// Print the username to stdout.
 	if cmdParser.Found("print") {
 		fmt.Print(user)
 		if stdoutIsTerminal() {
 			fmt.Println()
 		}
-		return
+		return nil
 	}
 
-	// Copy the username to the clipboard.
 	writeToClipboard(user)
+	return nil
 }

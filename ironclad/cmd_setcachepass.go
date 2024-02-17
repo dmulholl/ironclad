@@ -2,14 +2,12 @@ package main
 
 import (
 	"fmt"
-	"os"
-	"path/filepath"
 
-	"github.com/dmulholl/argo"
+	"github.com/dmulholl/argo/v4"
 )
 
-var cachepassHelp = fmt.Sprintf(`
-Usage: %s setcachepass
+var cachepassCmdHelptext = `
+Usage: ironclad setcachepass
 
   Changes a database's cache password. This password is used to encrypt the
   master password while it's temporarily cached in memory.
@@ -22,16 +20,16 @@ Options:
 
 Flags:
   -h, --help                Print this command's help text and exit.
-`, filepath.Base(os.Args[0]))
+`
 
 func registerSetCachePassCmd(parser *argo.ArgParser) {
 	cmdParser := parser.NewCommand("setcachepass")
-	cmdParser.Helptext = cachepassHelp
-	cmdParser.Callback = cachepassCallback
+	cmdParser.Helptext = cachepassCmdHelptext
+	cmdParser.Callback = cachepassCmdCallback
 	cmdParser.NewStringOption("file f", "")
 }
 
-func cachepassCallback(cmdName string, cmdParser *argo.ArgParser) {
+func cachepassCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 	filename, masterpass, db := loadDB(cmdParser)
 
 	printLineOfChar("─")
@@ -39,11 +37,13 @@ func cachepassCallback(cmdName string, cmdParser *argo.ArgParser) {
 	confirmNewCachePass := inputPass("     Re-enter to confirm: ")
 	printLineOfChar("─")
 
-	if newCachePass == confirmNewCachePass {
-		db.CachePass = newCachePass
-		saveDB(filename, masterpass, db)
-		setCachedPassword(filename, masterpass, newCachePass)
-	} else {
-		exit("passwords do not match")
+	if newCachePass != confirmNewCachePass {
+		return fmt.Errorf("passwords do not match")
 	}
+
+	db.CachePass = newCachePass
+	saveDB(filename, masterpass, db)
+	setCachedPassword(filename, masterpass, newCachePass)
+
+	return nil
 }

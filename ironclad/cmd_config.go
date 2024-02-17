@@ -2,25 +2,27 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
-	"path/filepath"
 	"strings"
 
-	"github.com/dmulholl/argo"
+	"github.com/dmulholl/argo/v4"
 	"github.com/dmulholl/ironclad/ironconfig"
 )
 
-var configHelp = fmt.Sprintf(`
-Usage: %s config [key] [value]
+var configCmdHelptext = `
+Usage: ironclad config
+       ironclad config <key>
+       ironclad config <key> <value>
 
   Sets or displays a configuration value.
 
-  A single argument will be treated as a key and the associated value
-  displayed. Two arguments will be treated as a key-value pair to be set.
-  If no arguments are supplied, the config file itself will be printed.
+  - If a single argument is supplied, it will be treated as a key and the
+    associated value will be printed.
+  - If two arguments are supplied, they will be treated as a key-value pair
+    to be set.
+  - If no arguments are supplied, the config file itself will be printed.
 
-  The following options are supported:
+  The following configuration options are supported:
 
   cache-timeout-minutes         Master-password cache timeout in minutes.
   clipboard-timeout-seconds     Clipboard timeout in seconds.
@@ -31,39 +33,51 @@ Arguments:
 
 Flags:
   -h, --help                    Print this command's help text and exit.
-`, filepath.Base(os.Args[0]))
+`
 
 func registerConfigCmd(parser *argo.ArgParser) {
 	cmdParser := parser.NewCommand("config")
-	cmdParser.Helptext = configHelp
-	cmdParser.Callback = configCallback
+	cmdParser.Helptext = configCmdHelptext
+	cmdParser.Callback = configCmdCallback
 }
 
-func configCallback(cmdName string, cmdParser *argo.ArgParser) {
-	if !cmdParser.HasArgs() {
+func configCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
+	if len(cmdParser.Args) == 0 {
 		if !ironconfig.FileExists() {
-			exit("no config file exists")
+			return fmt.Errorf("config file not found")
 		}
-		content, err := ioutil.ReadFile(ironconfig.ConfigFile)
+
+		content, err := os.ReadFile(ironconfig.ConfigFile)
 		if err != nil {
-			exit(err)
+			return fmt.Errorf("error reading config file: %w", err)
 		}
+
 		fmt.Println(strings.TrimSpace(string(content)))
-	} else if cmdParser.CountArgs() == 1 {
+		return nil
+	}
+
+	if len(cmdParser.Args) == 1 {
 		value, found, err := ironconfig.Get(cmdParser.Args[0])
 		if err != nil {
-			exit(err)
+			return fmt.Errorf("error reading config file: %w", err)
 		}
+
 		if !found {
-			exit("key not found")
+			return fmt.Errorf("key not found")
 		}
+
 		fmt.Println(value)
-	} else if cmdParser.CountArgs() == 2 {
+		return nil
+	}
+
+	if len(cmdParser.Args) == 2 {
 		err := ironconfig.Set(cmdParser.Args[0], cmdParser.Args[1])
 		if err != nil {
-			exit(err)
+			return fmt.Errorf("error setting config value: %w", err)
 		}
-	} else {
-		exit("too many arguments")
+
+		return nil
 	}
+
+	return fmt.Errorf("too many arguments")
 }

@@ -2,16 +2,14 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
-	"path/filepath"
 
-	"github.com/dmulholl/argo"
+	"github.com/dmulholl/argo/v4"
 	"github.com/dmulholl/ironclad/ironio"
 )
 
-var decryptHelp = fmt.Sprintf(`
-Usage: %s decrypt <file>
+var decryptCmdHelptext = `
+Usage: ironclad decrypt <file>
 
   Decrypts a file encrypted using the 'encrypt' command. (This command can also
   be used to directly decrypt a password database.)
@@ -24,18 +22,18 @@ Options:
 
 Flags:
   -h, --help                Print this command's help text and exit.
-`, filepath.Base(os.Args[0]))
+`
 
 func registerDecryptCmd(parser *argo.ArgParser) {
 	cmdParser := parser.NewCommand("decrypt")
-	cmdParser.Helptext = decryptHelp
-	cmdParser.Callback = decryptCallback
+	cmdParser.Helptext = decryptCmdHelptext
+	cmdParser.Callback = decryptCmdCallback
 	cmdParser.NewStringOption("out o", "")
 }
 
-func decryptCallback(cmdName string, cmdParser *argo.ArgParser) {
-	if !cmdParser.HasArgs() {
-		exit("missing filename")
+func decryptCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
+	if len(cmdParser.Args) == 0 {
+		return fmt.Errorf("missing filename argument")
 	}
 
 	inputfile := cmdParser.Args[0]
@@ -47,12 +45,13 @@ func decryptCallback(cmdName string, cmdParser *argo.ArgParser) {
 	password := inputPass("Password: ")
 	content, err := ironio.Load(inputfile, password)
 	if err != nil {
-		exit(err)
+		return fmt.Errorf("failed to load file: %w", err)
 	}
 
-	err = ioutil.WriteFile(outputfile, content, 0644)
+	err = os.WriteFile(outputfile, content, 0644)
 	if err != nil {
-
-		exit(err)
+		return fmt.Errorf("failed to write file: %w", err)
 	}
+
+	return nil
 }

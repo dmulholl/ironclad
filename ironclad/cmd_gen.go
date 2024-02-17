@@ -4,11 +4,9 @@ import (
 	"crypto/rand"
 	"fmt"
 	"math/big"
-	"os"
-	"path/filepath"
 	"strings"
 
-	"github.com/dmulholl/argo"
+	"github.com/dmulholl/argo/v4"
 )
 
 const (
@@ -20,8 +18,8 @@ const (
 	DefaultLength = 24
 )
 
-var genHelp = fmt.Sprintf(`
-Usage: %s gen [length]
+var genCmdHelptext = fmt.Sprintf(`
+Usage: ironclad gen [length]
 
   Generates a random ASCII password. By default, the password is copied to the
   system clipboard. Alternatively, the password can be printed to stdout.
@@ -52,12 +50,12 @@ Flags:
   -h, --help                Print this command's help text and exit.
   -p, --print               Print the password to stdout.
   -r, --readable            Add spaces for readability.
-`, filepath.Base(os.Args[0]), PoolSymbols, PoolSimilars)
+`, PoolSymbols, PoolSimilars)
 
 func registerGenCmd(parser *argo.ArgParser) {
 	cmdParser := parser.NewCommand("gen")
-	cmdParser.Helptext = genHelp
-	cmdParser.Callback = genCallback
+	cmdParser.Helptext = genCmdHelptext
+	cmdParser.Callback = genCmdCallback
 	cmdParser.NewStringOption("file f", "")
 	cmdParser.NewFlag("digits d")
 	cmdParser.NewFlag("exclude-similar x")
@@ -68,21 +66,30 @@ func registerGenCmd(parser *argo.ArgParser) {
 	cmdParser.NewFlag("print p")
 }
 
-func genCallback(cmdName string, cmdParser *argo.ArgParser) {
-	var length int
-	if cmdParser.HasArgs() {
-		length = int(cmdParser.ArgsAsInts()[0])
-	} else {
-		length = DefaultLength
+func genCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
+	length := DefaultLength
+
+	if len(cmdParser.Args) > 0 {
+		lengths, err := cmdParser.ArgsAsInts()
+		if err != nil {
+			return fmt.Errorf("invalid length argument")
+		}
+
+		length = lengths[0]
 	}
 
-	password := genPassword(
+	password, err := genPassword(
 		length,
 		cmdParser.Found("uppercase"),
 		cmdParser.Found("lowercase"),
 		cmdParser.Found("symbols"),
 		cmdParser.Found("digits"),
-		cmdParser.Found("exclude-similar"))
+		cmdParser.Found("exclude-similar"),
+	)
+
+	if err != nil {
+		return err
+	}
 
 	if cmdParser.Found("readable") {
 		password = addSpaces(password)
@@ -93,14 +100,15 @@ func genCallback(cmdName string, cmdParser *argo.ArgParser) {
 		if stdoutIsTerminal() {
 			fmt.Println()
 		}
-		return
+		return nil
 	}
 
 	writeToClipboard(password)
+	return nil
 }
 
 // Generate a new password.
-func genPassword(length int, upper, lower, symbols, digits, excludeSimilar bool) string {
+func genPassword(length int, upper, lower, symbols, digits, excludeSimilar bool) (string, error) {
 	// Assemble the character pool.
 	var pool string
 	if digits {
@@ -133,19 +141,23 @@ func genPassword(length int, upper, lower, symbols, digits, excludeSimilar bool)
 	}
 
 	// Assemble the password.
-	passBytes := make([]byte, length)
-	for i := range passBytes {
-		passBytes[i] = pool[randInt(len(pool))]
+	password := make([]byte, length)
+	for i := range password {
+		poolIndex, err := randInt((len(pool)))
+		if err != nil {
+			return "", err
+		}
+		password[i] = pool[poolIndex]
 	}
 
-	return string(passBytes)
+	return string(password), nil
 }
 
 // Generate a random integer in the uniform range [0, max).
-func randInt(max int) int {
+func randInt(max int) (int, error) {
 	n, err := rand.Int(rand.Reader, big.NewInt(int64(max)))
 	if err != nil {
-		exit(err)
+		return 0, err
 	}
-	return int(n.Int64())
+	return int(n.Int64()), nil
 }

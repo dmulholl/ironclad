@@ -2,15 +2,14 @@ package main
 
 import (
 	"fmt"
-	"os"
 	"path/filepath"
 	"strings"
 
-	"github.com/dmulholl/argo"
+	"github.com/dmulholl/argo/v4"
 )
 
-var editHelp = fmt.Sprintf(`
-Usage: %s edit <entry>
+var editCmdHelptext = `
+Usage: ironclad edit <entry>
 
   Edits an existing database entry.
 
@@ -37,12 +36,12 @@ Flags:
   -t, --title               Edit the entry's title.
       --url                 Edit the entry's url.
   -u, --username            Edit the entry's username.
-`, filepath.Base(os.Args[0]))
+`
 
 func registerEditCmd(parser *argo.ArgParser) {
 	cmdParser := parser.NewCommand("edit")
-	cmdParser.Helptext = editHelp
-	cmdParser.Callback = editCallback
+	cmdParser.Helptext = editCmdHelptext
+	cmdParser.Callback = editCmdCallback
 	cmdParser.NewStringOption("file f", "")
 	cmdParser.NewFlag("title t")
 	cmdParser.NewFlag("url l")
@@ -54,22 +53,25 @@ func registerEditCmd(parser *argo.ArgParser) {
 	cmdParser.NewFlag("no-editor")
 }
 
-func editCallback(cmdName string, cmdParser *argo.ArgParser) {
-	if !cmdParser.HasArgs() {
-		exit("missing entry argument")
+func editCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
+	if len(cmdParser.Args) == 0 {
+		return fmt.Errorf("missing entry argument")
 	}
+
 	filename, masterpass, db := loadDB(cmdParser)
 
-	// Search for an entry corresponding to the supplied arguments.
-	list := db.Active().FilterByAll(cmdParser.Args...)
-	if len(list) == 0 {
-		exit("no matching entry")
-	} else if len(list) > 1 {
-		println("Error: the query string matches multiple entries.")
-		printCompact(list, len(db.Active()), filepath.Base(filename))
-		os.Exit(1)
+	matchingEntries := db.Active().FilterByAll(cmdParser.Args...)
+	if len(matchingEntries) == 0 {
+		return fmt.Errorf("no matching entry")
 	}
-	entry := list[0]
+
+	if len(matchingEntries) > 1 {
+		fmt.Println("The query string matches multiple entries:")
+		printCompact(matchingEntries, len(db.Active()), filepath.Base(filename))
+		return nil
+	}
+
+	entry := matchingEntries[0]
 
 	// Default to editing all fields if no flags are present.
 	allFields := false
@@ -143,6 +145,8 @@ func editCallback(cmdName string, cmdParser *argo.ArgParser) {
 	saveDB(filename, masterpass, db)
 	fmt.Println("  Entry updated.")
 	printLineOfChar("─")
+
+	return nil
 }
 
 // Ask the user whether they want to edit the specified field.

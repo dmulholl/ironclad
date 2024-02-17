@@ -2,15 +2,14 @@ package main
 
 import (
 	"fmt"
-	"os"
 	"path/filepath"
 	"strings"
 
-	"github.com/dmulholl/argo"
+	"github.com/dmulholl/argo/v4"
 )
 
-var purgeHelp = fmt.Sprintf(`
-Usage: %s purge
+var purgeCmdHelptext = `
+Usage: ironclad purge
 
   Purges all inactive entries from a database.
 
@@ -19,21 +18,21 @@ Options:
 
 Flags:
   -h, --help                Print this command's help text and exit.
-`, filepath.Base(os.Args[0]))
+`
 
 func registerPurgeCmd(parser *argo.ArgParser) {
 	cmdParser := parser.NewCommand("purge")
-	cmdParser.Helptext = purgeHelp
-	cmdParser.Callback = purgeCallback
+	cmdParser.Helptext = purgeCmdHelptext
+	cmdParser.Callback = purgeCmdCallback
 	cmdParser.NewStringOption("file f", "")
 }
 
-func purgeCallback(cmdName string, cmdParser *argo.ArgParser) {
+func purgeCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 	filename, masterpass, db := loadDB(cmdParser)
 
 	list := db.Inactive()
 	if len(list) == 0 {
-		exit("no inactive entries to purge")
+		return fmt.Errorf("no inactive entries to purge")
 	}
 
 	printCompact(list, len(list), filepath.Base(filename))
@@ -48,4 +47,5 @@ func purgeCallback(cmdName string, cmdParser *argo.ArgParser) {
 	}
 
 	saveDB(filename, masterpass, db)
+	return nil
 }

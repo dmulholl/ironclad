@@ -2,15 +2,14 @@ package main
 
 import (
 	"fmt"
-	"os"
 	"path/filepath"
 	"strings"
 
-	"github.com/dmulholl/argo"
+	"github.com/dmulholl/argo/v4"
 )
 
-var retireHelp = fmt.Sprintf(`
-Usage: %s retire <entries>
+var retireCmdHelptext = `
+Usage: ironclad retire <entries>
 
   Retires one or more entries from the database. Entries to be retired should
   be specified by ID.
@@ -29,30 +28,27 @@ Options:
 
 Flags:
   -h, --help                Print this command's help text and exit.
-`, filepath.Base(os.Args[0]))
+`
 
 func registerRetireCmd(parser *argo.ArgParser) {
 	cmdParser := parser.NewCommand("retire")
-	cmdParser.Helptext = retireHelp
-	cmdParser.Callback = retireCallback
+	cmdParser.Helptext = retireCmdHelptext
+	cmdParser.Callback = retireCmdCallback
 	cmdParser.NewStringOption("file f", "")
 }
 
-func retireCallback(cmdName string, cmdParser *argo.ArgParser) {
-
-	// Check that at least one entry argument has been supplied.
-	if !cmdParser.HasArgs() {
-		exit("you must specify at least one entry to retire")
+func retireCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
+	if len(cmdParser.Args) == 0 {
+		return fmt.Errorf("missing entry argument")
 	}
+
 	filename, masterpass, db := loadDB(cmdParser)
 
-	// Grab the entries to retire.
 	list := db.Active().FilterByIDString(cmdParser.Args...)
 	if len(list) == 0 {
-		exit("no matching entries")
+		return fmt.Errorf("no matching entries")
 	}
 
-	// Print a listing and request confirmation.
 	printCompact(list, db.Size(), filepath.Base(filename))
 	answer := input("  Retire the entries listed above? (y/n): ")
 	if strings.ToLower(answer) == "y" {
@@ -65,4 +61,6 @@ func retireCallback(cmdName string, cmdParser *argo.ArgParser) {
 		fmt.Println("  Operation aborted.")
 	}
 	printLineOfChar("─")
+
+	return nil
 }

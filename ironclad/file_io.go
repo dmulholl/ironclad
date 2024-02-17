@@ -4,7 +4,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/dmulholl/argo"
+	"github.com/dmulholl/argo/v4"
 	"github.com/dmulholl/ironclad/irondb"
 	"github.com/dmulholl/ironclad/ironio"
 )

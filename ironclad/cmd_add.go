@@ -1,17 +1,15 @@
 package main
 
 import (
-	"fmt"
-	"os"
 	"path/filepath"
 	"strings"
 
-	"github.com/dmulholl/argo"
+	"github.com/dmulholl/argo/v4"
 	"github.com/dmulholl/ironclad/irondb"
 )
 
-var addHelp = fmt.Sprintf(`
-Usage: %s add
+var addCmdHelptext = `
+Usage: ironclad add
 
   Adds a new entry to a database. You will be prompted to supply values for
   the entry's fields - press return to leave an unwanted field blank.
@@ -24,17 +22,17 @@ Options:
 Flags:
   -h, --help                Print this command's help text and exit.
       --no-editor           Do not launch an external editor to add notes.
-`, filepath.Base(os.Args[0]))
+`
 
 func registerAddCmd(parser *argo.ArgParser) {
 	cmdParser := parser.NewCommand("add new")
-	cmdParser.Helptext = addHelp
-	cmdParser.Callback = addCallback
+	cmdParser.Helptext = addCmdHelptext
+	cmdParser.Callback = addCmdCallback
 	cmdParser.NewStringOption("file f", "")
 	cmdParser.NewFlag("no-editor")
 }
 
-func addCallback(cmdName string, cmdParser *argo.ArgParser) {
+func addCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 	filename, masterpass, db := loadDB(cmdParser)
 
 	// Create a new Entry object to add to the database.
@@ -49,19 +47,21 @@ func addCallback(cmdName string, cmdParser *argo.ArgParser) {
 
 	// Get or autogenerate a password.
 	printLineOfChar("─")
-	prompt := "  Enter a password or press return to automatically generate one"
-	prompt += ":\n\u001B[90m  >>\u001B[0m  "
-	entrypass := input(prompt)
-	entrypass = strings.TrimSpace(entrypass)
-	if entrypass == "" {
-		entrypass = genPassword(DefaultLength, true, true, true, true, false)
+	prompt := "  Enter a password or press return to automatically generate one:\n\u001B[90m  >>\u001B[0m  "
+	password := input(prompt)
+	password = strings.TrimSpace(password)
+	if password == "" {
+		generatedPassword, err := genPassword(DefaultLength, true, true, true, true, false)
+		if err != nil {
+			return err
+		}
+		password = generatedPassword
 	}
-	entry.SetPassword(entrypass)
+	entry.SetPassword(password)
 
 	// Split tags on commas.
 	printLineOfChar("─")
-	prompt = "  Enter a comma-separated list of tags for this entry"
-	prompt += ":\n\u001B[90m  >>\u001B[0m  "
+	prompt = "  Enter a comma-separated list of tags for this entry:\n\u001B[90m  >>\u001B[0m  "
 	tagstring := input(prompt)
 	for _, tag := range strings.Split(tagstring, ",") {
 		tag = strings.TrimSpace(tag)
@@ -87,4 +87,6 @@ func addCallback(cmdName string, cmdParser *argo.ArgParser) {
 
 	db.Add(entry)
 	saveDB(filename, masterpass, db)
+
+	return nil
 }

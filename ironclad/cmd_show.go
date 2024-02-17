@@ -1,16 +1,13 @@
 package main
 
 import (
-	"fmt"
-	"os"
 	"path/filepath"
 
-	"github.com/dmulholl/argo"
-	"github.com/dmulholl/ironclad/irondb"
+	"github.com/dmulholl/argo/v4"
 )
 
-var showHelp = fmt.Sprintf(`
-Usage: %s show [entries]
+var showCmdHelptext = `
+Usage: ironclad show [entries]
 
   Prints a list of entries from a database, showing entry content.
 
@@ -32,12 +29,12 @@ Flags:
   -i, --inactive            Show inactive entries.
   -n, --show-notes          Show each entry's notes.
   -p, --show-passwords      Show each entry's password in clear text.
-`, filepath.Base(os.Args[0]))
+`
 
 func registerShowCmd(parser *argo.ArgParser) {
 	cmdParser := parser.NewCommand("show")
-	cmdParser.Helptext = showHelp
-	cmdParser.Callback = showCallback
+	cmdParser.Helptext = showCmdHelptext
+	cmdParser.Callback = showCmdCallback
 	cmdParser.NewStringOption("file f", "")
 	cmdParser.NewStringOption("tag t", "")
 	cmdParser.NewFlag("inactive i")
@@ -45,41 +42,38 @@ func registerShowCmd(parser *argo.ArgParser) {
 	cmdParser.NewFlag("show-notes n")
 }
 
-func showCallback(cmdName string, cmdParser *argo.ArgParser) {
+func showCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 	filename, _, db := loadDB(cmdParser)
 
-	// Default to displaying all active entries.
-	var list irondb.EntryList
-	var title string
-	var totalCount int
+	// Default to displaying active entries.
+	list := db.Active()
+	title := "All Entries"
+	totalCount := len(list)
+
 	if cmdParser.Found("inactive") {
 		list = db.Inactive()
 		title = "Inactive Entries"
 		totalCount = len(list)
-	} else {
-		list = db.Active()
-		title = "All Entries"
-		totalCount = len(list)
 	}
 
-	// Do we have query strings to filter on?
-	if cmdParser.HasArgs() {
+	if len(cmdParser.Args) > 0 {
 		list = list.FilterByAny(cmdParser.Args...)
 		title = "Matching Entries"
 	}
 
-	// Are we filtering by tag?
 	if cmdParser.StringValue("tag") != "" {
 		list = list.FilterByTag(cmdParser.StringValue("tag"))
 		title = "Matching Entries"
 	}
 
-	// Print the list of entries.
 	printVerbose(
 		list,
 		totalCount,
 		cmdParser.Found("show-passwords"),
 		cmdParser.Found("show-notes"),
 		title,
-		filepath.Base(filename))
+		filepath.Base(filename),
+	)
+
+	return nil
 }

@@ -4,14 +4,12 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"os"
-	"path/filepath"
 
-	"github.com/dmulholl/argo"
+	"github.com/dmulholl/argo/v4"
 )
 
-var dumpHelp = fmt.Sprintf(`
-Usage: %s dump
+var dumpCmdHelptext = `
+Usage: ironclad dump
 
   Dumps a database's internal JSON data store to stdout.
 
@@ -20,29 +18,30 @@ Options:
 
 Flags:
   -h, --help                Print this command's help text and exit.
-`, filepath.Base(os.Args[0]))
+`
 
 func registerDumpCmd(parser *argo.ArgParser) {
 	cmdParser := parser.NewCommand("dump")
-	cmdParser.Helptext = dumpHelp
-	cmdParser.Callback = dumpCallback
+	cmdParser.Helptext = dumpCmdHelptext
+	cmdParser.Callback = dumpCmdCallback
 	cmdParser.NewStringOption("file f", "")
 }
 
-func dumpCallback(cmdName string, cmdParser *argo.ArgParser) {
-	// Load the database.
+func dumpCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 	_, _, db := loadDB(cmdParser)
 
-	// Serialize the database as a byte-slice of JSON.
 	data, err := db.ToJSON()
 	if err != nil {
-		exit(err)
+		return fmt.Errorf("failed to serialize database as JSON: %w", err)
 	}
 
-	// Format the JSON for display.
 	var formatted bytes.Buffer
-	json.Indent(&formatted, data, "", "  ")
 
-	// Print the formatted JSON to stdout.
+	err = json.Indent(&formatted, data, "", "  ")
+	if err != nil {
+		return fmt.Errorf("failed to serialize database as JSON: %w", err)
+	}
+
 	fmt.Println(formatted.String())
+	return nil
 }

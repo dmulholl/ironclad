@@ -1,6 +1,10 @@
 help:
 	@cat ./makefile
 
+.PHONY: build
+build:
+	go build -o ./build/ironclad ./ironclad
+
 all: clean
 	@printf "\e[1;32mCompiling\e[0m ...\n"
 	GOOS=linux GOARCH=amd64 go build -o build/ironclad-linux-amd64/ironclad ./ironclad

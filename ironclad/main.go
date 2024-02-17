@@ -3,15 +3,15 @@ package main
 import (
 	"fmt"
 	"os"
-	"path/filepath"
+	"strings"
 
-	"github.com/dmulholl/argo"
+	"github.com/dmulholl/argo/v4"
 )
 
-const version = "2.6.0"
+const version = "3.0.0-dev"
 
-var helptext = fmt.Sprintf(`
-Usage: %s [command]
+var helptext = `
+Usage: ironclad [command]
 
   A utility for creating and managing encrypted password databases.
 
@@ -46,20 +46,17 @@ Additional Commands:
   tags              List database tags.
 
 Aliases:
-  new               Alias for 'add'.
+  new               Alias for the 'add' command.
 
 Command Help:
   help <command>    Print the specified command's help text and exit.
-`, filepath.Base(os.Args[0]))
+`
 
 func main() {
-
-	// Instantiate an argument parser.
 	parser := argo.NewParser()
 	parser.Helptext = helptext
 	parser.Version = version
 
-	// Register commands.
 	registerAddCmd(parser)
 	registerCacheCmd(parser)
 	registerConfigCmd(parser)
@@ -84,9 +81,12 @@ func main() {
 	registerShowCmd(parser)
 	registerGoCmd(parser)
 
-	// Parse the command line arguments.
-	parser.Parse()
-	if !parser.HasCommand() {
-		parser.ExitWithHelptext()
+	if err := parser.ParseOsArgs(); err != nil {
+		fmt.Fprintf(os.Stderr, "error: %s\n", err)
+		os.Exit(1)
+	}
+
+	if parser.FoundCommandName == "" {
+		fmt.Println(strings.TrimSpace(helptext))
 	}
 }

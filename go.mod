@@ -1,10 +1,12 @@
 module github.com/dmulholl/ironclad
 
-go 1.15
+go 1.21
+
+toolchain go1.21.7
 
 require (
 	github.com/atotto/clipboard v0.1.4
-	github.com/dmulholl/argo v0.3.0
+	github.com/dmulholl/argo/v4 v4.0.0
 	github.com/howeyc/gopass v0.0.0-20210920133722-c8aef6fb66ef
 	github.com/mitchellh/go-wordwrap v1.0.1
 	github.com/pelletier/go-toml v1.9.4
@@ -12,3 +14,5 @@ require (
 	golang.org/x/crypto v0.17.0
 	golang.org/x/sys v0.15.0
 )
+
+require golang.org/x/term v0.15.0 // indirect

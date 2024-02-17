@@ -4,32 +4,31 @@ import (
 	"fmt"
 	"os"
 	"os/signal"
-	"path/filepath"
 	"strconv"
 	"time"
 
-	"github.com/dmulholl/argo"
+	"github.com/dmulholl/argo/v4"
 	"github.com/dmulholl/ironclad/ironconfig"
 	"github.com/dmulholl/ironclad/ironrpc"
 )
 
-var cacheHelp = fmt.Sprintf(`
-Usage: %s cache
+var cacheCmdHelptext = `
+Usage: ironclad cache
 
   Runs the cached-password server. This comand is run automatically when
   required; it should not be run manually.
 
 Flags:
   -h, --help    Print this command's help text and exit.
-`, filepath.Base(os.Args[0]))
+`
 
 func registerCacheCmd(parser *argo.ArgParser) {
 	cmdParser := parser.NewCommand("cache")
-	cmdParser.Helptext = cacheHelp
-	cmdParser.Callback = cacheCallback
+	cmdParser.Helptext = cacheCmdHelptext
+	cmdParser.Callback = cacheCmdCallback
 }
 
-func cacheCallback(cmdName string, cmdParser *argo.ArgParser) {
+func cacheCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 	// Set up a handler to intercept SIGINT interrupts. This fixes an annoying
 	// bug where hitting Ctrl-C to short-circuit a clipboard countdown could
 	// kill the cache server, forcing the user to re-enter their password.
@@ -49,15 +48,16 @@ func cacheCallback(cmdName string, cmdParser *argo.ArgParser) {
 	// Check if a cache timeout has been set in the config file.
 	timeout, found, err := ironconfig.Get("cache-timeout-minutes")
 	if err != nil {
-		exit("cacheCallback:", err)
+		return fmt.Errorf("ironclad cache server: failed to get timeout: %w", err)
 	}
+
 	if found {
 		numMinutes, err := strconv.ParseInt(timeout, 10, 64)
 		if err != nil {
-			exit("cacheCallback:", err)
+			return fmt.Errorf("ironclad cache server: failed to parse timeout: %w", err)
 		}
 		if numMinutes == 0 {
-			os.Exit(0)
+			return nil
 		}
 		ironrpc.CacheTimeout = time.Duration(numMinutes) * time.Minute
 	}
@@ -65,6 +65,8 @@ func cacheCallback(cmdName string, cmdParser *argo.ArgParser) {
 	// Run the cache server.
 	err = ironrpc.Serve()
 	if err != nil {
-		exit("cacheCallback:", err)
+		return fmt.Errorf("ironclad cache server: %w", err)
 	}
+
+	return nil
 }

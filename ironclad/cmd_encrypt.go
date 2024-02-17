@@ -2,16 +2,14 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
-	"path/filepath"
 
-	"github.com/dmulholl/argo"
+	"github.com/dmulholl/argo/v4"
 	"github.com/dmulholl/ironclad/ironio"
 )
 
-var encryptHelp = fmt.Sprintf(`
-Usage: %s encrypt <file>
+var encryptCmdHelptext = `
+Usage: ironclad encrypt <file>
 
   Encrypts a file using 256-bit AES encryption.
 
@@ -31,18 +29,18 @@ Options:
 
 Flags:
   -h, --help                Print this command's help text and exit.
-`, filepath.Base(os.Args[0]))
+`
 
 func registerEncryptCmd(parser *argo.ArgParser) {
 	cmdParser := parser.NewCommand("encrypt")
-	cmdParser.Helptext = encryptHelp
-	cmdParser.Callback = encryptCallback
+	cmdParser.Helptext = encryptCmdHelptext
+	cmdParser.Callback = encryptCmdCallback
 	cmdParser.NewStringOption("out o", "")
 }
 
-func encryptCallback(cmdName string, cmdParser *argo.ArgParser) {
-	if !cmdParser.HasArgs() {
-		exit("missing filename")
+func encryptCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
+	if len(cmdParser.Args) == 0 {
+		return fmt.Errorf("missing filename argument")
 	}
 
 	inputfile := cmdParser.Args[0]
@@ -52,13 +50,15 @@ func encryptCallback(cmdName string, cmdParser *argo.ArgParser) {
 	}
 
 	password := inputPass("Password: ")
-	content, err := ioutil.ReadFile(inputfile)
+	content, err := os.ReadFile(inputfile)
 	if err != nil {
-		exit(err)
+		return fmt.Errorf("error reading file: %w", err)
 	}
 
 	err = ironio.Save(outputfile, password, content)
 	if err != nil {
-		exit(err)
+		return fmt.Errorf("error saving file: %w", err)
 	}
+
+	return nil
 }

@@ -2,15 +2,13 @@ package main
 
 import (
 	"fmt"
-	"os"
-	"path/filepath"
 	"sort"
 
-	"github.com/dmulholl/argo"
+	"github.com/dmulholl/argo/v4"
 )
 
-var tagsHelp = fmt.Sprintf(`
-Usage: %s tags
+var tagsCmdHelptext = `
+Usage: ironclad tags
 
   Lists the tags in a database.
 
@@ -19,29 +17,26 @@ Options:
 
 Flags:
   -h, --help                Print this command's help text and exit.
-`, filepath.Base(os.Args[0]))
+`
 
 func registerTagsCmd(parser *argo.ArgParser) {
 	cmdParser := parser.NewCommand("tags")
-	cmdParser.Helptext = tagsHelp
-	cmdParser.Callback = tagsCallback
+	cmdParser.Helptext = tagsCmdHelptext
+	cmdParser.Callback = tagsCmdCallback
 	cmdParser.NewStringOption("file f", "")
 }
 
-func tagsCallback(cmdName string, cmdParser *argo.ArgParser) {
+func tagsCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 	_, _, db := loadDB(cmdParser)
 
-	// Assemble a map of tags.
 	tagmap := db.TagMap()
 
-	// Extract a sorted slice of tag strings.
 	tags := make([]string, 0)
 	for tag := range tagmap {
 		tags = append(tags, tag)
 	}
 	sort.Strings(tags)
 
-	// Print the tag list.
 	if len(tags) > 0 {
 		printLineOfChar("─")
 		fmt.Println("  Tags")
@@ -55,4 +50,6 @@ func tagsCallback(cmdName string, cmdParser *argo.ArgParser) {
 		fmt.Println("  No Tags")
 		printLineOfChar("─")
 	}
+
+	return nil
 }

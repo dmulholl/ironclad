@@ -1,16 +1,14 @@
 package main
 
 import (
-	"fmt"
-	"os"
 	"path/filepath"
 
-	"github.com/dmulholl/argo"
+	"github.com/dmulholl/argo/v4"
 	"github.com/dmulholl/ironclad/irondb"
 )
 
-var listHelp = fmt.Sprintf(`
-Usage: %s list [entries]
+var listCmdHelptext = `
+Usage: ironclad list [entries]
 
   Prints a list of entries from a database, showing only the entry title.
 
@@ -30,18 +28,18 @@ Options:
 Flags:
   -h, --help                Print this command's help text and exit.
   -i, --inactive            List inactive entries.
-`, filepath.Base(os.Args[0]))
+`
 
 func registerListCmd(parser *argo.ArgParser) {
 	cmdParser := parser.NewCommand("list")
-	cmdParser.Helptext = listHelp
-	cmdParser.Callback = listCallback
+	cmdParser.Helptext = listCmdHelptext
+	cmdParser.Callback = listCmdCallback
 	cmdParser.NewStringOption("file f", "")
 	cmdParser.NewStringOption("tag t", "")
 	cmdParser.NewFlag("inactive i")
 }
 
-func listCallback(cmdName string, cmdParser *argo.ArgParser) {
+func listCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 	filename, _, db := loadDB(cmdParser)
 
 	// Default to displaying all active entries.
@@ -56,7 +54,7 @@ func listCallback(cmdName string, cmdParser *argo.ArgParser) {
 	}
 
 	// Do we have query strings to filter on?
-	if cmdParser.HasArgs() {
+	if len(cmdParser.Args) > 0 {
 		list = list.FilterByAny(cmdParser.Args...)
 	}
 
@@ -67,4 +65,6 @@ func listCallback(cmdName string, cmdParser *argo.ArgParser) {
 
 	// Print the list of entries.
 	printCompact(list, totalCount, filepath.Base(filename))
+
+	return nil
 }

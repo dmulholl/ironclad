@@ -54,8 +54,6 @@ var (
 
 // Encrypt encrypts a plaintext slice using a 32-byte key.
 func Encrypt(plaintext, key []byte) ([]byte, error) {
-
-	// Check the key size.
 	if len(key) != KeySize {
 		return nil, ErrInvalidKeySize
 	}
@@ -87,8 +85,6 @@ func Encrypt(plaintext, key []byte) ([]byte, error) {
 
 // Decrypt decrypts a ciphertext slice using a 32-byte key.
 func Decrypt(ciphertext, key []byte) ([]byte, error) {
-
-	// Check the key size.
 	if len(key) != KeySize {
 		return nil, ErrInvalidKeySize
 	}

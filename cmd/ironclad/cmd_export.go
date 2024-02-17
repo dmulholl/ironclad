@@ -54,7 +54,7 @@ func exportCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 	}
 
 	// Confirm export.
-	printCompact(list, db.Size(), filepath.Base(filename))
+	printCompact(list, db.Count(), filepath.Base(filename))
 	answer := input("  Export the entries listed above? (y/n): ")
 	if strings.ToLower(answer) != "y" {
 		fmt.Println("  Export aborted.")

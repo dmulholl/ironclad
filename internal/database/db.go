@@ -97,8 +97,8 @@ func (db *DB) PurgeInactive() {
 	}
 }
 
-// Size returns the number of active entries in the database.
-func (db *DB) Size() int {
+// Count returns the number of active entries in the database.
+func (db *DB) Count() int {
 	return len(db.Active())
 }
 

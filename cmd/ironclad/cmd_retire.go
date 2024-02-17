@@ -54,7 +54,7 @@ func retireCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 		return fmt.Errorf("no matching entries")
 	}
 
-	printCompact(list, db.Size(), filepath.Base(filename))
+	printCompact(list, db.Count(), filepath.Base(filename))
 	answer := input("  Retire the entries listed above? (y/n): ")
 	if strings.ToLower(answer) == "y" {
 		for _, entry := range list {

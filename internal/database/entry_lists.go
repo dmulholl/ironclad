@@ -11,8 +11,8 @@ import (
 // An EntryList is a slice of Entry pointers.
 type EntryList []*Entry
 
-// Contains returns true if the EntryList contains the specified entry.
-func (list EntryList) Contains(entry *Entry) bool {
+// contains returns true if the EntryList contains the specified entry.
+func (list EntryList) contains(entry *Entry) bool {
 	for _, current := range list {
 		if entry == current {
 			return true
@@ -73,7 +73,7 @@ func (list EntryList) FilterByAny(queries ...string) EntryList {
 		if i, err := strconv.ParseInt(query, 10, 32); err == nil {
 			id := int(i)
 			for _, entry := range list {
-				if id == entry.Id && !matches.Contains(entry) {
+				if id == entry.Id && !matches.contains(entry) {
 					matches = append(matches, entry)
 					break
 				}
@@ -83,7 +83,7 @@ func (list EntryList) FilterByAny(queries ...string) EntryList {
 		query = strings.ToLower(query)
 		for _, entry := range list {
 			if strings.Contains(strings.ToLower(entry.Title), query) {
-				if !matches.Contains(entry) {
+				if !matches.contains(entry) {
 					matches = append(matches, entry)
 				}
 			}

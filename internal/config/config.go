@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -27,13 +28,15 @@ func init() {
 func Get(key string) (value string, found bool, err error) {
 	config, err := loadToml()
 	if err != nil {
-		return "", false, err
+		return "", false, fmt.Errorf("failed to load config file: %w", err)
 	}
+
 	if config.Has(key) {
 		if value, ok := config.Get(key).(string); ok {
 			return value, true, nil
 		}
 	}
+
 	return "", false, nil
 }
 
@@ -41,10 +44,17 @@ func Get(key string) (value string, found bool, err error) {
 func Set(key, value string) error {
 	config, err := loadToml()
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to load config file: %w", err)
 	}
+
 	config.Set(key, value)
-	return saveToml(config)
+
+	err = saveToml(config)
+	if err != nil {
+		return fmt.Errorf("failed to save config file: %w", err)
+	}
+
+	return nil
 }
 
 // FileExists returns true if the configuration file exists.
@@ -58,22 +68,16 @@ func FileExists() bool {
 // Load a config file's TOML content.
 func loadToml() (*toml.Tree, error) {
 	if FileExists() {
-		tree, err := toml.LoadFile(ConfigFile)
-		if err != nil {
-			return nil, err
-		}
-		return tree, nil
-	} else {
-		tree, err := toml.TreeFromMap(make(map[string]interface{}))
-		return tree, err
+		return toml.LoadFile(ConfigFile)
 	}
+	return toml.TreeFromMap(make(map[string]interface{}))
 }
 
 // Save a TOML tree to file.
 func saveToml(tree *toml.Tree) error {
 	err := os.MkdirAll(filepath.Dir(ConfigFile), 0777)
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to create directory: %w", err)
 	}
 	return os.WriteFile(ConfigFile, []byte(tree.String()), 0600)
 }

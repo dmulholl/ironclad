@@ -1,7 +1,7 @@
 package cache
 
 import (
-	"errors"
+	"fmt"
 	"net"
 	"net/rpc"
 	"time"
@@ -19,15 +19,16 @@ type CacheClient struct {
 func NewClient() (*CacheClient, error) {
 	address, found, err := config.Get("address")
 	if err != nil {
-		return nil, errors.New("NewClient: cannot read config file")
+		return nil, fmt.Errorf("failed to get address from config file: %w", err)
 	}
+
 	if !found {
-		return nil, errors.New("NewClient: address not found")
+		return nil, fmt.Errorf("address not found in config file")
 	}
 
 	conn, err := net.DialTimeout("tcp", address, ClientTimeout)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to create connection: %w", err)
 	}
 
 	return &CacheClient{rpcc: rpc.NewClient(conn)}, nil
@@ -40,8 +41,10 @@ func (client *CacheClient) GetPass(filename, cachepass, token string) (string, e
 		CachePass: cachepass,
 		Token:     token,
 	}
+
 	var masterpass string
 	err := client.rpcc.Call("CacheServer.GetPass", data, &masterpass)
+
 	return masterpass, err
 }
 
@@ -52,18 +55,23 @@ func (client *CacheClient) SetPass(filename, masterpass, cachepass string) error
 		MasterPass: masterpass,
 		CachePass:  cachepass,
 	}
+
 	var notused bool
 	return client.rpcc.Call("CacheServer.SetPass", data, &notused)
 }
 
-// IsCached checks if the server has a cache entry for the specified database file.
+// IsCached checks if the server has a cache entry for the specified filename.
 func (client *CacheClient) IsCached(filename string) bool {
+	data := IsCachedData{
+		Filename: filename,
+	}
+
 	var found bool
-	data := IsCachedData{Filename: filename}
 	err := client.rpcc.Call("CacheServer.IsCached", data, &found)
 	if err != nil {
 		return false
 	}
+
 	return found
 }
 

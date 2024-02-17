@@ -1,7 +1,6 @@
 package cache
 
 import (
-	"errors"
 	"fmt"
 	"net"
 	"net/rpc"
@@ -74,19 +73,19 @@ func (server *CacheServer) GetPass(data GetPassData, password *string) error {
 	// If the token matches, it validates that the caller has read access to $HOME.
 	token, found, err := config.Get("token")
 	if err != nil {
-		return fmt.Errorf("GetPass(): %v", err)
+		return fmt.Errorf("failed to get token from the config file: %w", err)
 	}
 	if !found {
-		return fmt.Errorf("GetPass(): token not found")
+		return fmt.Errorf("token not found in config file")
 	}
 	if token != data.Token {
-		return fmt.Errorf("GetPass(): invalid token")
+		return fmt.Errorf("invalid token")
 	}
 
 	// Do we have a cache entry for the specified database file?
 	entry, found := server.cache[data.Filename]
 	if !found {
-		return fmt.Errorf("GetPass(): filename not in cache")
+		return fmt.Errorf("filename is not in cache")
 	}
 
 	// Use the cache password and salt to regenerate the encryption key.
@@ -114,7 +113,7 @@ func (server *CacheServer) SetPass(data SetPassData, notused *bool) error {
 	// Generate a random salt.
 	salt, err := ironcrypt.RandBytes(32)
 	if err != nil {
-		return errors.New("SetPass: cannot generate random salt")
+		return fmt.Errorf("failed to generate random salt: %w", err)
 	}
 
 	// Generate an encryption key from the cache password.
@@ -123,13 +122,14 @@ func (server *CacheServer) SetPass(data SetPassData, notused *bool) error {
 	// Encrypt the database password using the cache password.
 	ciphertext, err := aes.Encrypt([]byte(data.MasterPass), key)
 	if err != nil {
-		return errors.New("Set Pass: cannot encrypt master password")
+		return fmt.Errorf("failed to encrypt master password: %w", err)
 	}
 
 	server.cache[data.Filename] = CacheEntry{
 		salt: salt,
 		data: ciphertext,
 	}
+
 	return nil
 }
 
@@ -153,19 +153,19 @@ func Serve() error {
 
 	err := rpc.Register(server)
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to register server: %w", err)
 	}
 
 	listener, err := net.Listen("tcp", "localhost:0")
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to initialize listener: %w", err)
 	}
+
 	defer listener.Close()
 
-	address := listener.Addr().String()
-	err = config.Set("address", address)
+	err = config.Set("address", listener.Addr().String())
 	if err != nil {
-		return errors.New("Serve: cannot set address")
+		return fmt.Errorf("failed to set address in config file: %w", err)
 	}
 
 	rpc.Accept(listener)

@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/dmulholl/argo/v4"
-	"github.com/dmulholl/ironclad/internal/irondb"
+	"github.com/dmulholl/ironclad/internal/database"
 )
 
 var addCmdHelptext = `
@@ -36,7 +36,7 @@ func addCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 	filename, masterpass, db := loadDB(cmdParser)
 
 	// Create a new Entry object to add to the database.
-	entry := irondb.NewEntry()
+	entry := database.NewEntry()
 
 	// Fetch user input.
 	printHeading("Add Entry", filepath.Base(filename))

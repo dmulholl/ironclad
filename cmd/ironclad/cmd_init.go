@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/dmulholl/argo/v4"
-	"github.com/dmulholl/ironclad/internal/irondb"
+	"github.com/dmulholl/ironclad/internal/database"
 )
 
 var initCmdHelptext = `
@@ -48,7 +48,7 @@ func initCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 		return fmt.Errorf("the cache passwords do not match")
 	}
 
-	db := irondb.New(cachepass1)
+	db := database.New(cachepass1)
 	setCachedFilename(filename)
 	saveDB(filename, masterpass1, db)
 

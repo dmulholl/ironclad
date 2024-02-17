@@ -5,12 +5,12 @@ import (
 	"path/filepath"
 
 	"github.com/dmulholl/argo/v4"
+	"github.com/dmulholl/ironclad/internal/database"
 	"github.com/dmulholl/ironclad/internal/fileio"
-	"github.com/dmulholl/ironclad/internal/irondb"
 )
 
 // Load a database from an encrypted file.
-func loadDB(args *argo.ArgParser) (filename, masterpass string, db *irondb.DB) {
+func loadDB(args *argo.ArgParser) (filename, masterpass string, db *database.DB) {
 	// Determine the file to use.
 	// 1. Has a filename been specified on the command line?
 	// 2. Look for a cached filename.
@@ -43,7 +43,7 @@ func loadDB(args *argo.ArgParser) (filename, masterpass string, db *irondb.DB) {
 				exit(err)
 			}
 		}
-		db, err := irondb.FromJSON(data)
+		db, err := database.FromJSON(data)
 		if err != nil {
 			exit(err)
 		}
@@ -58,7 +58,7 @@ func loadDB(args *argo.ArgParser) (filename, masterpass string, db *irondb.DB) {
 	if err != nil {
 		exit(err)
 	}
-	db, err = irondb.FromJSON(data)
+	db, err = database.FromJSON(data)
 	if err != nil {
 		exit(err)
 	}
@@ -68,7 +68,7 @@ func loadDB(args *argo.ArgParser) (filename, masterpass string, db *irondb.DB) {
 }
 
 // Encrypt and save a database file.
-func saveDB(filename, password string, db *irondb.DB) {
+func saveDB(filename, password string, db *database.DB) {
 	// Serialize the database as a byte-slice of JSON.
 	json, err := db.ToJSON()
 	if err != nil {

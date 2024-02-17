@@ -4,7 +4,6 @@ import (
 	"path/filepath"
 
 	"github.com/dmulholl/argo/v4"
-	"github.com/dmulholl/ironclad/internal/irondb"
 )
 
 var listCmdHelptext = `
@@ -42,29 +41,22 @@ func registerListCmd(parser *argo.ArgParser) {
 func listCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 	filename, _, db := loadDB(cmdParser)
 
-	// Default to displaying all active entries.
-	var list irondb.EntryList
-	var totalCount int
+	list := db.Active()
+	totalCount := len(list)
+
 	if cmdParser.Found("inactive") {
 		list = db.Inactive()
 		totalCount = len(list)
-	} else {
-		list = db.Active()
-		totalCount = len(list)
 	}
 
-	// Do we have query strings to filter on?
 	if len(cmdParser.Args) > 0 {
 		list = list.FilterByAny(cmdParser.Args...)
 	}
 
-	// Are we filtering by tag?
 	if cmdParser.StringValue("tag") != "" {
 		list = list.FilterByTag(cmdParser.StringValue("tag"))
 	}
 
-	// Print the list of entries.
 	printCompact(list, totalCount, filepath.Base(filename))
-
 	return nil
 }

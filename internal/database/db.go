@@ -1,4 +1,4 @@
-package irondb
+package database
 
 import (
 	"encoding/json"

@@ -1,4 +1,4 @@
-package irondb
+package database
 
 // An Entry object represents a single database record.
 type Entry struct {

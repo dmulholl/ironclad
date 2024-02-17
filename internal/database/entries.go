@@ -28,8 +28,8 @@ type ExportEntry struct {
 func NewEntry() *Entry {
 	return &Entry{
 		Active:    true,
-		Passwords: make([]string, 0),
-		Tags:      make([]string, 0),
+		Passwords: []string{},
+		Tags:      []string{},
 	}
 }
 

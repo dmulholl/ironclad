@@ -2,6 +2,7 @@ package database
 
 import (
 	"encoding/json"
+	"fmt"
 )
 
 // DB represents an in-memory database of password records.
@@ -12,51 +13,49 @@ type DB struct {
 }
 
 // New initializes a new database instance.
-func New(cachepass string) (db *DB) {
+func New(cachepass string) *DB {
 	return &DB{
 		Version:   2,
 		CachePass: cachepass,
-		Entries:   make([]*Entry, 0)}
+		Entries:   make([]*Entry, 0),
+	}
 }
 
-// FromJSON initializes a database instance from a serialized byte-slice.
-func FromJSON(data []byte) (db *DB, err error) {
-	db = &DB{}
-	err = json.Unmarshal(data, db)
+// FromJSON initializes a database instance from JSON.
+func FromJSON(input []byte) (*DB, error) {
+	db := &DB{}
+	err := json.Unmarshal(input, db)
 	return db, err
 }
 
-// ToJSON serializes a database instance as a byte-slice of JSON.
-func (db *DB) ToJSON() (data []byte, err error) {
-	data, err = json.Marshal(db)
-	if err != nil {
-		return nil, err
-	}
-	return data, nil
+// ToJSON serializes a database instance to JSON.
+func (db *DB) ToJSON() ([]byte, error) {
+	return json.Marshal(db)
 }
 
-// Import adds entries from a previously-exported byte-slice of JSON.
+// Import adds entries to the database from JSON. The entries must have been exported using an
+// EntryList's Export() method. Returns the number of new entrie.
 func (db *DB) Import(data []byte) (int, error) {
+	entries := []*ExportEntry{}
 
-	exports := make([]*ExportEntry, 0)
-	err := json.Unmarshal(data, &exports)
+	err := json.Unmarshal(data, &entries)
 	if err != nil {
-		return 0, err
+		return 0, fmt.Errorf("failed to unmarshall input: %w", err)
 	}
 
-	for _, export := range exports {
-		entry := NewEntry()
-		entry.Title = export.Title
-		entry.Url = export.Url
-		entry.Username = export.Username
-		entry.Passwords = export.Passwords
-		entry.Email = export.Email
-		entry.Tags = export.Tags
-		entry.Notes = export.Notes
-		db.Add(entry)
+	for _, entry := range entries {
+		newEntry := NewEntry()
+		newEntry.Title = entry.Title
+		newEntry.Url = entry.Url
+		newEntry.Username = entry.Username
+		newEntry.Passwords = entry.Passwords
+		newEntry.Email = entry.Email
+		newEntry.Tags = entry.Tags
+		newEntry.Notes = entry.Notes
+		db.Add(newEntry)
 	}
 
-	return len(exports), nil
+	return len(entries), nil
 }
 
 // Add inserts a new entry into the database.
@@ -120,14 +119,13 @@ func (db *DB) Inactive() EntryList {
 
 // TagMap returns a map of tags to entry-lists.
 func (db *DB) TagMap() map[string]EntryList {
-	tags := make(map[string]EntryList)
+	tagMap := map[string]EntryList{}
+
 	for _, entry := range db.Active() {
 		for _, tag := range entry.Tags {
-			if _, ok := tags[tag]; !ok {
-				tags[tag] = make([]*Entry, 0)
-			}
-			tags[tag] = append(tags[tag], entry)
+			tagMap[tag] = append(tagMap[tag], entry)
 		}
 	}
-	return tags
+
+	return tagMap
 }

@@ -36,9 +36,14 @@ func restoreCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 		return fmt.Errorf("missing entry argument")
 	}
 
+	ids, err := cmdParser.ArgsAsInts()
+	if err != nil {
+		return fmt.Errorf("arguments must be integer IDs: %w", err)
+	}
+
 	filename, masterpass, db := loadDB(cmdParser)
 
-	list := db.Inactive().FilterByIDString(cmdParser.Args...)
+	list := db.Inactive().FilterByID(ids...)
 	if len(list) == 0 {
 		return fmt.Errorf("no matching entries")
 	}

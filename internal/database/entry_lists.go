@@ -3,6 +3,7 @@ package database
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"strconv"
 	"strings"
 )
@@ -20,54 +21,55 @@ func (list EntryList) Contains(entry *Entry) bool {
 	return false
 }
 
-// FilterActive filters an EntryList returning only those entries which are
-// active.
+// FilterActive returns a new EntryList containing active entries.
 func (list EntryList) FilterActive() EntryList {
-	active := make([]*Entry, 0)
+	active := EntryList{}
+
 	for _, entry := range list {
 		if entry.Active {
 			active = append(active, entry)
 		}
 	}
+
 	return active
 }
 
-// FilterInactive filters an EntryList returning only those entries which are
-// inactive.
+// FilterInactive returns a new EntryList containing inactive entries.
 func (list EntryList) FilterInactive() EntryList {
-	inactive := make([]*Entry, 0)
+	inactive := EntryList{}
+
 	for _, entry := range list {
 		if !entry.Active {
 			inactive = append(inactive, entry)
 		}
 	}
+
 	return inactive
 }
 
-// FilterByTag filters an EntryList returning only those entries which match
-// the specified tag. Matches are case-insensitive.
+// FilterByTag returns a new EntryList containing entries which match the specified tag. Matches
+// are case-insensitive.
 func (list EntryList) FilterByTag(tag string) EntryList {
-	matches := make([]*Entry, 0)
-	target := strings.ToLower(tag)
+	tag = strings.ToLower(tag)
+	matches := EntryList{}
+
 	for _, entry := range list {
 		for _, entrytag := range entry.Tags {
-			if strings.ToLower(entrytag) == target {
+			if strings.ToLower(entrytag) == tag {
 				matches = append(matches, entry)
 			}
 		}
 	}
+
 	return matches
 }
 
-// FilterByAny filters an EntryList returning entries which match *any* of the
-// specified query strings. Each query string can be an entry ID or a
-// case-insensitive substring of an entry title.
+// FilterByAny returns a new EntryList containing entries which match *any* of the specified query
+// strings. A query string can be an entry ID or a case-insensitive substring of an entry title.
 func (list EntryList) FilterByAny(queries ...string) EntryList {
-	matches := EntryList(make([]*Entry, 0))
-	for _, query := range queries {
+	matches := EntryList{}
 
-		// First, see if we can parse the query string as an integer ID.
-		// If we can, look for an entry with a matching ID.
+	for _, query := range queries {
 		if i, err := strconv.ParseInt(query, 10, 32); err == nil {
 			id := int(i)
 			for _, entry := range list {
@@ -78,7 +80,6 @@ func (list EntryList) FilterByAny(queries ...string) EntryList {
 			}
 		}
 
-		// Check for a case-insensitive substring match on the entry title.
 		query = strings.ToLower(query)
 		for _, entry := range list {
 			if strings.Contains(strings.ToLower(entry.Title), query) {
@@ -92,12 +93,11 @@ func (list EntryList) FilterByAny(queries ...string) EntryList {
 	return matches
 }
 
-// FilterByAll filters an EntryList returning entries which match *all* of the
-// specified query strings, where each query string is a case-insensitive
-// substring of the entry title. If a single query string is supplied it will
-// first be checked to see if it matches a valid entry ID.
+// FilterByAll returns a new EntryList containing entries which match *all* of the specified query
+// strings, where each query string is a case-insensitive substring of the entry title. If a single
+// query string is supplied, it will first be checked to see if it matches a valid entry ID.
 func (list EntryList) FilterByAll(queries ...string) EntryList {
-	matches := make([]*Entry, 0)
+	matches := EntryList{}
 
 	// If we have a single query string, check if it matches an entry ID.
 	if len(queries) == 1 {
@@ -113,12 +113,11 @@ func (list EntryList) FilterByAll(queries ...string) EntryList {
 	}
 
 	// Convert all query strings to lower case.
-	for i, _ := range queries {
+	for i := range queries {
 		queries[i] = strings.ToLower(queries[i])
 	}
 
-	// Check entry titles for a case-insensitive substring match on all
-	// query strings.
+	// Check entry titles for a case-insensitive substring match on all query strings.
 	for _, entry := range list {
 		entrytitle := strings.ToLower(entry.Title)
 		match := true
@@ -136,29 +135,26 @@ func (list EntryList) FilterByAll(queries ...string) EntryList {
 	return matches
 }
 
-// FilterByIDString filters an EntryList returning only those entries which
-// match the specified query strings where each query string is an entry ID.
-func (list EntryList) FilterByIDString(queries ...string) EntryList {
-	matches := make([]*Entry, 0)
-	for _, query := range queries {
-		if i, err := strconv.ParseInt(query, 10, 32); err == nil {
-			id := int(i)
-			for _, entry := range list {
-				if id == entry.Id {
-					matches = append(matches, entry)
-					break
-				}
+// FilterByID returns a new EntryList containing entries with matching IDs.
+func (list EntryList) FilterByID(ids ...int) EntryList {
+	matches := EntryList{}
+
+	for _, id := range ids {
+		for _, entry := range list {
+			if id == entry.Id {
+				matches = append(matches, entry)
+				break
 			}
 		}
 	}
+
 	return matches
 }
 
-// Export exports a list of entries as a JSON string.
+// Export exports the EntryList as formatted JSON.
 func (list EntryList) Export() (string, error) {
+	exports := []ExportEntry{}
 
-	// Assemble a list of ExportEntry objects.
-	exports := make([]ExportEntry, 0)
 	for _, entry := range list {
 		export := ExportEntry{
 			Title:     entry.Title,
@@ -172,13 +168,11 @@ func (list EntryList) Export() (string, error) {
 		exports = append(exports, export)
 	}
 
-	// Generate a JSON dump of the list.
 	data, err := json.Marshal(exports)
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("failed to marshall entries as JSON: %w", err)
 	}
 
-	// Format the JSON for display.
 	var formatted bytes.Buffer
 	json.Indent(&formatted, data, "", "  ")
 

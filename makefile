@@ -16,6 +16,10 @@ all: ## Builds all command binaries.
 build: ## Builds the primary application binary.
 	go build -o ./build/ironclad ./cmd/ironclad
 
+.PHONY: install
+install: ## Builds and installs the primary application binary.
+	go install ./cmd/ironclad
+
 .PHONY: test
 test: ## Runs unit tests.
 	go test ./...

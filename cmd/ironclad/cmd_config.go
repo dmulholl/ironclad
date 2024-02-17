@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/dmulholl/argo/v4"
-	"github.com/dmulholl/ironclad/ironconfig"
+	"github.com/dmulholl/ironclad/internal/ironconfig"
 )
 
 var configCmdHelptext = `

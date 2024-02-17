@@ -3,7 +3,7 @@ package main
 import (
 	"strings"
 
-	"github.com/dmulholl/ironclad/irondb"
+	"github.com/dmulholl/ironclad/internal/irondb"
 	"github.com/mitchellh/go-wordwrap"
 )
 

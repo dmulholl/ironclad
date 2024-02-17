@@ -5,7 +5,7 @@ import (
 	"os"
 
 	"github.com/dmulholl/argo/v4"
-	"github.com/dmulholl/ironclad/ironio"
+	"github.com/dmulholl/ironclad/internal/ironio"
 )
 
 var decryptCmdHelptext = `

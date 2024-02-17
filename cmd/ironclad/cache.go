@@ -8,9 +8,9 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/dmulholl/ironclad/ironconfig"
-	"github.com/dmulholl/ironclad/ironcrypt"
-	"github.com/dmulholl/ironclad/ironrpc"
+	"github.com/dmulholl/ironclad/internal/ironconfig"
+	"github.com/dmulholl/ironclad/internal/ironcrypt"
+	"github.com/dmulholl/ironclad/internal/ironrpc"
 )
 
 // Cache the current filename for the application's next run.

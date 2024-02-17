@@ -5,8 +5,8 @@ import (
 	"path/filepath"
 
 	"github.com/dmulholl/argo/v4"
-	"github.com/dmulholl/ironclad/irondb"
-	"github.com/dmulholl/ironclad/ironio"
+	"github.com/dmulholl/ironclad/internal/irondb"
+	"github.com/dmulholl/ironclad/internal/ironio"
 )
 
 // Load a database from an encrypted file.

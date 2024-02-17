@@ -1,6 +1,5 @@
 /*
-Package ironio provides read and write access to the content of encrypted
-files.
+Package ironio provides read/write access to the content of encrypted files.
 */
 package ironio
 
@@ -9,11 +8,9 @@ import (
 	"compress/gzip"
 	"io/ioutil"
 	"os"
-)
 
-import (
-	"github.com/dmulholl/ironclad/ironcrypt"
-	"github.com/dmulholl/ironclad/ironcrypt/aes"
+	"github.com/dmulholl/ironclad/internal/ironcrypt"
+	"github.com/dmulholl/ironclad/internal/ironcrypt/aes"
 )
 
 // Length of the key derivation salt in bytes.

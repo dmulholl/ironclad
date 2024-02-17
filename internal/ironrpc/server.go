@@ -9,9 +9,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/dmulholl/ironclad/ironconfig"
-	"github.com/dmulholl/ironclad/ironcrypt"
-	"github.com/dmulholl/ironclad/ironcrypt/aes"
+	"github.com/dmulholl/ironclad/internal/ironconfig"
+	"github.com/dmulholl/ironclad/internal/ironcrypt"
+	"github.com/dmulholl/ironclad/internal/ironcrypt/aes"
 )
 
 var CacheTimeout time.Duration = 15 * time.Minute

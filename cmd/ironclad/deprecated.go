@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/dmulholl/ironclad/ironconfig"
+	"github.com/dmulholl/ironclad/internal/ironconfig"
 	"github.com/howeyc/gopass"
 	"golang.org/x/crypto/ssh/terminal"
 )

@@ -6,7 +6,7 @@ import (
 	"net/rpc"
 	"time"
 
-	"github.com/dmulholl/ironclad/ironconfig"
+	"github.com/dmulholl/ironclad/internal/ironconfig"
 )
 
 var ClientTimeout = 100 * time.Millisecond

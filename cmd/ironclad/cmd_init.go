@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/dmulholl/argo/v4"
-	"github.com/dmulholl/ironclad/irondb"
+	"github.com/dmulholl/ironclad/internal/irondb"
 )
 
 var initCmdHelptext = `

@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/atotto/clipboard"
-	"github.com/dmulholl/ironclad/ironconfig"
+	"github.com/dmulholl/ironclad/internal/ironconfig"
 )
 
 // Write a string to the system clipboard. Automatically overwrite the

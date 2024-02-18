@@ -21,7 +21,6 @@ Options:
 
 Flags:
   -h, --help                Print this command's help text and exit.
-      --no-editor           Do not launch an external editor to add notes.
 `
 
 func registerAddCmd(parser *argo.ArgParser) {
@@ -29,7 +28,6 @@ func registerAddCmd(parser *argo.ArgParser) {
 	cmdParser.Helptext = addCmdHelptext
 	cmdParser.Callback = addCmdCallback
 	cmdParser.NewStringOption("file f", "")
-	cmdParser.NewFlag("no-editor")
 }
 
 func addCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
@@ -82,14 +80,7 @@ func addCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 	printLineOfChar("─")
 	answer := input("  Add a note to this entry? (y/n): ")
 	if strings.ToLower(answer) == "y" {
-		if cmdParser.Found("no-editor") {
-			printLineOfChar("─")
-			entry.Notes = inputViaStdin()
-		} else {
-			entry.Notes = inputViaEditor("")
-		}
-	} else {
-		entry.Notes = ""
+		entry.Notes = inputViaEditor("")
 	}
 	printLineOfChar("─")
 

@@ -29,7 +29,6 @@ Options:
 Flags:
   -e, --email               Edit the entry's email address.
   -h, --help                Print this command's help text and exit.
-      --no-editor           Do not launch an external editor to edit notes.
   -n, --notes               Edit the entry's notes.
   -p, --password            Edit the entry's password.
       --tags                Edit the entry's tags.
@@ -50,7 +49,6 @@ func registerEditCmd(parser *argo.ArgParser) {
 	cmdParser.NewFlag("notes n")
 	cmdParser.NewFlag("tags s")
 	cmdParser.NewFlag("email e")
-	cmdParser.NewFlag("no-editor")
 }
 
 func editCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
@@ -137,17 +135,7 @@ func editCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 	}
 
 	if cmdParser.Found("notes") || (allFields && editField("notes")) {
-		if cmdParser.Found("no-editor") {
-			oldnotes := strings.Trim(entry.Notes, "\r\n")
-			if oldnotes != "" {
-				fmt.Println(oldnotes)
-				printLineOfChar("·")
-			}
-			entry.Notes = inputViaStdin()
-			printLineOfChar("·")
-		} else {
-			entry.Notes = inputViaEditor(entry.Notes)
-		}
+		entry.Notes = inputViaEditor(entry.Notes)
 	}
 
 	if err := saveDB(filename, masterpass, db); err != nil {

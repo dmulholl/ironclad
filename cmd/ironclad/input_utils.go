@@ -3,7 +3,6 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"io"
 	"os"
 	"os/exec"
 	"strings"
@@ -35,15 +34,6 @@ func inputPass(prompt string) string {
 		exit(err)
 	}
 	return strings.TrimSpace(string(bytes))
-}
-
-// Read from stdin until EOF.
-func inputViaStdin() string {
-	input, err := io.ReadAll(stdinReader)
-	if err != nil {
-		exit(err)
-	}
-	return string(input)
 }
 
 // Launch a text editor and capture its output.

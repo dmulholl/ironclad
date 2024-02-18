@@ -49,7 +49,7 @@ func userCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 
 	if len(matchingEntries) > 1 {
 		fmt.Println("The query string matches multiple entries:")
-		printCompact(matchingEntries, len(db.Active()), filepath.Base(filename))
+		printCompactList(matchingEntries, len(db.Active()), filepath.Base(filename))
 		return nil
 	}
 

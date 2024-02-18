@@ -10,7 +10,7 @@ import (
 )
 
 // Print a list of entries in compact format.
-func printCompact(list database.EntryList, dbsize int, filename string) {
+func printCompactList(list database.EntryList, dbsize int, filename string) {
 	if len(list) == 0 {
 		printHeading("No Entries", filename)
 		return
@@ -42,7 +42,7 @@ func printCompact(list database.EntryList, dbsize int, filename string) {
 }
 
 // Print a list of entries in verbose format.
-func printVerbose(list database.EntryList, dbsize int, showPassword, showNotes bool, title, filename string) {
+func printVerboseList(list database.EntryList, dbsize int, showPassword, showNotes bool, title, filename string) {
 	if len(list) == 0 {
 		printHeading("No Entries", filename)
 		return

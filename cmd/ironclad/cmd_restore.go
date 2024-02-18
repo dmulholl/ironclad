@@ -48,7 +48,7 @@ func restoreCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 		return fmt.Errorf("no matching entries")
 	}
 
-	printCompact(list, len(db.Inactive()), filepath.Base(filename))
+	printCompactList(list, len(db.Inactive()), filepath.Base(filename))
 	answer := input("  Restore the entries listed above? (y/n): ")
 	if strings.ToLower(answer) == "y" {
 		for _, entry := range list {

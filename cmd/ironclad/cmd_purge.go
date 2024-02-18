@@ -35,7 +35,7 @@ func purgeCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 		return fmt.Errorf("no inactive entries to purge")
 	}
 
-	printCompact(list, len(list), filepath.Base(filename))
+	printCompactList(list, len(list), filepath.Base(filename))
 	answer := input("  Purge the entries listed above? (y/n): ")
 	if strings.ToLower(answer) == "y" {
 		db.PurgeInactive()

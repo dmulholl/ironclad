@@ -57,6 +57,6 @@ func listCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 		list = list.FilterByTag(cmdParser.StringValue("tag"))
 	}
 
-	printCompact(list, totalCount, filepath.Base(filename))
+	printCompactList(list, totalCount, filepath.Base(filename))
 	return nil
 }

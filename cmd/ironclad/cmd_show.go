@@ -66,7 +66,7 @@ func showCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 		title = "Matching Entries"
 	}
 
-	printVerbose(
+	printVerboseList(
 		list,
 		totalCount,
 		cmdParser.Found("show-passwords"),

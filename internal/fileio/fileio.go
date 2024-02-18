@@ -10,8 +10,8 @@ import (
 	"io"
 	"os"
 
-	"github.com/dmulholl/ironclad/internal/ironcrypt"
-	"github.com/dmulholl/ironclad/internal/ironcrypt/aes"
+	"github.com/dmulholl/ironclad/internal/crypto"
+	"github.com/dmulholl/ironclad/internal/crypto/aes"
 )
 
 // Length of the key derivation salt in bytes.
@@ -32,7 +32,7 @@ func Load(filename, password string) ([]byte, error) {
 	ciphertext := content[SaltLength:]
 
 	// Use the password and salt to regenerate the file encryption key.
-	key := ironcrypt.Key(password, salt, PBKDFIterations, aes.KeySize)
+	key := crypto.Key(password, salt, PBKDFIterations, aes.KeySize)
 
 	// Use the key to decrypt the ciphertext.
 	plaintext, err := aes.Decrypt(ciphertext, key)
@@ -72,13 +72,13 @@ func Save(filename, password string, plaintext []byte) error {
 	}
 
 	// Generate a random salt.
-	salt, err := ironcrypt.RandBytes(SaltLength)
+	salt, err := crypto.RandBytes(SaltLength)
 	if err != nil {
 		return fmt.Errorf("failed to generate random salt: %w", err)
 	}
 
 	// Use the password and salt to generate a file encryption key.
-	key := ironcrypt.Key(password, salt, PBKDFIterations, aes.KeySize)
+	key := crypto.Key(password, salt, PBKDFIterations, aes.KeySize)
 
 	// Encrypt the data using the key.
 	ciphertext, err := aes.Encrypt(zipped.Bytes(), key)

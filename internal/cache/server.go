@@ -9,8 +9,8 @@ import (
 	"time"
 
 	"github.com/dmulholl/ironclad/internal/config"
-	"github.com/dmulholl/ironclad/internal/ironcrypt"
-	"github.com/dmulholl/ironclad/internal/ironcrypt/aes"
+	"github.com/dmulholl/ironclad/internal/crypto"
+	"github.com/dmulholl/ironclad/internal/crypto/aes"
 )
 
 var CacheTimeout time.Duration = 15 * time.Minute
@@ -89,7 +89,7 @@ func (server *CacheServer) GetPass(data GetPassData, password *string) error {
 	}
 
 	// Use the cache password and salt to regenerate the encryption key.
-	key := ironcrypt.Key(data.CachePass, entry.salt, 10000, aes.KeySize)
+	key := crypto.Key(data.CachePass, entry.salt, 10000, aes.KeySize)
 
 	// Attempt to decrypt the entry.
 	plaintext, err := aes.Decrypt(entry.data, key)
@@ -111,13 +111,13 @@ func (server *CacheServer) SetPass(data SetPassData, notused *bool) error {
 	defer server.mutex.Unlock()
 
 	// Generate a random salt.
-	salt, err := ironcrypt.RandBytes(32)
+	salt, err := crypto.RandBytes(32)
 	if err != nil {
 		return fmt.Errorf("failed to generate random salt: %w", err)
 	}
 
 	// Generate an encryption key from the cache password.
-	key := ironcrypt.Key(data.CachePass, salt, 10000, aes.KeySize)
+	key := crypto.Key(data.CachePass, salt, 10000, aes.KeySize)
 
 	// Encrypt the database password using the cache password.
 	ciphertext, err := aes.Encrypt([]byte(data.MasterPass), key)

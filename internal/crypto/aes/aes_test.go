@@ -3,7 +3,7 @@ package aes
 import (
 	"testing"
 
-	"github.com/dmulholl/ironclad/internal/ironcrypt"
+	"github.com/dmulholl/ironclad/internal/crypto"
 	"github.com/stretchr/testify/require"
 )
 
@@ -30,11 +30,11 @@ Caesari renuntiatur Helvetiis esse in animo per agrum Sequanorum et Haeduorum it
 `
 
 func TestAESRoundtripEmptyInput(t *testing.T) {
-	salt, err := ironcrypt.RandBytes(32)
+	salt, err := crypto.RandBytes(32)
 	require.NoError(t, err, "failed to generate random salt")
 
 	password := "abc123"
-	key := ironcrypt.Key(password, salt, 1000, KeySize)
+	key := crypto.Key(password, salt, 1000, KeySize)
 
 	plaintext := []byte("")
 
@@ -48,11 +48,11 @@ func TestAESRoundtripEmptyInput(t *testing.T) {
 }
 
 func TestAESRoundtripShortInput(t *testing.T) {
-	salt, err := ironcrypt.RandBytes(32)
+	salt, err := crypto.RandBytes(32)
 	require.NoError(t, err, "failed to generate random salt")
 
 	password := "abc123"
-	key := ironcrypt.Key(password, salt, 1000, KeySize)
+	key := crypto.Key(password, salt, 1000, KeySize)
 
 	plaintext := []byte("foo 123 bar 456 baz 789")
 
@@ -66,11 +66,11 @@ func TestAESRoundtripShortInput(t *testing.T) {
 }
 
 func TestAESRoundtripLongInput(t *testing.T) {
-	salt, err := ironcrypt.RandBytes(32)
+	salt, err := crypto.RandBytes(32)
 	require.NoError(t, err, "failed to generate random salt")
 
 	password := "abc123"
-	key := ironcrypt.Key(password, salt, 1000, KeySize)
+	key := crypto.Key(password, salt, 1000, KeySize)
 
 	plaintext := []byte(deBelloGallico)
 

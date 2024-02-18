@@ -1,5 +1,5 @@
 /*
-Package ironcrypt/aes is a symmetric encryption library built from secure,
+Package crypto/aes is a symmetric encryption library built from secure,
 industry-standard components.
 
 Encryption is performed using 256-bit AES in CBC mode. Message padding

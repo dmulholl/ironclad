@@ -10,7 +10,7 @@ import (
 
 	"github.com/dmulholl/ironclad/internal/cache"
 	"github.com/dmulholl/ironclad/internal/config"
-	"github.com/dmulholl/ironclad/internal/ironcrypt"
+	"github.com/dmulholl/ironclad/internal/crypto"
 )
 
 // Cache the current filename for the application's next run.
@@ -61,7 +61,7 @@ func setCachedPassword(filename, masterpass, cachepass string) {
 	client.SetPass(filename, masterpass, cachepass)
 
 	// Write a new authentication token to the config file.
-	bytes, err := ironcrypt.RandBytes(32)
+	bytes, err := crypto.RandBytes(32)
 	if err != nil {
 		exit("setCachedPassword():", err)
 	}

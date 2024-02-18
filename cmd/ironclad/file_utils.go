@@ -84,16 +84,17 @@ func loadDB(filename string) (string, *database.DB, error) {
 }
 
 // Encrypt and save a database file.
-func saveDB(filename, password string, db *database.DB) {
-	// Serialize the database as a byte-slice of JSON.
-	json, err := db.ToJSON()
+func saveDB(filename, password string, db *database.DB) error {
+	data, err := db.ToJSON()
 	if err != nil {
-		exit(err)
+		return fmt.Errorf("failed to serialize database to JSON: %w", err)
 	}
 
 	// Encrypt the serialized database and write it to disk.
-	err = fileio.Save(filename, password, json)
+	err = fileio.Save(filename, password, data)
 	if err != nil {
-		exit(err)
+		return fmt.Errorf("failed to save database: %w", err)
 	}
+
+	return nil
 }

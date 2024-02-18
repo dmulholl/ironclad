@@ -45,8 +45,10 @@ func masterpassCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 		return fmt.Errorf("passwords do not match")
 	}
 
-	saveDB(filename, newMasterPass, db)
-	setCachedPassword(filename, newMasterPass, db.CachePass)
+	if err := saveDB(filename, newMasterPass, db); err != nil {
+		return err
+	}
 
+	setCachedPassword(filename, newMasterPass, db.CachePass)
 	return nil
 }

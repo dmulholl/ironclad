@@ -150,7 +150,10 @@ func editCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 		}
 	}
 
-	saveDB(filename, masterpass, db)
+	if err := saveDB(filename, masterpass, db); err != nil {
+		return err
+	}
+
 	fmt.Println("  Entry updated.")
 	printLineOfChar("─")
 

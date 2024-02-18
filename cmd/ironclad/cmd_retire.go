@@ -63,16 +63,23 @@ func retireCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 	}
 
 	printCompactList(list, db.Count(), filepath.Base(filename))
+
 	answer := input("  Retire the entries listed above? (y/n): ")
-	if strings.ToLower(answer) == "y" {
-		for _, entry := range list {
-			db.SetInactive(entry.Id)
-		}
-		saveDB(filename, masterpass, db)
-		fmt.Println("  Entries retired.")
-	} else {
+	if strings.ToLower(answer) != "y" {
 		fmt.Println("  Operation aborted.")
+		printLineOfChar("─")
+		return nil
 	}
+
+	for _, entry := range list {
+		db.SetInactive(entry.Id)
+	}
+
+	if err := saveDB(filename, masterpass, db); err != nil {
+		return err
+	}
+
+	fmt.Println("  Entries retired.")
 	printLineOfChar("─")
 
 	return nil

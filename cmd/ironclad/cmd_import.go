@@ -54,8 +54,10 @@ func importCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 		return fmt.Errorf("failed to import entries: %w", err)
 	}
 
-	saveDB(filename, masterpass, db)
-	fmt.Printf("%d entries imported.\n", count)
+	if err := saveDB(filename, masterpass, db); err != nil {
+		return err
+	}
 
+	fmt.Printf("%d entries imported.\n", count)
 	return nil
 }

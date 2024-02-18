@@ -54,7 +54,9 @@ func initCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 	}
 
 	db := database.New(cachepass1)
-	saveDB(filename, masterpass1, db)
+	if err := saveDB(filename, masterpass1, db); err != nil {
+		return err
+	}
 
 	err = config.Set("file", filename)
 	if err != nil {

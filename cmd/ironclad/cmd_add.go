@@ -94,7 +94,10 @@ func addCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 	printLineOfChar("─")
 
 	db.Add(entry)
-	saveDB(filename, masterpass, db)
+
+	if err := saveDB(filename, masterpass, db); err != nil {
+		return err
+	}
 
 	return nil
 }

@@ -50,8 +50,11 @@ func cachepassCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 	}
 
 	db.CachePass = newCachePass
-	saveDB(filename, masterpass, db)
-	setCachedPassword(filename, masterpass, newCachePass)
 
+	if err := saveDB(filename, masterpass, db); err != nil {
+		return err
+	}
+
+	setCachedPassword(filename, masterpass, newCachePass)
 	return nil
 }

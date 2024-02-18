@@ -11,8 +11,8 @@ import (
 	"github.com/dmulholl/ironclad/internal/textutils"
 )
 
-// Write a string to the system clipboard. Automatically overwrite the
-// clipboard after a customizable delay.
+// Writes a string to the system clipboard. Automatically overwrites the clipboard after a
+// customizable delay read from the config file.
 func writeToClipboard(value string) {
 	if clipboard.Unsupported {
 		exit("clipboard functionality is not supported on this system")
@@ -26,6 +26,7 @@ func writeToClipboard(value string) {
 	if err != nil {
 		exit(err)
 	}
+
 	if found {
 		seconds, err := strconv.ParseInt(strval, 10, 32)
 		if err != nil {

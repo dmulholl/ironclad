@@ -58,7 +58,15 @@ func editCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 		return fmt.Errorf("missing entry argument")
 	}
 
-	filename, masterpass, db := loadDB(cmdParser)
+	filename, err := getDatabaseFilename(cmdParser)
+	if err != nil {
+		return err
+	}
+
+	masterpass, db, err := loadDB(filename)
+	if err != nil {
+		return err
+	}
 
 	matchingEntries := db.Active().FilterByAll(cmdParser.Args...)
 	if len(matchingEntries) == 0 {

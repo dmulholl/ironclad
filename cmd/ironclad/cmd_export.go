@@ -38,7 +38,15 @@ func registerExportCmd(parser *argo.ArgParser) {
 }
 
 func exportCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
-	filename, _, db := loadDB(cmdParser)
+	filename, err := getDatabaseFilename(cmdParser)
+	if err != nil {
+		return err
+	}
+
+	_, db, err := loadDB(filename)
+	if err != nil {
+		return err
+	}
 
 	// Default to exporting all active entries.
 	list := db.Active()

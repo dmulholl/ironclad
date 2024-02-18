@@ -39,7 +39,15 @@ func goCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 		return fmt.Errorf("mising entry argument")
 	}
 
-	filename, _, db := loadDB(cmdParser)
+	filename, err := getDatabaseFilename(cmdParser)
+	if err != nil {
+		return err
+	}
+
+	_, db, err := loadDB(filename)
+	if err != nil {
+		return err
+	}
 
 	matchingEntries := db.Active().FilterByAll(cmdParser.Args...)
 	if len(matchingEntries) == 0 {
@@ -52,7 +60,7 @@ func goCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 		return nil
 	}
 
-	err := browser.OpenURL(matchingEntries[0].Url)
+	err = browser.OpenURL(matchingEntries[0].Url)
 	if err != nil {
 		return err
 	}

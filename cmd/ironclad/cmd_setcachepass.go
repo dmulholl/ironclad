@@ -30,7 +30,15 @@ func registerSetCachePassCmd(parser *argo.ArgParser) {
 }
 
 func cachepassCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
-	filename, masterpass, db := loadDB(cmdParser)
+	filename, err := getDatabaseFilename(cmdParser)
+	if err != nil {
+		return err
+	}
+
+	masterpass, db, err := loadDB(filename)
+	if err != nil {
+		return err
+	}
 
 	printLineOfChar("─")
 	newCachePass := inputPass("Enter new cache password: ")

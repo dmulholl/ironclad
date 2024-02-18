@@ -5,34 +5,12 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
-	"path/filepath"
 	"time"
 
 	"github.com/dmulholl/ironclad/internal/cache"
 	"github.com/dmulholl/ironclad/internal/config"
 	"github.com/dmulholl/ironclad/internal/crypto"
 )
-
-// Cache the current filename for the application's next run.
-func setCachedFilename(filename string) {
-	filename, err := filepath.Abs(filename)
-	if err != nil {
-		exit(err)
-	}
-	err = config.Set("file", filename)
-	if err != nil {
-		exit(err)
-	}
-}
-
-// Fetch the cached filename (if it exists) from the application's last run.
-func getCachedFilename() (filename string, found bool) {
-	filename, found, err := config.Get("file")
-	if err != nil {
-		exit(err)
-	}
-	return filename, found
-}
 
 // Cache the database password for the application's next run.
 func setCachedPassword(filename, masterpass, cachepass string) {
@@ -107,7 +85,7 @@ func getCachedPassword(filename string) (masterpass string, success bool) {
 	cachepass := inputPass("Cache Password: ")
 	masterpass, err = client.GetPass(filename, cachepass, token)
 	if err != nil {
-		fmt.Printf("Error: %v.\n", err)
+		fmt.Printf("error: %v\n", err)
 		return "", false
 	}
 

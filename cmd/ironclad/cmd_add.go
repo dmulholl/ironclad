@@ -33,7 +33,15 @@ func registerAddCmd(parser *argo.ArgParser) {
 }
 
 func addCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
-	filename, masterpass, db := loadDB(cmdParser)
+	filename, err := getDatabaseFilename(cmdParser)
+	if err != nil {
+		return err
+	}
+
+	masterpass, db, err := loadDB(filename)
+	if err != nil {
+		return err
+	}
 
 	// Create a new Entry object to add to the database.
 	entry := database.NewEntry()

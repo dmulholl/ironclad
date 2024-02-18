@@ -43,7 +43,15 @@ func registerShowCmd(parser *argo.ArgParser) {
 }
 
 func showCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
-	filename, _, db := loadDB(cmdParser)
+	filename, err := getDatabaseFilename(cmdParser)
+	if err != nil {
+		return err
+	}
+
+	_, db, err := loadDB(filename)
+	if err != nil {
+		return err
+	}
 
 	// Default to displaying active entries.
 	list := db.Active()

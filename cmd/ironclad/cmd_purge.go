@@ -28,7 +28,15 @@ func registerPurgeCmd(parser *argo.ArgParser) {
 }
 
 func purgeCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
-	filename, masterpass, db := loadDB(cmdParser)
+	filename, err := getDatabaseFilename(cmdParser)
+	if err != nil {
+		return err
+	}
+
+	masterpass, db, err := loadDB(filename)
+	if err != nil {
+		return err
+	}
 
 	list := db.Inactive()
 	if len(list) == 0 {

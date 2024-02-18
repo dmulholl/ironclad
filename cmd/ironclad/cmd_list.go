@@ -39,7 +39,15 @@ func registerListCmd(parser *argo.ArgParser) {
 }
 
 func listCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
-	filename, _, db := loadDB(cmdParser)
+	filename, err := getDatabaseFilename(cmdParser)
+	if err != nil {
+		return err
+	}
+
+	_, db, err := loadDB(filename)
+	if err != nil {
+		return err
+	}
 
 	list := db.Active()
 	totalCount := len(list)

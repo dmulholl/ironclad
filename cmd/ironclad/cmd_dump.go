@@ -28,7 +28,15 @@ func registerDumpCmd(parser *argo.ArgParser) {
 }
 
 func dumpCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
-	_, _, db := loadDB(cmdParser)
+	filename, err := getDatabaseFilename(cmdParser)
+	if err != nil {
+		return err
+	}
+
+	_, db, err := loadDB(filename)
+	if err != nil {
+		return err
+	}
 
 	data, err := db.ToJSON()
 	if err != nil {
@@ -39,7 +47,7 @@ func dumpCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 
 	err = json.Indent(&formatted, data, "", "  ")
 	if err != nil {
-		return fmt.Errorf("failed to serialize database as JSON: %w", err)
+		return fmt.Errorf("failed to format JSON output: %w", err)
 	}
 
 	fmt.Println(formatted.String())

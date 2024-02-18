@@ -39,7 +39,15 @@ func importCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 		return fmt.Errorf("failed to read file: %w", err)
 	}
 
-	filename, masterpass, db := loadDB(cmdParser)
+	filename, err := getDatabaseFilename(cmdParser)
+	if err != nil {
+		return err
+	}
+
+	masterpass, db, err := loadDB(filename)
+	if err != nil {
+		return err
+	}
 
 	count, err := db.Import(input)
 	if err != nil {

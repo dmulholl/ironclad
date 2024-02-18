@@ -27,7 +27,15 @@ func registerTagsCmd(parser *argo.ArgParser) {
 }
 
 func tagsCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
-	_, _, db := loadDB(cmdParser)
+	filename, err := getDatabaseFilename(cmdParser)
+	if err != nil {
+		return err
+	}
+
+	_, db, err := loadDB(filename)
+	if err != nil {
+		return err
+	}
 
 	tagmap := db.TagMap()
 

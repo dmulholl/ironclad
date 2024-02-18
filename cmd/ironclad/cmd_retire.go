@@ -47,7 +47,15 @@ func retireCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 		return fmt.Errorf("arguments must be integer IDs: %w", err)
 	}
 
-	filename, masterpass, db := loadDB(cmdParser)
+	filename, err := getDatabaseFilename(cmdParser)
+	if err != nil {
+		return err
+	}
+
+	masterpass, db, err := loadDB(filename)
+	if err != nil {
+		return err
+	}
 
 	list := db.Active().FilterByID(ids...)
 	if len(list) == 0 {

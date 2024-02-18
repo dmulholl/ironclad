@@ -2,8 +2,10 @@ package main
 
 import (
 	"fmt"
+	"path/filepath"
 
 	"github.com/dmulholl/argo/v4"
+	"github.com/dmulholl/ironclad/internal/config"
 	"github.com/dmulholl/ironclad/internal/database"
 )
 
@@ -34,7 +36,10 @@ func initCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 		return fmt.Errorf("missing filename argument")
 	}
 
-	filename := cmdParser.Args[0]
+	filename, err := filepath.Abs(cmdParser.Args[0])
+	if err != nil {
+		return fmt.Errorf("failed to resolve filename: %w", err)
+	}
 
 	masterpass1 := inputPass("Enter the master password for the new database: ")
 	masterpass2 := inputPass("                           Re-enter to confirm: ")
@@ -49,8 +54,12 @@ func initCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 	}
 
 	db := database.New(cachepass1)
-	setCachedFilename(filename)
 	saveDB(filename, masterpass1, db)
+
+	err = config.Set("file", filename)
+	if err != nil {
+		return fmt.Errorf("failed to cache filename: %w", err)
+	}
 
 	return nil
 }

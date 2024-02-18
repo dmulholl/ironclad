@@ -5,6 +5,7 @@ import (
 	"path/filepath"
 
 	"github.com/dmulholl/argo/v4"
+	"github.com/dmulholl/ironclad/internal/textutils"
 )
 
 var passCmdHelptext = `
@@ -58,7 +59,7 @@ func passCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 
 	password := entry.GetPassword()
 	if cmdParser.Found("readable") {
-		password = addSpaces(password)
+		password = textutils.AddSpacer(password, "  ", 4)
 	}
 
 	if cmdParser.Found("print") {

@@ -133,3 +133,38 @@ func TestAddSpacer(t *testing.T) {
 		})
 	}
 }
+
+func TestRuneString(t *testing.T) {
+	testcases := []struct {
+		name   string
+		length int
+		char   rune
+		want   string
+	}{
+		{
+			name:   "zero length",
+			length: 0,
+			char:   '-',
+			want:   "",
+		},
+		{
+			name:   "single rune output",
+			length: 1,
+			char:   '-',
+			want:   "-",
+		},
+		{
+			name:   "multirune output",
+			length: 2,
+			char:   '-',
+			want:   "--",
+		},
+	}
+
+	for _, tc := range testcases {
+		t.Run(tc.name, func(t *testing.T) {
+			got := RuneString(tc.length, tc.char)
+			assert.Equal(t, tc.want, got)
+		})
+	}
+}

@@ -37,3 +37,12 @@ func AddSpacer(text, spacer string, n int) string {
 
 	return builder.String()
 }
+
+// Returns a string of the specified length.
+func RuneString(length int, char rune) string {
+	runes := make([]rune, length)
+	for i := range runes {
+		runes[i] = char
+	}
+	return string(runes)
+}

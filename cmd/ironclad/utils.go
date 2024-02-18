@@ -11,8 +11,7 @@ func stdoutIsTerminal() bool {
 	return term.IsTerminal(int(os.Stdout.Fd()))
 }
 
-// Returns the width of the terminal window. Defaults to 80 if the width
-// cannot be determined.
+// Returns the width of the terminal window. Defaults to 80 if the width cannot be determined.
 func terminalWidth() int {
 	width, _, err := term.GetSize(int(os.Stdout.Fd()))
 	if err == nil {

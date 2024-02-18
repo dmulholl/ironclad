@@ -62,7 +62,7 @@ func loadDB(filename string) (string, *database.DB, error) {
 		}
 	}
 
-	masterpass := inputPass("Master Password: ")
+	masterpass := inputMasked("Master Password: ")
 
 	data, err := fileio.Load(filename, masterpass)
 	if err != nil {

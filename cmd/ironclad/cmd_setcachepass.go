@@ -41,8 +41,8 @@ func cachepassCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 	}
 
 	printLineOfChar("─")
-	newCachePass := inputPass("Enter new cache password: ")
-	confirmNewCachePass := inputPass("     Re-enter to confirm: ")
+	newCachePass := inputMasked("Enter new cache password: ")
+	confirmNewCachePass := inputMasked("     Re-enter to confirm: ")
 	printLineOfChar("─")
 
 	if newCachePass != confirmNewCachePass {

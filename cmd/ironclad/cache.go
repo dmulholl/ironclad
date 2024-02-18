@@ -82,7 +82,7 @@ func getCachedPassword(filename string) (masterpass string, success bool) {
 
 	// The empty string didn't work. Ask the user for their cache password
 	// and try again.
-	cachepass := inputPass("Cache Password: ")
+	cachepass := inputMasked("Cache Password: ")
 	masterpass, err = client.GetPass(filename, cachepass, token)
 	if err != nil {
 		fmt.Printf("error: %v\n", err)

@@ -37,8 +37,8 @@ func masterpassCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 	}
 
 	printLineOfChar("─")
-	newMasterPass := inputPass("Enter new master password: ")
-	confirmNewMasterPass := inputPass("      Re-enter to confirm: ")
+	newMasterPass := inputMasked("Enter new master password: ")
+	confirmNewMasterPass := inputMasked("      Re-enter to confirm: ")
 	printLineOfChar("─")
 
 	if newMasterPass != confirmNewMasterPass {

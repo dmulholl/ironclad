@@ -41,14 +41,14 @@ func initCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 		return fmt.Errorf("failed to resolve filename: %w", err)
 	}
 
-	masterpass1 := inputPass("Enter the master password for the new database: ")
-	masterpass2 := inputPass("                           Re-enter to confirm: ")
+	masterpass1 := inputMasked("Enter the master password for the new database: ")
+	masterpass2 := inputMasked("                           Re-enter to confirm: ")
 	if masterpass1 != masterpass2 {
 		return fmt.Errorf("the master passwords do not match")
 	}
 
-	cachepass1 := inputPass("Enter the cache password for the new database: ")
-	cachepass2 := inputPass("                          Re-enter to confirm: ")
+	cachepass1 := inputMasked("Enter the cache password for the new database: ")
+	cachepass2 := inputMasked("                          Re-enter to confirm: ")
 	if cachepass1 != cachepass2 {
 		return fmt.Errorf("the cache passwords do not match")
 	}

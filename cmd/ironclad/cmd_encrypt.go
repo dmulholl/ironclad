@@ -49,7 +49,7 @@ func encryptCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 		outputfile = inputfile + ".encrypted"
 	}
 
-	password := inputPass("Password: ")
+	password := inputMasked("Password: ")
 	content, err := os.ReadFile(inputfile)
 	if err != nil {
 		return fmt.Errorf("error reading file: %w", err)

@@ -27,7 +27,7 @@ func input(prompt string) string {
 }
 
 // Read a masked password from stdin.
-func inputPass(prompt string) string {
+func inputMasked(prompt string) string {
 	fmt.Fprint(os.Stderr, prompt)
 	bytes, err := gopass.GetPasswdMasked()
 	if err != nil {

@@ -42,7 +42,7 @@ func decryptCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 		outputfile = inputfile + ".decrypted"
 	}
 
-	password := inputPass("Password: ")
+	password := inputMasked("Password: ")
 	content, err := fileio.Load(inputfile, password)
 	if err != nil {
 		return fmt.Errorf("failed to load file: %w", err)

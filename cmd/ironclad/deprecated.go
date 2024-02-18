@@ -3,7 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"os"
 	"os/exec"
 	"strings"
@@ -39,7 +39,7 @@ func inputPass(prompt string) string {
 
 // Read from stdin until EOF.
 func inputViaStdin() string {
-	input, err := ioutil.ReadAll(stdinReader)
+	input, err := io.ReadAll(stdinReader)
 	if err != nil {
 		exit(err)
 	}

@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	"golang.org/x/term"
 )
@@ -25,9 +26,7 @@ func terminalWidth() int {
 func printLineOfChar(char string) {
 	length := terminalWidth()
 	fmt.Print("\u001B[90m")
-	for i := 0; i < length; i++ {
-		fmt.Print(char)
-	}
+	fmt.Print(strings.Repeat(char, length))
 	fmt.Println("\u001B[0m")
 }
 
@@ -36,9 +35,7 @@ func printIndentedLineOfChar(char string) {
 	length := terminalWidth() - 4
 	fmt.Print("\u001B[90m")
 	fmt.Print("  ")
-	for i := 0; i < length; i++ {
-		fmt.Print(char)
-	}
+	fmt.Print(strings.Repeat(char, length))
 	fmt.Println("\u001B[0m")
 }
 
@@ -62,9 +59,7 @@ func printHeading(text, meta string) {
 	fmt.Print("  ")
 	fmt.Print(text)
 	numSpaces := terminalWidth() - len(text) - len(meta) - 4
-	for i := 0; i < numSpaces; i += 1 {
-		fmt.Print(" ")
-	}
+	fmt.Print(strings.Repeat(" ", numSpaces))
 	printlnGrey(meta)
 	printLineOfChar("─")
 }

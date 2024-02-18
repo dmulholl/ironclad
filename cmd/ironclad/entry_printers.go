@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/dmulholl/ironclad/internal/database"
+	"github.com/dmulholl/ironclad/internal/textutils"
 	"github.com/mitchellh/go-wordwrap"
 )
 
@@ -82,8 +83,8 @@ func printVerbose(list database.EntryList, dbsize int, showPassword, showNotes b
 		if entry.Notes != "" && showNotes {
 			printIndentedLineOfChar("·")
 			wrapped := wordwrap.WrapString(entry.Notes, 76)
-			indented := indent(wrapped, "  ")
-			println(strings.Trim(indented, "\r\n"))
+			indented := textutils.Indent(wrapped, "  ")
+			fmt.Println(strings.Trim(indented, "\r\n"))
 		}
 
 		printLineOfChar("─")

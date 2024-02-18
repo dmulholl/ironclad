@@ -1,6 +1,6 @@
 # Ironclad
 
-[1]: http://www.dmulholl.com/docs/ironclad/master/
+[1]: https://www.dmulholl.com/docs/ironclad/master/
 [2]: https://github.com/dmulholl/ironclad/releases
 
 
@@ -19,11 +19,11 @@ You can download a pre-compiled binary from the [releases page][2].
 
 
 
-## Build
+## Install
 
 Ironclad is written in Go. If you have a Go compiler installed you can install Ironclad by running:
 
-    go install github.com/dmulholl/ironclad/ironclad@latest
+    go install github.com/dmulholl/ironclad/cmd/ironclad@latest
 
 This will download, compile, and install the latest version of the application to your `$GOPATH/bin` directory.
 

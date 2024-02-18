@@ -148,17 +148,6 @@ func printIndentedLineOfChar(char string) {
 	fmt.Println("\u001B[0m")
 }
 
-// Shortcut print function.
-func print(format string, args ...interface{}) {
-	fmt.Printf(format, args...)
-}
-
-// Shortcut println function.
-func println(format string, args ...interface{}) {
-	fmt.Printf(format, args...)
-	fmt.Println()
-}
-
 // Print in grey.
 func printGrey(format string, args ...interface{}) {
 	fmt.Print("\u001B[90m")
@@ -176,11 +165,11 @@ func printlnGrey(format string, args ...interface{}) {
 // Print a heading.
 func printHeading(text, meta string) {
 	printLineOfChar("─")
-	print("  ")
-	print(text)
+	fmt.Print("  ")
+	fmt.Print(text)
 	numSpaces := terminalWidth() - len(text) - len(meta) - 4
 	for i := 0; i < numSpaces; i += 1 {
-		print(" ")
+		fmt.Print(" ")
 	}
 	printlnGrey(meta)
 	printLineOfChar("─")

@@ -9,7 +9,6 @@ import (
 	"strings"
 
 	"github.com/howeyc/gopass"
-	"golang.org/x/crypto/ssh/terminal"
 )
 
 // Reader for reading user input from stdin.
@@ -102,25 +101,10 @@ func inputViaEditor(template string) string {
 	return string(output)
 }
 
-// Returns true if stdout is connected to a terminal.
-func stdoutIsTerminal() bool {
-	return terminal.IsTerminal(int(os.Stdout.Fd()))
-}
-
 // Exit with an error message and non-zero error code.
 func exit(message any) {
 	fmt.Fprintf(os.Stderr, "error: %s\n", message)
 	os.Exit(1)
-}
-
-// Returns the width of the terminal window. Defaults to 80 if the width
-// cannot be determined.
-func terminalWidth() int {
-	width, _, err := terminal.GetSize(int(os.Stdout.Fd()))
-	if err == nil {
-		return width
-	}
-	return 80
 }
 
 // Print a line of characters.
@@ -194,18 +178,4 @@ func charstr(length int, char rune) string {
 		runes[i] = char
 	}
 	return string(runes)
-}
-
-// Inserts the prefix string at the beginning of each non-empty line.
-func indent(text, prefix string) string {
-	var output []byte
-	is_bol := true
-	for _, c := range []byte(text) {
-		if is_bol && c != '\n' {
-			output = append(output, []byte(prefix)...)
-		}
-		output = append(output, c)
-		is_bol = (c == '\n')
-	}
-	return string(output)
 }

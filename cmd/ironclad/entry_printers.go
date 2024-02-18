@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/dmulholl/ironclad/internal/database"
@@ -16,26 +17,26 @@ func printCompact(list database.EntryList, dbsize int, filename string) {
 
 	// Header.
 	printLineOfChar("─")
-	print("  ID")
+	fmt.Printf("  ID")
 	printGrey("  ·  ")
-	print("TITLE")
+	fmt.Printf("TITLE")
 	numSpaces := terminalWidth() - len(filename) - 16
 	for i := 0; i < numSpaces; i += 1 {
-		print(" ")
+		fmt.Printf(" ")
 	}
 	printlnGrey(filename)
 	printLineOfChar("─")
 
 	// Print the entry listing.
 	for _, entry := range list {
-		print("%4d", entry.Id)
+		fmt.Printf("%4d", entry.Id)
 		printGrey("  ·  ")
-		print("%s\n", entry.Title)
+		fmt.Printf("%s\n", entry.Title)
 	}
 
 	// Footer.
 	printLineOfChar("─")
-	print("  %d/%d Entries\n", len(list), dbsize)
+	fmt.Printf("  %d/%d Entries\n", len(list), dbsize)
 	printLineOfChar("─")
 }
 
@@ -51,31 +52,31 @@ func printVerbose(list database.EntryList, dbsize int, showPassword, showNotes b
 
 	// Print the entry listing.
 	for _, entry := range list {
-		print("  ID:       %d\n", entry.Id)
-		print("  Title:    %s\n", entry.Title)
+		fmt.Printf("  ID:       %d\n", entry.Id)
+		fmt.Printf("  Title:    %s\n", entry.Title)
 
 		if entry.Url != "" {
-			print("  URL:      %s\n", entry.Url)
+			fmt.Printf("  URL:      %s\n", entry.Url)
 		}
 
 		if entry.Username != "" {
-			print("  Username: %s\n", entry.Username)
+			fmt.Printf("  Username: %s\n", entry.Username)
 		}
 
 		if entry.GetPassword() != "" {
 			if showPassword {
-				print("  Password: %s\n", entry.GetPassword())
+				fmt.Printf("  Password: %s\n", entry.GetPassword())
 			} else {
-				print("  Password: %s\n", strings.Repeat("*", len(entry.GetPassword())))
+				fmt.Printf("  Password: %s\n", strings.Repeat("*", len(entry.GetPassword())))
 			}
 		}
 
 		if entry.Email != "" {
-			print("  Email:    %s\n", entry.Email)
+			fmt.Printf("  Email:    %s\n", entry.Email)
 		}
 
 		if len(entry.Tags) > 0 {
-			print("  Tags:     %s\n", strings.Join(entry.Tags, ", "))
+			fmt.Printf("  Tags:     %s\n", strings.Join(entry.Tags, ", "))
 		}
 
 		if entry.Notes != "" && showNotes {
@@ -89,6 +90,6 @@ func printVerbose(list database.EntryList, dbsize int, showPassword, showNotes b
 	}
 
 	// Footer.
-	print("  %d/%d Entries\n", len(list), dbsize)
+	fmt.Printf("  %d/%d Entries\n", len(list), dbsize)
 	printLineOfChar("─")
 }

@@ -40,8 +40,8 @@ import (
 )
 
 const (
-	KeySize  = 32 // Size in bytes of encryption key.
-	HMACSize = 32 // Size in bytes of authentication code.
+	KeySize  = 32 // Size in bytes of the encryption key.
+	HMACSize = 32 // Size in bytes of the authentication code.
 )
 
 var (

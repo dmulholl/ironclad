@@ -26,8 +26,8 @@ func RandBytes(length int) ([]byte, error) {
 	return output, nil
 }
 
-// Key derives a secure encryption key from a password using the PBKDF2 key derivation algorithm
-// with an SHA-256 hash.
+// Key derives a secure encryption key from a password using the PBKDF2 key-derivation algorithm
+// with an SHA-256 hash. The returned key will have keyLength bytes.
 func Key(password string, salt []byte, iterationCount, keyLength int) []byte {
 	return pbkdf2.Key([]byte(password), salt, iterationCount, keyLength, sha256.New)
 }

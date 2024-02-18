@@ -8,6 +8,7 @@ import (
 
 	"github.com/atotto/clipboard"
 	"github.com/dmulholl/ironclad/internal/config"
+	"github.com/dmulholl/ironclad/internal/textutils"
 )
 
 // Write a string to the system clipboard. Automatically overwrite the
@@ -45,19 +46,19 @@ func writeToClipboard(value string) {
 	strlen := intervals + 7
 
 	for count := 0; count <= intervals; count++ {
-		fmt.Fprintf(os.Stderr, "▌")
-		fmt.Fprintf(os.Stderr, charstr(count, '█'))
-		fmt.Fprintf(os.Stderr, charstr(intervals-count, ' '))
-		fmt.Fprintf(os.Stderr, "▐")
+		fmt.Fprint(os.Stderr, "▌")
+		fmt.Fprint(os.Stderr, textutils.RuneString(count, '█'))
+		fmt.Fprint(os.Stderr, textutils.RuneString(intervals-count, ' '))
+		fmt.Fprint(os.Stderr, "▐")
 
 		ms_remaining := milliseconds - count*ms_per_interval
 		fmt.Fprintf(os.Stderr, " %02.fs ", float64(ms_remaining)/1000)
 
 		time.Sleep(time.Duration(ms_per_interval) * time.Millisecond)
 
-		fmt.Fprintf(os.Stderr, charstr(strlen, '\b'))
-		fmt.Fprintf(os.Stderr, charstr(strlen, ' '))
-		fmt.Fprintf(os.Stderr, charstr(strlen, '\b'))
+		fmt.Fprint(os.Stderr, textutils.RuneString(strlen, '\b'))
+		fmt.Fprint(os.Stderr, textutils.RuneString(strlen, ' '))
+		fmt.Fprint(os.Stderr, textutils.RuneString(strlen, '\b'))
 	}
 
 	clipContent, err := clipboard.ReadAll()

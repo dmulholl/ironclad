@@ -73,7 +73,7 @@ func inputViaEditor(template string) string {
 
 	_, err = exec.LookPath(editor)
 	if err != nil {
-		exit("cannot locate text editor:", editor)
+		exit(err)
 	}
 
 	// Write the template to the temporary file.
@@ -108,12 +108,8 @@ func stdoutIsTerminal() bool {
 }
 
 // Exit with an error message and non-zero error code.
-func exit(objects ...interface{}) {
-	fmt.Fprint(os.Stderr, "Error:")
-	for _, obj := range objects {
-		fmt.Fprintf(os.Stderr, " %v", obj)
-	}
-	fmt.Fprint(os.Stderr, ".\n")
+func exit(message any) {
+	fmt.Fprintf(os.Stderr, "error: %s\n", message)
 	os.Exit(1)
 }
 

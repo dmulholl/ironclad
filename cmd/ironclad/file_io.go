@@ -24,10 +24,10 @@ func loadDB(args *argo.ArgParser) (filename, masterpass string, db *database.DB)
 	}
 	filename, err := filepath.Abs(filename)
 	if err != nil {
-		exit("loadDB:", err)
+		exit(err)
 	}
 	if _, err := os.Stat(filename); os.IsNotExist(err) {
-		exit("file does not exist:", filename)
+		exit(err)
 	}
 
 	// Look for a cached master password from the application's last run. This

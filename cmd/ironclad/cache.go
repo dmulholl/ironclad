@@ -63,12 +63,12 @@ func setCachedPassword(filename, masterpass, cachepass string) {
 	// Write a new authentication token to the config file.
 	bytes, err := crypto.RandBytes(32)
 	if err != nil {
-		exit("setCachedPassword():", err)
+		exit(err)
 	}
 	token := base64.StdEncoding.EncodeToString(bytes)
 	err = config.Set("token", token)
 	if err != nil {
-		exit("setCachedPassword():", err)
+		exit(err)
 	}
 }
 

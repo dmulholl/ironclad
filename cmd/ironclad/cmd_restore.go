@@ -58,7 +58,11 @@ func restoreCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 
 	printCompactList(list, len(db.Inactive()), filepath.Base(filename))
 
-	answer := input("  Restore the entries listed above? (y/n): ")
+	answer, err := input("  Restore the entries listed above? (y/n): ")
+	if err != nil {
+		return err
+	}
+
 	if strings.ToLower(answer) != "y" {
 		fmt.Println("  Operation aborted.")
 		printLineOfChar("─")

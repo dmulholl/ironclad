@@ -26,7 +26,10 @@ func getDatabaseFilename(argParser *argo.ArgParser) (string, error) {
 
 		filename = cached
 		if !found {
-			filename = input("Database file: ")
+			filename, err = input("Database file: ")
+			if err != nil {
+				return "", err
+			}
 		}
 	}
 
@@ -66,7 +69,10 @@ func loadDB(filename string) (string, *database.DB, error) {
 		}
 	}
 
-	masterpass := inputMasked("Master Password: ")
+	masterpass, err := inputMasked("Master Password: ")
+	if err != nil {
+		return "", nil, err
+	}
 
 	data, err := fileio.Load(filename, masterpass)
 	if err != nil {

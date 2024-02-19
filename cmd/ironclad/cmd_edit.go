@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"path/filepath"
 	"strings"
 
@@ -92,50 +93,75 @@ func editCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 
 	if cmdParser.Found("title") || (allFields && editField("title")) {
 		fmt.Println("  Old title: " + entry.Title)
-		entry.Title = input("  New title: ")
+		entry.Title, err = input("  New title: ")
+		if err != nil {
+			return err
+		}
 		printLineOfChar("·")
 	}
 
 	if cmdParser.Found("url") || (allFields && editField("url")) {
 		fmt.Println("  Old URL: " + entry.Url)
-		entry.Url = input("  New URL: ")
+		entry.Url, err = input("  New URL: ")
+		if err != nil {
+			return err
+		}
 		printLineOfChar("·")
 	}
 
 	if cmdParser.Found("username") || (allFields && editField("username")) {
 		fmt.Println("  Old username: " + entry.Username)
-		entry.Username = input("  New username: ")
+		entry.Username, err = input("  New username: ")
+		if err != nil {
+			return err
+		}
 		printLineOfChar("·")
 	}
 
 	if cmdParser.Found("password") || (allFields && editField("password")) {
 		fmt.Println("  Old password: " + entry.GetPassword())
-		entry.SetPassword(input("  New password: "))
+		newPassword, err := input("  New password: ")
+		if err != nil {
+			return err
+		}
+		entry.SetPassword(newPassword)
 		printLineOfChar("·")
 	}
 
 	if cmdParser.Found("email") || (allFields && editField("email")) {
 		fmt.Println("  Old email: " + entry.Email)
-		entry.Email = input("  New email: ")
+		entry.Email, err = input("  New email: ")
+		if err != nil {
+			return err
+		}
 		printLineOfChar("·")
 	}
 
 	if cmdParser.Found("tags") || (allFields && editField("tags")) {
 		fmt.Println("  Old tags: " + strings.Join(entry.Tags, ", "))
-		tagstring := input("  New tags: ")
+		tagstring, err := input("  New tags: ")
+		if err != nil {
+			return err
+		}
+
 		tagslice := strings.Split(tagstring, ",")
-		entry.Tags = make([]string, 0)
+		entry.Tags = []string{}
+
 		for _, tag := range tagslice {
 			tag = strings.TrimSpace(tag)
 			if tag != "" {
 				entry.Tags = append(entry.Tags, tag)
 			}
 		}
+
 		printLineOfChar("·")
 	}
 
 	if cmdParser.Found("notes") || (allFields && editField("notes")) {
-		entry.Notes = inputViaEditor(entry.Notes)
+		entry.Notes, err = inputViaEditor(entry.Notes)
+		if err != nil {
+			return err
+		}
 	}
 
 	if err := saveDB(filename, masterpass, db); err != nil {
@@ -149,8 +175,13 @@ func editCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 }
 
 // Ask the user whether they want to edit the specified field.
-func editField(field string) bool {
-	answer := input("  Edit " + field + "? (y/n) ")
+func editField(fieldname string) bool {
+	answer, err := input("  Edit " + fieldname + "? (y/n) ")
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "error: %s\n", err)
+		os.Exit(1)
+	}
+
 	printLineOfChar("·")
 	return strings.ToLower(answer) == "y"
 }

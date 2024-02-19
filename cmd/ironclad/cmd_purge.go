@@ -45,7 +45,11 @@ func purgeCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 
 	printCompactList(list, len(list), filepath.Base(filename))
 
-	answer := input("  Purge the entries listed above? (y/n): ")
+	answer, err := input("  Purge the entries listed above? (y/n): ")
+	if err != nil {
+		return err
+	}
+
 	if strings.ToLower(answer) != "y" {
 		fmt.Println("  Operation aborted.")
 		printLineOfChar("─")

@@ -46,15 +46,36 @@ func addCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 
 	// Fetch user input.
 	printHeading("Add Entry", filepath.Base(filename))
-	entry.Title = input("  Title:      ")
-	entry.Url = input("  URL:        ")
-	entry.Username = input("  Username:   ")
-	entry.Email = input("  Email:      ")
+
+	entry.Title, err = input("  Title:      ")
+	if err != nil {
+		return err
+	}
+
+	entry.Url, err = input("  URL:        ")
+	if err != nil {
+		return err
+	}
+
+	entry.Username, err = input("  Username:   ")
+	if err != nil {
+		return err
+	}
+
+	entry.Email, err = input("  Email:      ")
+	if err != nil {
+		return err
+	}
 
 	// Get or autogenerate a password.
 	printLineOfChar("─")
 	prompt := "  Enter a password or press return to automatically generate one:\n\u001B[90m  >>\u001B[0m  "
-	password := input(prompt)
+
+	password, err := input(prompt)
+	if err != nil {
+		return err
+	}
+
 	password = strings.TrimSpace(password)
 	if password == "" {
 		generatedPassword, err := genPassword(DefaultLength, true, true, true, true, false)
@@ -63,12 +84,18 @@ func addCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 		}
 		password = generatedPassword
 	}
+
 	entry.SetPassword(password)
 
 	// Split tags on commas.
 	printLineOfChar("─")
 	prompt = "  Enter a comma-separated list of tags for this entry:\n\u001B[90m  >>\u001B[0m  "
-	tagstring := input(prompt)
+
+	tagstring, err := input(prompt)
+	if err != nil {
+		return err
+	}
+
 	for _, tag := range strings.Split(tagstring, ",") {
 		tag = strings.TrimSpace(tag)
 		if tag != "" {
@@ -78,10 +105,19 @@ func addCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 
 	// Add a note?
 	printLineOfChar("─")
-	answer := input("  Add a note to this entry? (y/n): ")
-	if strings.ToLower(answer) == "y" {
-		entry.Notes = inputViaEditor("")
+
+	answer, err := input("  Add a note to this entry? (y/n): ")
+	if err != nil {
+		return err
 	}
+
+	if strings.ToLower(answer) == "y" {
+		entry.Notes, err = inputViaEditor("")
+		if err != nil {
+			return err
+		}
+	}
+
 	printLineOfChar("─")
 
 	db.Add(entry)

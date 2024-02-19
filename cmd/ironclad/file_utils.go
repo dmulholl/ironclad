@@ -44,7 +44,7 @@ func getDatabaseFilename(argParser *argo.ArgParser) (string, error) {
 
 // Load a database from an encrypted file. Returns (masterpass, database, error).
 func loadDB(filename string) (string, *database.DB, error) {
-	if masterpass, success := getCachedPassword(filename); success {
+	if masterpass, found := getCachedPassword(filename); found {
 		data, err := fileio.Load(filename, masterpass)
 		if err == nil {
 			db, err := database.FromJSON(data)

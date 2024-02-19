@@ -59,12 +59,14 @@ func setCachedPassword(filename, masterpass, cachepass string) error {
 }
 
 // Fetch the cached master password (if it exists) from the application's last run.
-func getCachedPassword(filename string) (masterpass string, success bool) {
+func getCachedPassword(filename string) (string, bool) {
 	// Read the authentication token from the config file.
 	token, found, err := config.Get("token")
 	if err != nil {
-		exit(err)
+		fmt.Fprintf(os.Stderr, "error: failed to read token from config file: %s\n", err)
+		return "", false
 	}
+
 	if !found {
 		return "", false
 	}
@@ -72,8 +74,11 @@ func getCachedPassword(filename string) (masterpass string, success bool) {
 	// Attempt to make a connection to the cache server.
 	client, err := cache.NewClient()
 	if err != nil {
+		// Errors are expected here, e.g. there may be no cache server running.
+		// We'll just fall back on asking the user for their password.
 		return "", false
 	}
+
 	defer client.Close()
 
 	// Check if the server has a cache entry for the database file.
@@ -83,17 +88,17 @@ func getCachedPassword(filename string) (masterpass string, success bool) {
 
 	// Attempt to retrieve the master password from the server.
 	// Try first using an empty string as the cache password.
-	masterpass, err = client.GetPass(filename, "", token)
+	masterpass, err := client.GetPass(filename, "", token)
 	if err == nil {
 		return masterpass, true
 	}
 
-	// The empty string didn't work. Ask the user for their cache password
-	// and try again.
+	// The empty string didn't work. Ask the user for their cache password and try again.
 	cachepass := inputMasked("Cache Password: ")
+
 	masterpass, err = client.GetPass(filename, cachepass, token)
 	if err != nil {
-		fmt.Printf("error: %v\n", err)
+		fmt.Fprintf(os.Stderr, "error: %s\n", err)
 		return "", false
 	}
 

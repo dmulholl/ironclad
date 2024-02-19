@@ -13,11 +13,11 @@ import (
 )
 
 // Cache the database password for the application's next run.
-func setCachedPassword(filename, masterpass, cachepass string) {
+func setCachedPassword(filename, masterpass, cachepass string) error {
 	// If the cache timeout has been set to 0, do nothing.
 	timeout, found, _ := config.Get("cache-timeout-minutes")
 	if found && timeout == "0" {
-		return
+		return nil
 	}
 
 	// Attempt to connect to the cache server. If we can't make a connection,
@@ -32,22 +32,30 @@ func setCachedPassword(filename, masterpass, cachepass string) {
 		time.Sleep(time.Millisecond * 100)
 		client, err = cache.NewClient()
 		if err != nil {
-			return
+			return nil
 		}
 	}
+
 	defer client.Close()
-	client.SetPass(filename, masterpass, cachepass)
+
+	err = client.SetPass(filename, masterpass, cachepass)
+	if err != nil {
+		return fmt.Errorf("call to cache server failed: %w", err)
+	}
 
 	// Write a new authentication token to the config file.
 	bytes, err := crypto.RandBytes(32)
 	if err != nil {
-		exit(err)
+		return fmt.Errorf("failed to generate token: %w", err)
 	}
+
 	token := base64.StdEncoding.EncodeToString(bytes)
 	err = config.Set("token", token)
 	if err != nil {
-		exit(err)
+		return fmt.Errorf("failed to write token to config file: %w", err)
 	}
+
+	return nil
 }
 
 // Fetch the cached master password (if it exists) from the application's last run.

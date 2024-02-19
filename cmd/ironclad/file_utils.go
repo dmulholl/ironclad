@@ -57,7 +57,11 @@ func loadDB(filename string) (string, *database.DB, error) {
 				return "", nil, fmt.Errorf("failed to cache filename: %w", err)
 			}
 
-			setCachedPassword(filename, masterpass, db.CachePass)
+			err = setCachedPassword(filename, masterpass, db.CachePass)
+			if err != nil {
+				return "", nil, fmt.Errorf("failed to cache master password: %w", err)
+			}
+
 			return masterpass, db, nil
 		}
 	}
@@ -79,7 +83,11 @@ func loadDB(filename string) (string, *database.DB, error) {
 		return "", nil, fmt.Errorf("failed to cache filename: %w", err)
 	}
 
-	setCachedPassword(filename, masterpass, db.CachePass)
+	err = setCachedPassword(filename, masterpass, db.CachePass)
+	if err != nil {
+		return "", nil, fmt.Errorf("failed to cache master password: %w", err)
+	}
+
 	return masterpass, db, nil
 }
 

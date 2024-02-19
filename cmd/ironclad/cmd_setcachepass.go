@@ -55,6 +55,5 @@ func cachepassCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 		return err
 	}
 
-	setCachedPassword(filename, masterpass, newCachePass)
-	return nil
+	return setCachedPassword(filename, masterpass, newCachePass)
 }

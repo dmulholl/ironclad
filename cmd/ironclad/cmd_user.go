@@ -77,6 +77,5 @@ func userCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 		return nil
 	}
 
-	writeToClipboard(user)
-	return nil
+	return writeToClipboard(user)
 }

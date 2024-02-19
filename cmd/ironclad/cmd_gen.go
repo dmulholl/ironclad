@@ -104,8 +104,7 @@ func genCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 		return nil
 	}
 
-	writeToClipboard(password)
-	return nil
+	return writeToClipboard(password)
 }
 
 // Generate a new password.

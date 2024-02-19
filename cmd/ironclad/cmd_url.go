@@ -70,6 +70,5 @@ func urlCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 		return nil
 	}
 
-	writeToClipboard(entry.Url)
-	return nil
+	return writeToClipboard(entry.Url)
 }

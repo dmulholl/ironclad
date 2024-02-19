@@ -13,37 +13,37 @@ import (
 
 // Writes a string to the system clipboard. Automatically overwrites the clipboard after a
 // customizable delay read from the config file.
-func writeToClipboard(value string) {
+func writeToClipboard(value string) error {
 	if clipboard.Unsupported {
-		exit("clipboard functionality is not supported on this system")
+		return fmt.Errorf("clipboard functionality is not supported on this system")
 	}
 
 	// Default timeout.
-	milliseconds := 15000
+	timeoutMs := 15000
 
 	// Check for a custom timeout.
-	strval, found, err := config.Get("clipboard-timeout-seconds")
+	customTimeout, found, err := config.Get("clipboard-timeout-seconds")
 	if err != nil {
-		exit(err)
+		return fmt.Errorf("failed to read clipboard timeout from config file: %w", err)
 	}
 
 	if found {
-		seconds, err := strconv.ParseInt(strval, 10, 32)
+		timeoutS, err := strconv.ParseInt(customTimeout, 10, 32)
 		if err != nil {
-			exit(err)
+			return fmt.Errorf("failed to parse config value for clipboard-timeout-seconds: %w", err)
 		}
-		milliseconds = int(seconds) * 1000
+		timeoutMs = int(timeoutS) * 1000
 	}
 
 	err = clipboard.WriteAll(value)
 	if err != nil {
-		exit(err)
+		return fmt.Errorf("failed to write to clipboard: %w", err)
 	}
 
 	fmt.Fprint(os.Stderr, "Clipboard: ")
 
 	intervals := terminalWidth() - 20
-	ms_per_interval := milliseconds / intervals
+	ms_per_interval := timeoutMs / intervals
 	strlen := intervals + 7
 
 	for count := 0; count <= intervals; count++ {
@@ -52,7 +52,7 @@ func writeToClipboard(value string) {
 		fmt.Fprint(os.Stderr, textutils.RuneString(intervals-count, ' '))
 		fmt.Fprint(os.Stderr, "▐")
 
-		ms_remaining := milliseconds - count*ms_per_interval
+		ms_remaining := timeoutMs - count*ms_per_interval
 		fmt.Fprintf(os.Stderr, " %02.fs ", float64(ms_remaining)/1000)
 
 		time.Sleep(time.Duration(ms_per_interval) * time.Millisecond)
@@ -62,18 +62,21 @@ func writeToClipboard(value string) {
 		fmt.Fprint(os.Stderr, textutils.RuneString(strlen, '\b'))
 	}
 
-	clipContent, err := clipboard.ReadAll()
+	clipboardContent, err := clipboard.ReadAll()
 	if err != nil {
-		exit(err)
+		return fmt.Errorf("failed to read from clipboard: %w", err)
 	}
 
-	if clipContent == value {
-		err = clipboard.WriteAll("[Clipboard overwritten by Ironclad]")
-		if err != nil {
-			exit(err)
-		}
-		fmt.Fprintln(os.Stderr, "[CLEARED]")
-	} else {
+	if clipboardContent != value {
 		fmt.Fprintln(os.Stderr, "[ALTERED]")
+		return nil
 	}
+
+	err = clipboard.WriteAll("[CLIPBOARD OVERWRITTEN BY IRONCLAD]")
+	if err != nil {
+		return fmt.Errorf("failed to overwrite clipboard: %w", err)
+	}
+
+	fmt.Fprintln(os.Stderr, "[CLEARED]")
+	return nil
 }

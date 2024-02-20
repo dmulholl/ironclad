@@ -24,7 +24,7 @@
                 <p class="tagline">A command line password manager.</p>
             
             
-                <p class="version">Version 2.6.0</p>
+                <p class="version">Version 2.7.0</p>
             
             <nav class="menu">
                 <input id="menu-check" type="checkbox"/>
@@ -46,25 +46,24 @@
 
         <article class="main">
             <header class="title">
-                <h1>Getting Started</h1>
+                <h1>Quickstart Tutorial</h1>
                 
                 <hr>
             </header>
-            <p>
-Download the latest version of Ironclad from the <a href="releases.html">releases</a> page, unzip the package and place the binary somewhere on your system's <a href="https://alistapart.com/article/the-path-to-enlightenment">$PATH</a>.
-</p>
-<h3 id="initialize-a-new-database">
+            <h3 id="initialize-a-new-database">
 Initialize a new database
 </h3>
 <p>
-Use the <code>init</code> command to initialize a new password database. This command takes a single argument specifying the location of the database file.
+Use the <code>init</code> command to initialize a new password database.
+This command takes a single argument specifying the location of the database file:
 </p>
 <pre>
-$ ironclad init my/secret/passwords.db
+ironclad init my/secret/passwords.db
 </pre>
 <p>
 Ironclad will create a new database file at the specified location.
-You can call the file anything you like &mdash; Ironclad doesn't require any particular file extension for databases. (In fact, database files have no special markers and are indistinguishable from random data.)
+You can call the file anything you like &mdash; Ironclad doesn't require any particular file extension for databases.
+(In fact, database files have no special markers and are indistinguishable from random data.)
 </p>
 <p>
 You'll be prompted to enter two passwords: a <b>master password</b> which will be used to encrypt your
@@ -73,21 +72,19 @@ it's temporarily cached in memory between application runs. (Ironclad defaults t
 master password for 15 minutes but you can customize this timeout using the <code>config</code> command.)
 </p>
 <p>
-Think of it like this: your master password protects your database file from the world so it needs to be long and complex. Your cache password protects your master password from people who have access to your computer while it's cached in memory; this is a much smaller attack surface so it can be considerably shorter and easier to type.
+Think of it like this: your master password protects your database file from the world so it needs to be long and complex. Your cache password protects your master password from people who have access to your computer while it's cached in memory &mdash; this is a much smaller attack surface so it can be considerably shorter and easier to type.
 </p>
 <p>
-(You can set your cache password to an empty string which will disable the prompt completely. This
- means that your master password is effectively unencrypted while cached in memory, but you may
- judge that the extra convenience is worth the risk.)
+(Setting your cache password to an empty string will disable the prompt completely. This means that your master password is effectively unencrypted while cached in memory, but you may judge that the extra convenience is worth the risk.)
 </p>
 <h3 id="add-entries">
 Add entries
 </h3>
 <p>
-Use the <code>add</code> command to add a new entry to your database.
+Use the <code>add</code> command to add a new entry to your database:
 </p>
 <pre>
-$ ironclad add
+ironclad add
 </pre>
 <p>
 You'll be prompted to supply values for the entry's fields &mdash; simply press return to leave any unwanted field empty.
@@ -96,23 +93,23 @@ You'll be prompted to supply values for the entry's fields &mdash; simply press 
 View entries
 </h3>
 <p>
-Use the <code>list</code> command to see a list of all the database's entries.
+Use the <code>list</code> command to see a list of all the database's entries:
 </p>
 <pre>
-$ ironclad list
+ironclad list
 </pre>
 <p>
-Use the <code>show</code> command to view the full details of each entry in the list.
+Use the <code>show</code> command to view the full details of each entry in the list:
 </p>
 <pre>
-$ ironclad show
+ironclad show
 </pre>
 <p>
-You can specify the entries to <code>list</code> or <code>show</code> by ID or by title:
+You can specify the entries to <code>list</code> or <code>show</code> by ID or by title, e.g.
 </p>
 <pre>
-$ ironclad show 123
-$ ironclad show gmail
+ironclad show 123
+ironclad show gmail
 </pre>
 <p>
 Titles are checked for a case-insensitive substring match.
@@ -124,7 +121,7 @@ Copy a password or username
 Use the <code>pass</code> command to copy a password to the clipboard. The clipboard is automatically overwritten after a default timeout of 15 seconds. (You can customize this timeout using the <code>config</code> command.)
 </p>
 <pre>
-$ ironclad pass &lt;entry&gt;
+ironclad pass &lt;entry&gt;
 </pre>
 <p>
 You can specify the entry by its ID or by any unique set of case-insensitive substrings of its title.
@@ -136,16 +133,16 @@ The <code>user</code> command works identically for usernames.
 Command line help
 </h3>
 <p>
-Use the <code>--help</code> flag to view Ironclad's command line help, including a list of all available commands.
+Use the <code>--help</code> flag to view Ironclad's command line help, including a list of all available commands:
 </p>
 <pre>
-$ ironclad --help
+ironclad --help
 </pre>
 <p>
-Use the <code>help</code> command to view detailed help for any individual command.
+Use the <code>help</code> command to view detailed help for any individual command:
 </p>
 <pre>
-$ ironclad help &lt;command&gt;
+ironclad help &lt;command&gt;
 </pre>
         </article>
 

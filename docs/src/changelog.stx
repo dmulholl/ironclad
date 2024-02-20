@@ -4,6 +4,12 @@ meta_title: Ironclad &mdash; Changelog
 ---
 
 
+### 2.7.0
+
+* Internal refactor. No significant changes for users.
+
+
+
 ### 2.6.0
 
 * Include symbols in the default character pool.
@@ -54,7 +60,7 @@ meta_title: Ironclad &mdash; Changelog
 
 ### 2.0.0
 
-* New database format. You can find [instructions here](@root/upgrade//) for migrating a V1 database to V2.
+* New database format.
 
 * New cache password to protect the master password while it's temporarily cached in memory.
 

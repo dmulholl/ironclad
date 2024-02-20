@@ -6,7 +6,7 @@
         <title>Ironclad &mdash; a command line password manager</title>
 
         
-            <meta name="description" content="Ironclad is a simple command line utility for creating and managing encrypted password databases.">
+            <meta name="description" content="A command line utility for creating and managing encrypted password databases.">
         
 
         <link rel="stylesheet" href="assets/fonts.css">
@@ -26,7 +26,7 @@
                 <p class="tagline">A command line password manager.</p>
             
             
-                <p class="version">Version 2.6.0</p>
+                <p class="version">Version 2.7.0</p>
             
             <nav class="menu">
                 <input id="menu-check" type="checkbox"/>
@@ -123,7 +123,7 @@ Ironclad is written in Go. If you have a Go compiler installed
 you can run:
 </p>
 <pre>
-$ go install github.com/dmulholl/ironclad/ironclad@latest
+go install github.com/dmulholl/ironclad/ironclad@latest
 </pre>
 <p>
 This will download, compile, and install the latest version of the application
@@ -136,7 +136,7 @@ You can find the source files on <a href="https://github.com/dmulholl/ironclad">
 Security
 </h3>
 <p>
-Database files are encrypted using industry-standard cryptography.<sup class="footnote" id="fnref:1"><a href="#fn:1">1</a></sup>
+Database files are encrypted using industry-standard cryptography.
 </p>
 <ul>
 <li>
@@ -155,28 +155,11 @@ Encryption keys are generated using 100,000 rounds of the PBKDF2 key derivation 
 <p>
 Encrypted files have no special markers and are indistinguishable from random data.
 </p>
-<p>
-Note that the application itself is a cross-platform utility written in a high-level, garbage-collected language. It has <i>not</i> been hardened against system-local threats, e.g. malicious code running with user-level privileges on the user's system, or adversaries with physical access to the user's hardware.
-</p>
 <h3 id="file-encryption">
 File Encryption
 </h3>
 <p>
 The application doubles as a simple file encryption utility using the <code>encrypt</code> and <code>decrypt</code> commands. Files are encrypted using the same 256-bit AES protocol as password databases. Original files are unaffected by either encryption or decryption.
-</p>
-<h3 id="rationale">
-Rationale
-</h3>
-<p>
-I built this cross-platform utility as a prototype implementation of Ironclad's core idea &mdash; an open-source password manager organized around a simple JSON data store.
-Complexity is the enemy of security, so Ironclad is as uncomplicated as possible. A password
-database is a simple text file which you can view using the <code>dump</code> command:
-</p>
-<pre>
-$ ironclad dump
-</pre>
-<p>
-This file is encrypted using 256-bit AES, chosen as the most widely-supported secure encryption algorithm available, with implementations in every popular programming language.
 </p>
 <h3 id="license">
 License
@@ -184,23 +167,6 @@ License
 <p>
 Zero-Clause BSD (0BSD).
 </p>
-<h3 id="notes">
-Notes
-</h3>
-<dl class="footnotes">
-<div id="fn:1">
-<dt>
-<a href="#fnref:1">
-1
-</a>
-</dt>
-<dd>
-<p>
-Ironclad deliberately uses boring cryptography. I originally intended to use ChaCha20-Poly1305 but it wasn't available in the Go standard library at the time. I realised that being easy to reimplement in different languages and environments was one of my key design goals for Ironclad so I chose instead the most widely-supported protocols from the set of secure industry-standard algorithms.
-</p>
-</dd>
-</div>
-</dl>
         </article>
 
         

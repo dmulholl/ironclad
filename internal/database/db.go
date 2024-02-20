@@ -17,7 +17,7 @@ func New(cachepass string) *DB {
 	return &DB{
 		Version:   2,
 		CachePass: cachepass,
-		Entries:   make([]*Entry, 0),
+		Entries:   []*Entry{},
 	}
 }
 
@@ -58,14 +58,16 @@ func (db *DB) Import(data []byte) (int, error) {
 	return len(entries), nil
 }
 
-// Add inserts a new entry into the database.
-func (db *DB) Add(entry *Entry) {
-	if len(db.Entries) == 0 {
-		entry.Id = 1
-	} else {
+// Add inserts a new entry into the database. Returns the new entry's ID.
+func (db *DB) Add(entry *Entry) int {
+	entry.Id = 1
+
+	if len(db.Entries) > 0 {
 		entry.Id = db.Entries[len(db.Entries)-1].Id + 1
 	}
+
 	db.Entries = append(db.Entries, entry)
+	return entry.Id
 }
 
 // SetActive sets an entry's active status to true.

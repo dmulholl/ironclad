@@ -11,7 +11,7 @@ import (
 	"github.com/dmulholl/argo/v4"
 )
 
-const version = "3.0.0-dev"
+const version = "3.0.0-rc1"
 
 var helptext = `
 Usage: ironclad [command]

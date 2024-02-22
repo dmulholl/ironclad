@@ -52,7 +52,7 @@ var (
 	ErrInvalidHMAC         = errors.New("authentication failed")
 )
 
-// Encrypt encrypts a plaintext slice using a 32-byte key.
+// Encrypt encrypts plaintext using a 32-byte key.
 func Encrypt(plaintext, key []byte) ([]byte, error) {
 	if len(key) != KeySize {
 		return nil, ErrInvalidKeySize
@@ -83,7 +83,7 @@ func Encrypt(plaintext, key []byte) ([]byte, error) {
 	return ciphertext, nil
 }
 
-// Decrypt decrypts a ciphertext slice using a 32-byte key.
+// Decrypt decrypts ciphertext using a 32-byte key.
 func Decrypt(ciphertext, key []byte) ([]byte, error) {
 	if len(key) != KeySize {
 		return nil, ErrInvalidKeySize

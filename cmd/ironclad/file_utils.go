@@ -8,7 +8,7 @@ import (
 	"github.com/dmulholl/argo/v4"
 	"github.com/dmulholl/ironclad/internal/config"
 	"github.com/dmulholl/ironclad/internal/database"
-	"github.com/dmulholl/ironclad/internal/fileio"
+	"github.com/dmulholl/ironclad/internal/ioutils"
 )
 
 // Determine the database filename.
@@ -48,7 +48,7 @@ func getDatabaseFilename(argParser *argo.ArgParser) (string, error) {
 // Load a database from an encrypted file. Returns (masterpass, database, error).
 func loadDB(filename string) (string, *database.DB, error) {
 	if masterpass, found := getCachedPassword(filename); found {
-		data, err := fileio.Load(filename, masterpass)
+		data, err := ioutils.Load(filename, masterpass)
 		if err == nil {
 			db, err := database.FromJSON(data)
 			if err != nil {
@@ -74,7 +74,7 @@ func loadDB(filename string) (string, *database.DB, error) {
 		return "", nil, err
 	}
 
-	data, err := fileio.Load(filename, masterpass)
+	data, err := ioutils.Load(filename, masterpass)
 	if err != nil {
 		return "", nil, fmt.Errorf("failed to load database: %w", err)
 	}
@@ -105,7 +105,7 @@ func saveDB(filename, password string, db *database.DB) error {
 	}
 
 	// Encrypt the serialized database and write it to disk.
-	err = fileio.Save(filename, password, data)
+	err = ioutils.Save(filename, password, data)
 	if err != nil {
 		return fmt.Errorf("failed to save database: %w", err)
 	}

@@ -5,7 +5,7 @@ import (
 	"os"
 
 	"github.com/dmulholl/argo/v4"
-	"github.com/dmulholl/ironclad/internal/fileio"
+	"github.com/dmulholl/ironclad/internal/ioutils"
 )
 
 var decryptCmdHelptext = `
@@ -47,7 +47,7 @@ func decryptCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 		return err
 	}
 
-	content, err := fileio.Load(inputfile, password)
+	content, err := ioutils.Load(inputfile, password)
 	if err != nil {
 		return fmt.Errorf("failed to load file: %w", err)
 	}

@@ -31,9 +31,7 @@ func input(prompt string) (string, error) {
 
 // Reads masked input from stdin.
 func inputMasked(prompt string) (string, error) {
-	fmt.Fprint(os.Stderr, prompt)
-
-	input, err := gopass.GetPasswdMasked()
+	input, err := gopass.GetPasswdPrompt(prompt, true, os.Stdin, os.Stderr)
 	if err != nil {
 		return "", err
 	}

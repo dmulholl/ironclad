@@ -6,7 +6,7 @@ meta_title: Ironclad &mdash; Changelog
 
 ### 2.7.0
 
-* Internal refactor. No significant changes for users.
+* The `encrypt` and `decrypt` commands now default to reading from standard input and writing to standard output.
 
 
 

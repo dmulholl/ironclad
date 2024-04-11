@@ -10,8 +10,9 @@ import (
 var userCmdHelptext = `
 Usage: ironclad user <entry>
 
-  Copies a stored username to the system clipboard or prints it to stdout. This
-  command will fall back on the email address if the username field is empty.
+  Copies a stored username to the system clipboard.
+
+  Defaults to the email address if the username field is empty.
 
   The entry can be specified by its ID or by any unique set of case-insensitive
   substrings of its title.
@@ -24,7 +25,7 @@ Options:
 
 Flags:
   -h, --help                Print this command's help text and exit.
-  -p, --print               Print the username to stdout.
+  -p, --print               Print the username to the standard output stream.
 `
 
 func registerUserCmd(parser *argo.ArgParser) {
@@ -63,7 +64,6 @@ func userCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 
 	entry := matchingEntries[0]
 
-	// Return the email field if the username field is empty.
 	user := entry.Username
 	if user == "" {
 		user = entry.Email
@@ -77,5 +77,6 @@ func userCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 		return nil
 	}
 
+	fmt.Printf("Copying to clipboard: %s\n", user)
 	return writeToClipboard(user)
 }

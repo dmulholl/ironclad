@@ -11,7 +11,7 @@ import (
 var passCmdHelptext = `
 Usage: ironclad pass <entry>
 
-  Copies a stored password to the system clipboard or prints it to stdout.
+  Copies a stored password to the system clipboard.
 
   The entry can be specified by its ID or by any unique set of case-insensitive
   substrings of its title.
@@ -24,7 +24,7 @@ Options:
 
 Flags:
   -h, --help                Print this command's help text and exit.
-  -p, --print               Print the password to stdout.
+  -p, --print               Print the password to the standard output stream.
   -r, --readable            Add spaces to the password for readability.
 `
 
@@ -78,5 +78,5 @@ func passCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 		return nil
 	}
 
-	return writeToClipboard(password)
+	return writeToClipboardWithTimeout(password)
 }

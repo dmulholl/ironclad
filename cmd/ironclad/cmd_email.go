@@ -7,10 +7,10 @@ import (
 	"github.com/dmulholl/argo/v4"
 )
 
-var urlCmdHelptext = `
-Usage: ironclad url <entry>
+var emailCmdHelptext = `
+Usage: ironclad email <entry>
 
-  Copies a stored url to the system clipboard.
+  Copies a stored email address to the system clipboard.
 
   The entry can be specified by its ID or by any unique set of case-insensitive
   substrings of its title.
@@ -23,18 +23,18 @@ Options:
 
 Flags:
   -h, --help                Print this command's help text and exit.
-  -p, --print               Print the url to the standard output stream.
+  -p, --print               Print the address to the standard output stream.
 `
 
-func registerUrlCmd(parser *argo.ArgParser) {
-	cmdParser := parser.NewCommand("url")
-	cmdParser.Helptext = urlCmdHelptext
-	cmdParser.Callback = urlCmdCallback
+func registerEmailCmd(parser *argo.ArgParser) {
+	cmdParser := parser.NewCommand("email")
+	cmdParser.Helptext = emailCmdHelptext
+	cmdParser.Callback = emailCmdCallback
 	cmdParser.NewStringOption("file f", "")
 	cmdParser.NewFlag("print p")
 }
 
-func urlCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
+func emailCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 	if len(cmdParser.Args) == 0 {
 		return fmt.Errorf("missing entry argument")
 	}
@@ -63,13 +63,13 @@ func urlCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 	entry := matchingEntries[0]
 
 	if cmdParser.Found("print") {
-		fmt.Print(entry.Url)
+		fmt.Print(entry.Email)
 		if stdoutIsTerminal() {
 			fmt.Println()
 		}
 		return nil
 	}
 
-	fmt.Printf("Copying to clipboard: %s\n", entry.Url)
-	return writeToClipboard(entry.Url)
+	fmt.Printf("Copying to clipboard: %s\n", entry.Email)
+	return writeToClipboard(entry.Email)
 }

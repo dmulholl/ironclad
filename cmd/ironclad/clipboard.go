@@ -11,9 +11,23 @@ import (
 	"github.com/dmulholl/ironclad/internal/textutils"
 )
 
-// Writes a string to the system clipboard. Automatically overwrites the clipboard after a
-// customizable delay read from the config file.
+// Writes a string to the system clipboard.
 func writeToClipboard(value string) error {
+	if clipboard.Unsupported {
+		return fmt.Errorf("clipboard functionality is not supported on this system")
+	}
+
+	err := clipboard.WriteAll(value)
+	if err != nil {
+		return fmt.Errorf("failed to write to clipboard: %w", err)
+	}
+
+	return nil
+}
+
+// Writes a string to the system clipboard. Automatically overwrites the clipboard after a
+// customizable timeout read from the config file.
+func writeToClipboardWithTimeout(value string) error {
 	if clipboard.Unsupported {
 		return fmt.Errorf("clipboard functionality is not supported on this system")
 	}

@@ -11,7 +11,7 @@ import (
 	"github.com/dmulholl/argo/v4"
 )
 
-const version = "2.7.0"
+const version = "2.8.0"
 
 var helptext = `
 Usage: ironclad [command]
@@ -25,6 +25,7 @@ Flags:
 Basic Commands:
   add               Add a new entry to a password database.
   edit              Edit an existing database entry.
+  email             Copy an email address to the clipboard.
   gen               Generate a new random password.
   go                Open an entry's URL in the default browser.
   init              Initialize a new password database.
@@ -83,6 +84,7 @@ func main() {
 	registerUserCmd(parser)
 	registerShowCmd(parser)
 	registerGoCmd(parser)
+	registerEmailCmd(parser)
 
 	if err := parser.ParseOsArgs(); err != nil {
 		fmt.Fprintf(os.Stderr, "error: %s\n", err)

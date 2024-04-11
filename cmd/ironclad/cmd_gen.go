@@ -15,15 +15,14 @@ const (
 	PoolUpper     = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	PoolDigits    = "0123456789"
 	PoolSymbols   = `!"$%^&*()_+=-[]{};'#:@~,./<>?|`
-	PoolSimilars  = "il1|oO0"
+	PoolSimilars  = "Il1oO0"
 	DefaultLength = 24
 )
 
 var genCmdHelptext = fmt.Sprintf(`
 Usage: ironclad gen [length]
 
-  Generates a random ASCII password. By default, the password is copied to the
-  system clipboard. Alternatively, the password can be printed to stdout.
+  Generates a random ASCII password and copies it to the system clipboard.
 
   The default password length is 24 characters. The default character pool
   consists of uppercase letters, lowercase letters, digits, and symbols.
@@ -49,7 +48,7 @@ Character Flags:
 Flags:
   -x, --exclude-similar     Exclude similar characters.
   -h, --help                Print this command's help text and exit.
-  -p, --print               Print the password to stdout.
+  -p, --print               Print the password to the standard output stream.
   -r, --readable            Add spaces for readability.
 `, PoolSymbols, PoolSimilars)
 
@@ -104,7 +103,7 @@ func genCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 		return nil
 	}
 
-	return writeToClipboard(password)
+	return writeToClipboardWithTimeout(password)
 }
 
 // Generate a new password.

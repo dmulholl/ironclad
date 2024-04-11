@@ -6,4 +6,4 @@ title = "Ironclad"
 
 tagline = "A command line password manager."
 
-version = "Version 2.7.0"
+version = "Version 2.8.0"

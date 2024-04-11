@@ -4,6 +4,12 @@ meta_title: Ironclad &mdash; Changelog
 ---
 
 
+### 2.8.0
+
+* New `email` command for copying stored email addresses to the system clipboard.
+
+
+
 ### 2.7.0
 
 * The `encrypt` and `decrypt` commands now default to reading from standard input and writing to standard output.

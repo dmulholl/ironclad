@@ -25,14 +25,14 @@ Usage: ironclad gen [length]
   Generates a random ASCII password and copies it to the system clipboard.
 
   The default password length is 24 characters. The default character pool
-  consists of uppercase letters, lowercase letters, digits, and symbols.
-
-  The full list of possible symbols is:
-
-    %s
+  consists of uppercase letters, lowercase letters, and digits.
 
   The --exclude-similar option excludes the following characters from the
   pool:
+
+    %s
+
+  The full list of possible symbols enabled by the --symbols option is:
 
     %s
 
@@ -50,7 +50,7 @@ Flags:
   -h, --help                Print this command's help text and exit.
   -p, --print               Print the password to the standard output stream.
   -r, --readable            Add spaces for readability.
-`, PoolSymbols, PoolSimilars)
+`, PoolSimilars, PoolSymbols)
 
 func registerGenCmd(parser *argo.ArgParser) {
 	cmdParser := parser.NewCommand("gen")
@@ -116,16 +116,16 @@ func genPassword(length int, upper, lower, symbols, digits, excludeSimilar bool)
 	if lower {
 		pool += PoolLower
 	}
-	if symbols {
-		pool += PoolSymbols
-	}
 	if upper {
 		pool += PoolUpper
+	}
+	if symbols {
+		pool += PoolSymbols
 	}
 
 	// Use the default pool if no options were specified.
 	if pool == "" {
-		pool = PoolDigits + PoolLower + PoolUpper + PoolSymbols
+		pool = PoolDigits + PoolLower + PoolUpper
 	}
 
 	// Are we excluding similar characters from the pool?

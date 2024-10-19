@@ -78,7 +78,7 @@ func addCmdCallback(cmdName string, cmdParser *argo.ArgParser) error {
 
 	password = strings.TrimSpace(password)
 	if password == "" {
-		generatedPassword, err := genPassword(DefaultLength, true, true, true, true, false)
+		generatedPassword, err := genPassword(DefaultLength, true, true, false, true, false)
 		if err != nil {
 			return err
 		}
